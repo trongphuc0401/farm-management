@@ -1,25 +1,33 @@
 package vn.edu.likelion.farm_management.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Generated;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
 @Table(name ="tbl_user")
 @Data
-public class UserEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserEntity extends BaseEntity {
 
-    @Id
-    private String id;
+    @Column()
+    private String firstName;
+    @Column
+    private String lastName;
+    @Column(unique=true , nullable=false)
+    private String email;
     @Column
     private String username;
 
-    @PrePersist
-    protected void onCreate() {
-        if (id == null) {
-            id = UUID.randomUUID().toString();
-        }
-    }
+    // private String password;
+
+    private String googleId;
+
+
+
 }

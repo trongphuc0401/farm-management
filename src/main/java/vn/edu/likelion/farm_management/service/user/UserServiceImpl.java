@@ -13,6 +13,18 @@ public class UserServiceImpl implements  UserService{
     @Autowired
     UserRepository userRepository;
 
+    public UserEntity findOrCreateUser(String email, String username ,String googleId) {
+        UserEntity user = userRepository.findByGoogleId(googleId);
+        if (user == null) {
+            user = new UserEntity();
+            user.setEmail(email);
+            user.setUsername(username);
+            user.setGoogleId(googleId);
+            userRepository.save(user);
+        }
+        return user;
+    }
+
     @Override
     public UserEntity save(UserEntity userEntity) {
         return null;

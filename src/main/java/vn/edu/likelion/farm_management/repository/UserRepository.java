@@ -8,5 +8,9 @@ import vn.edu.likelion.farm_management.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity,String> {
 
+    UserEntity findByUsername(String username);
+    UserEntity findByEmail(String email);
+    UserEntity findByGoogleId(String googleId);
+
 
 }

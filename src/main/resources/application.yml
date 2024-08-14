@@ -3,6 +3,19 @@ spring:
     name: farm-management
     title: DraFarm
     version: 1.0
+  security:
+    # conf
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 135464535352-fqug92lp4hf0890m5j07evps9fejm3hu.apps.googleusercontent.com
+            client-secret: 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
+            scope: openid,profile,email
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
     # config Entity to Snake_case in database
   jackson:
     property-naming-strategy: SNAKE_CASE
@@ -14,5 +27,5 @@ spring:
     password: dUMLaC6eu9zdMj25dAVovf3XdLgvNkBo
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     show-sql: true
