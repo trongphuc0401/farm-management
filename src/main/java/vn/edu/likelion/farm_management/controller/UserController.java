@@ -14,7 +14,7 @@ import vn.edu.likelion.farm_management.service.user.UserService;
 import java.util.Iterator;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<RestAPIResponse<Object>> getAllUser() {
         return responseUtil.successResponse( userService.getAll());
     }

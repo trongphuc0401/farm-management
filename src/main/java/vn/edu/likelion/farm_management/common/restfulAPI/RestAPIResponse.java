@@ -12,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 public class RestAPIResponse <T extends Object>  implements Serializable {
-    private int status;
+    private int code;
     private String message;
     private  T data;
     private String description;
@@ -23,7 +23,7 @@ public class RestAPIResponse <T extends Object>  implements Serializable {
             throw new IllegalArgumentException("APIStatus must not be null");
         }
 
-        this.status = restApiStatus.getCode();
+        this.code = restApiStatus.getCode();
         this.message = restApiStatus.getDescription();
         this.data = data;
         this.description = "";
@@ -34,7 +34,7 @@ public class RestAPIResponse <T extends Object>  implements Serializable {
             throw new IllegalArgumentException("APIStatus must not be null");
         }
 
-        this.status = restApiStatus.getCode();
+        this.code = restApiStatus.getCode();
         this.message = restApiStatus.getDescription();
         this.data = data;
         this.description = description;
