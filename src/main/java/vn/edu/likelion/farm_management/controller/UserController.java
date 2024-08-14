@@ -32,4 +32,9 @@ public class UserController {
         return responseUtil.successResponse( userService.getAll());
     }
 
+    @GetMapping("/create")
+    public ResponseEntity<RestAPIResponse<Object>> create() {
+        return responseUtil.successResponse( userService.getAll());
+    }
+
 }
