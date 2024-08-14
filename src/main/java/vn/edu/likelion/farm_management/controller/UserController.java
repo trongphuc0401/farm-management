@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
@@ -34,6 +35,11 @@ public class UserController {
 
     @GetMapping("/create")
     public ResponseEntity<RestAPIResponse<Object>> create() {
+        return responseUtil.successResponse( userService.getAll());
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<RestAPIResponse<Object>> update() {
         return responseUtil.successResponse( userService.getAll());
     }
 
