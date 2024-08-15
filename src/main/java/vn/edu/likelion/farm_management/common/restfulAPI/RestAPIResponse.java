@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Builder
 public class RestAPIResponse <T extends Object>  implements Serializable {
     private int code;
+    private int status;
     private String message;
     private  T data;
     private String description;
