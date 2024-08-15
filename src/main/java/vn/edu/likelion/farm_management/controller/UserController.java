@@ -43,4 +43,9 @@ public class UserController {
         return responseUtil.successResponse( userService.getAll());
     }
 
+    @PostMapping("/delete")
+    public ResponseEntity<RestAPIResponse<Object>> delete() {
+        return responseUtil.successResponse( userService.getAll());
+    }
+
 }
