@@ -14,7 +14,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AppException extends RuntimeException{
-
     private ErrorCode errorCode;
     private Object data;
 
@@ -23,10 +22,5 @@ public class AppException extends RuntimeException{
         this.errorCode = errorCode;
 
     }
-
-
-
-    
-
 
 }

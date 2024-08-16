@@ -7,8 +7,8 @@ import java.util.Optional;
 public interface BaseService <T> {
     Optional<T> save(T t);
     List<T> saveAll(List<T> ts);
-    void delete(T t);
-    void deleteAll(List<T> ts);
+    void delete(String id);
+    void deleteAll(List<String> listId);
     Optional<T> findById(String id);
     List<T> getAll();
 }

@@ -29,9 +29,7 @@ public class GlobalExceptionHandler {
         restAPIResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCodeError());
         restAPIResponse.setMessageEng(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessageEng());
         restAPIResponse.setMessageVN(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessageVN());
-
         restAPIResponse.setTimestamp(LocalDateTime.now());
-
         return ResponseEntity.badRequest().body(restAPIResponse);
     }
 
@@ -39,7 +37,6 @@ public class GlobalExceptionHandler {
     ResponseEntity handlingAppException(AppException exception) {
         ErrorCode errorCode = exception.getErrorCode();
         RestAPIResponse restAPIResponse = new RestAPIResponse();
-
 
         restAPIResponse.setStatus(errorCode.getStatusCode());
         restAPIResponse.setCode(errorCode.getCodeError());
@@ -49,6 +46,7 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(restAPIResponse);
     }
+
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity handlingValidation(MethodArgumentNotValidException exception) {
@@ -62,7 +60,6 @@ public class GlobalExceptionHandler {
         }
 
         RestAPIResponse restAPIResponse = new RestAPIResponse();
-
         restAPIResponse.setStatus(errorCode.getStatusCode());
         restAPIResponse.setCode(errorCode.getCodeError());
         restAPIResponse.setMessageEng(errorCode.getMessageEng());
@@ -71,8 +68,5 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(restAPIResponse);
     }
-
-
-
 
 }

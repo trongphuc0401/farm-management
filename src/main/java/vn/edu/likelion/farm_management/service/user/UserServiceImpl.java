@@ -36,12 +36,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(UserEntity userEntity) {
-
+    public void delete(String id) {
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXIST));
+        userEntity.setIsDeleted(1);
+        userRepository.save(userEntity);
     }
 
     @Override
-    public void deleteAll(List<UserEntity> userEntities) {
+    public void deleteAll(List<String> listId) {
 
     }
 

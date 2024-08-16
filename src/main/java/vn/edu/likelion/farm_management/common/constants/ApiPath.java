@@ -9,16 +9,12 @@ package vn.edu.likelion.farm_management.common.constants;
  */
 public interface ApiPath {
 
-
     String BASE_API_URL = "/api/v1";
     String USER_API = BASE_API_URL + "/user";
     String PLANT_API = BASE_API_URL + "/plant";
     String FARM_API = BASE_API_URL + "/farm";
     String HARVEST_API = BASE_API_URL + "/harvest";
     String REPORT_API = BASE_API_URL + "/report";
-
-
-
 
 
     //http methods
@@ -50,7 +46,5 @@ public interface ApiPath {
     String SIGNUP_VERIFY = "/signup-verify";
     String FORGOT_PASSWORD = "/forgot-password";
     String REFRESH_TOKEN = "/refresh-token";
-
-
 
 }

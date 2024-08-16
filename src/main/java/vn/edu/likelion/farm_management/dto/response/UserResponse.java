@@ -1,5 +1,6 @@
 package vn.edu.likelion.farm_management.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,7 +20,7 @@ public class UserResponse {
     String urlAvatar;
     String urlBanner;
     String local;
-//    int isDeleted;
+    int isDeleted;
     LocalDateTime createAt;
     LocalDateTime updateAt;
 }
