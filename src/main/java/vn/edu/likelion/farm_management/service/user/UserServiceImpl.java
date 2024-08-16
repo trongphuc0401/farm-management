@@ -1,21 +1,33 @@
 package vn.edu.likelion.farm_management.service.user;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import vn.edu.likelion.farm_management.common.exceptions.AppException;
+import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 import vn.edu.likelion.farm_management.entity.UserEntity;
+import vn.edu.likelion.farm_management.mapper.UserMapper;
 import vn.edu.likelion.farm_management.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements  UserService{
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserMapper userMapper;
+
     @Override
-    public UserEntity save(UserEntity userEntity) {
-        return null;
+    public Optional<UserEntity> save(UserEntity userEntity) {
+        return Optional.empty();
     }
 
     @Override
@@ -34,8 +46,10 @@ public class UserServiceImpl implements  UserService{
     }
 
     @Override
-    public UserEntity getById(String s) {
-        return null;
+    public Optional<UserEntity> findById(String id) {
+        return Optional.ofNullable(userRepository.findById(id).orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_EXIST)
+        ));
     }
 
     @Override
