@@ -10,20 +10,10 @@ package vn.edu.likelion.farm_management.common.constants;
 public interface ApiPath {
 
 
-    String BASE_API_URL = "/api/v1";
-    String USER_API = BASE_API_URL + "/user";
-    String PLANT_API = BASE_API_URL + "/plant";
-    String FARM_API = BASE_API_URL + "/farm";
-    String HARVEST_API = BASE_API_URL + "/harvest";
-    String REPORT_API = BASE_API_URL + "/report";
-
-
-
-
-
     //http methods
-
     String ID = "/{id}";
+
+
     String SLUG = "/slug/{slug}";
     String DETAIL = "/detail";
     String ADD = "/add";
@@ -35,7 +25,7 @@ public interface ApiPath {
     String VERIFY_TOKEN = "/{verify-token}";
     String REGISTER = "/register";
     String DOWNLOAD = "/download";
-    String GET_ALL = "/getAll";
+    String FIND_ALL = "/findAll";
 
     // Authenticate APIs
     String LOGIN = "/login";
@@ -50,6 +40,40 @@ public interface ApiPath {
     String SIGNUP_VERIFY = "/signup-verify";
     String FORGOT_PASSWORD = "/forgot-password";
     String REFRESH_TOKEN = "/refresh-token";
+
+
+
+    String BASE_API_URL = "/api/v1";
+
+
+    // User
+    String USER_API = BASE_API_URL + "/user";
+    String USER_API_findById =   ID;
+    String USER_API_updateInfo =   "/updateInfo/{id}";
+    String USER_API_updateAvatar =  "/updateAvatar/{id}";
+    String USER_API_updateBanner =  "/updateBanner/{id}";
+
+
+    // Plant
+    String PLANT_API = BASE_API_URL + "/plant";
+
+
+    // Plant
+    String FARM_API = BASE_API_URL + "/farm";
+
+
+    // Harvest
+    String HARVEST_API = BASE_API_URL + "/harvest";
+
+
+    // Report
+    String REPORT_API = BASE_API_URL + "/report";
+
+
+
+
+
+
 
 
 

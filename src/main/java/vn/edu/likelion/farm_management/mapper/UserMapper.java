@@ -20,7 +20,6 @@ public interface UserMapper {
 
     UserResponse toUserResponse(UserEntity userEntity);
 
-//    @Mapping(target = "password", ignore = true)
     void updateUser(@MappingTarget UserEntity user, UserUpdateInfoRequest userUpdateInfoRequest);
 
 }
