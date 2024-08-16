@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
     String username;
@@ -20,7 +19,7 @@ public class UserResponse {
     String urlAvatar;
     String urlBanner;
     String local;
-    int isDeleted;
+//    int isDeleted;
     LocalDateTime createAt;
     LocalDateTime updateAt;
 }

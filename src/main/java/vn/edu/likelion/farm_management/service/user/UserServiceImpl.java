@@ -54,6 +54,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserEntity> getAll() {
-        return userRepository.findAll();
+        return Optional.of(userRepository.findAll())
+                .filter(users -> !users.isEmpty())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXIST));
     }
+
 }

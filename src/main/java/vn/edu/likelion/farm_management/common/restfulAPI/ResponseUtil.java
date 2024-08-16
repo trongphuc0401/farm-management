@@ -53,7 +53,6 @@ public class ResponseUtil {
         return new ResponseEntity<>(_createResponse(restApiStatus, errorCode), httpStatus);
     }
 
-
     /**
      * Return success HTTP Request
      * @param data
@@ -62,8 +61,5 @@ public class ResponseUtil {
     public ResponseEntity<RestAPIResponse<Object>> successResponse(Object data) {
         return buildResponse(RestAPIStatus.OK, data, HttpStatus.OK);
     }
-
-
-
 
 }
