@@ -8,9 +8,8 @@ package vn.edu.likelion.farm_management.entity;
  * @throws
  */
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UuidGenerator;
 import vn.edu.likelion.farm_management.common.utils.UniqueID;
@@ -32,19 +31,23 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @UuidGenerator
-    private String id;
+    String id;
 
     @Column(nullable = true, updatable = false)
-    private LocalDateTime createTime;
+    LocalDateTime createAt;
 
     @Column(nullable = true, insertable = false)
-    private LocalDateTime updateTime;
+    LocalDateTime updateAt;
+
+    @Column
+    int isDeleted;
 
     @PrePersist
     protected void onCreate() {
@@ -52,9 +55,7 @@ public abstract class BaseEntity implements Serializable {
         if (id == null) {
             id = UniqueID.getUUID();
         }
-        this.createTime = LocalDateTime.now();
-
-        updateTime = LocalDateTime.now();
-
+        this.createAt = LocalDateTime.now();
+        updateAt = LocalDateTime.now();
     }
 }

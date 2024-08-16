@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-
 public class RestAPIResponse <T extends Object>  implements Serializable {
     private int status;
     private int code;
@@ -27,13 +26,16 @@ public class RestAPIResponse <T extends Object>  implements Serializable {
         if (restApiStatus == null) {
             throw new IllegalArgumentException("APIStatus must not be null");
         }
-        this.status =restApiStatus.getCode();
+        this.status = restApiStatus.getCode();
         this.code = ErrorCode.OK.getCodeError();
         this.messageEng = restApiStatus.getDescription();
         this.data = data;
         this.timestamp = LocalDateTime.now();
 
     }
+
+
+
     public RestAPIResponse(RestAPIStatus restApiStatus, ErrorCode errorCode) {
 
         if (restApiStatus == null) {

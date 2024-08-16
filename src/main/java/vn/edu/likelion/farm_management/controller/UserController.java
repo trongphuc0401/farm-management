@@ -1,22 +1,18 @@
 package vn.edu.likelion.farm_management.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.likelion.farm_management.common.constants.ApiPath;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
-import vn.edu.likelion.farm_management.entity.UserEntity;
+import vn.edu.likelion.farm_management.mapper.UserMapper;
 import vn.edu.likelion.farm_management.service.user.UserService;
-
-import java.util.Iterator;
 
 @RestController
 @RequestMapping(ApiPath.USER_API)
+@RequiredArgsConstructor
 public class UserController {
 
     @Autowired
@@ -25,28 +21,17 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    UserMapper userMapper;
 
     @GetMapping(ApiPath.GET_ALL)
     public ResponseEntity<RestAPIResponse<Object>> getAllUser() {
-        return responseUtil.successResponse( userService.getAll());
+        return responseUtil.successResponse(
+                userService.getAll().stream().map(userMapper::toUserResponse).toList()
+        );
     }
 
-    @GetMapping("/create")
-    public ResponseEntity<RestAPIResponse<Object>> create() {
-        return responseUtil.successResponse( userService.getAll());
-    }
 
-    @PostMapping("/update")
-    public ResponseEntity<RestAPIResponse<Object>> update() {
-        return responseUtil.successResponse( userService.getAll());
-    }
 
-    @PostMapping("/delete")
-    public ResponseEntity<RestAPIResponse<Object>> delete() {
-        return responseUtil.successResponse( userService.getAll());
-    }
 
 }
