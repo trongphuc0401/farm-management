@@ -40,6 +40,7 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = exception.getErrorCode();
         RestAPIResponse restAPIResponse = new RestAPIResponse();
 
+
         restAPIResponse.setStatus(errorCode.getStatusCode());
         restAPIResponse.setCode(errorCode.getCodeError());
         restAPIResponse.setMessageEng(errorCode.getMessageEng());

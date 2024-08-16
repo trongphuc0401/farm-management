@@ -16,6 +16,7 @@ import lombok.Setter;
 public class AppException extends RuntimeException{
 
     private ErrorCode errorCode;
+    private Object data;
 
     public AppException(ErrorCode errorCode){
         super(errorCode.getMessageEng());

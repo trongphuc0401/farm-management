@@ -16,10 +16,5 @@ public class UserEntity {
     @Column
     private String username;
 
-    @PrePersist
-    protected void onCreate() {
-        if (id == null) {
-            id = UUID.randomUUID().toString();
-        }
-    }
+
 }
