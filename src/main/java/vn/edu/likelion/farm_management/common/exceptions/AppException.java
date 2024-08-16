@@ -1,5 +1,9 @@
 package vn.edu.likelion.farm_management.common.exceptions;
 
+
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * AppException -
  *
@@ -7,7 +11,19 @@ package vn.edu.likelion.farm_management.common.exceptions;
  * @return
  * @throws
  */
+@Getter
+@Setter
 public class AppException extends RuntimeException{
+
+    private ErrorCode errorCode;
+
+    public AppException(ErrorCode errorCode){
+        super(errorCode.getMessageEng());
+        this.errorCode = errorCode;
+
+    }
+
+
 
     
 

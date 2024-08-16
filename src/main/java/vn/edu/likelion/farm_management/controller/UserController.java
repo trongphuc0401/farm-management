@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vn.edu.likelion.farm_management.common.constants.ApiPath;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 import vn.edu.likelion.farm_management.entity.UserEntity;
@@ -15,7 +16,7 @@ import vn.edu.likelion.farm_management.service.user.UserService;
 import java.util.Iterator;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping(ApiPath.USER_API)
 public class UserController {
 
     @Autowired
@@ -28,7 +29,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/getAll")
+    @GetMapping(ApiPath.GET_ALL)
     public ResponseEntity<RestAPIResponse<Object>> getAllUser() {
         return responseUtil.successResponse( userService.getAll());
     }

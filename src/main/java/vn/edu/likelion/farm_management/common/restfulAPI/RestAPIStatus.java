@@ -33,8 +33,6 @@ public enum RestAPIStatus {
     private final String description;
 
 
-
-
      RestAPIStatus(int s, String v) {
         code = s;
         description = v;

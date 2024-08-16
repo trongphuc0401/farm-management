@@ -1,9 +1,8 @@
 package vn.edu.likelion.farm_management.common.restfulAPI;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
+import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,10 +11,14 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+
 public class RestAPIResponse <T extends Object>  implements Serializable {
     private int status;
     private int code;
-    private String message;
+    private String messageEng;
+    private String messageVN;
     private  T data;
     private LocalDateTime timestamp;
 
@@ -24,22 +27,23 @@ public class RestAPIResponse <T extends Object>  implements Serializable {
         if (restApiStatus == null) {
             throw new IllegalArgumentException("APIStatus must not be null");
         }
-
         this.status =restApiStatus.getCode();
-        this.code = restApiStatus.getCode();
-        this.message = restApiStatus.getDescription();
+        this.code = ErrorCode.OK.getCodeError();
+        this.messageEng = restApiStatus.getDescription();
         this.data = data;
+        this.timestamp = LocalDateTime.now();
 
     }
-    public RestAPIResponse(RestAPIStatus restApiStatus, T data, String description) {
+    public RestAPIResponse(RestAPIStatus restApiStatus, ErrorCode errorCode) {
 
         if (restApiStatus == null) {
             throw new IllegalArgumentException("APIStatus must not be null");
         }
+        this.status = restApiStatus.getCode();
+        this.code = errorCode.getCodeError();
+        this.messageEng = errorCode.getMessageEng();
+        this.messageVN = errorCode.getMessageVN();
+        this.timestamp = LocalDateTime.now();
 
-        this.code = restApiStatus.getCode();
-        this.message = restApiStatus.getDescription();
-        this.data = data;
-        this.description = description;
     }
 }
