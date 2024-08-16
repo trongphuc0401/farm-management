@@ -1,11 +1,8 @@
 package vn.edu.likelion.farm_management.common.restfulAPI;
 
-
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter
+
 public enum RestAPIStatus {
     OK(200, "OK"),
     NO_RESULT(201, "No more result."),
@@ -31,8 +28,8 @@ public enum RestAPIStatus {
     UNPROCESSABLE(422,"Unprocessable Entity"),
     NOT_IMPLEMENTED(501,"Not Implemented");
 
-    private int code;
-    private String description;
+    private final int code;
+    private final String description;
 
      RestAPIStatus(int s, String v) {
         code = s;
@@ -46,4 +43,11 @@ public enum RestAPIStatus {
     }
 
 
+    public int getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

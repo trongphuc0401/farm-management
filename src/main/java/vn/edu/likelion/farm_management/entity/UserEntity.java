@@ -11,9 +11,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "tbl_user")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserEntity extends BaseEntity {
 
@@ -46,6 +43,5 @@ public class UserEntity extends BaseEntity {
 
     @Column
     String local;
-
 
 }

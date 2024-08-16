@@ -28,10 +28,6 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@SuperBuilder
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
