@@ -17,7 +17,7 @@ public interface ApiPath {
     String SLUG = "/slug/{slug}";
     String DETAIL = "/detail";
     String ADD = "/add";
-    String EDIT = "/edit";
+    String EDIT = "/update";
     String DELETE = "/delete";
     String CANCEL = "/cancel";
     String GET_PAGE = "/page";

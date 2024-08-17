@@ -11,6 +11,7 @@ import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
 import vn.edu.likelion.farm_management.dto.request.plant.PlantCreationRequest;
+import vn.edu.likelion.farm_management.dto.request.plant.PlantUpdateInfoRequest;
 import vn.edu.likelion.farm_management.service.plant.PlantService;
 
 /**
@@ -43,6 +44,11 @@ public class PlantController {
 
     }
 
+    @PostMapping(value =ApiPath.EDIT + ApiPath.ID ,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE  )
+    public ResponseEntity<RestAPIResponse<Object>> updatePlant(@PathVariable String id, @RequestBody PlantUpdateInfoRequest plantUpdateInfoRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.OK,plantService.updateInfo(id,plantUpdateInfoRequest),HttpStatus.OK);
+
+    }
 
 
 

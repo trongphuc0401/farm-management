@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import vn.edu.likelion.farm_management.common.exceptions.AppException;
 import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 import vn.edu.likelion.farm_management.dto.request.plant.PlantCreationRequest;
+import vn.edu.likelion.farm_management.dto.request.plant.PlantUpdateInfoRequest;
 import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.mapper.PlantMapper;
@@ -37,7 +38,7 @@ public class PlantServiceImpl  implements PlantService{
 
         @Override
         public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
-                PlantEntity plantEntity = plantMapper.toPlant(plantCreationRequest);
+                PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
                 plantEntity = plantRepository.save(plantEntity);
                 PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
                 return Optional.of(plantResponse);
@@ -45,7 +46,8 @@ public class PlantServiceImpl  implements PlantService{
         }
 
     @Override
-    public Optional<PlantResponse> update(PlantCreationRequest t) {
+    public Optional<PlantResponse> update(PlantCreationRequest t)
+    {
         return Optional.empty();
     }
 
@@ -66,7 +68,11 @@ public class PlantServiceImpl  implements PlantService{
 
     @Override
     public Optional<PlantResponse> findById(String id) {
-        return Optional.empty();
+        return plantRepository.findById(id)
+                .map(plantMapper::toPlantResponse)
+                .or(() -> {
+                    throw  new AppException(ErrorCode.PLANT_NOT_EXIST);
+                });
     }
 
     @Override
@@ -79,5 +85,17 @@ public class PlantServiceImpl  implements PlantService{
         return  plantEntities.stream()
                 .map(plantMapper::toPlantResponse)
                 .toList();
+    }
+
+    @Override
+    public Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest plantUpdateInfoRequest) {
+       PlantEntity plantEntity = plantRepository.findById(id)
+               .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
+
+       plantMapper.updatePlantEntity(plantEntity, plantUpdateInfoRequest);
+
+       PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
+       PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
+     return Optional.of(plantResponse);
     }
 }
