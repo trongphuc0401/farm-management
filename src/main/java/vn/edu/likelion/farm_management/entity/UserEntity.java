@@ -1,12 +1,9 @@
 package vn.edu.likelion.farm_management.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.Columns;
 
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_user")
