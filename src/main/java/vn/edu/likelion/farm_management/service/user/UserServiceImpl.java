@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Optional<UserResponse> create(UserEntity t) {
+    public Optional<UserResponse> create(UserCreationRequest t) {
         return Optional.empty();
     }
 
