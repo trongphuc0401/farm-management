@@ -56,6 +56,7 @@ public interface ApiPath {
 
     // Plant
     String PLANT_API = BASE_API_URL + "/plant";
+    String PAGINATE = "/paginate";
 
 
     // Plant
