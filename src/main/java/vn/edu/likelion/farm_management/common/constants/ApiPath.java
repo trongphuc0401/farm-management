@@ -8,16 +8,13 @@ package vn.edu.likelion.farm_management.common.constants;
  * @throws
  */
 public interface ApiPath {
-
-
     //http methods
     String ID = "/{id}";
-
 
     String SLUG = "/slug/{slug}";
     String DETAIL = "/detail";
     String ADD = "/add";
-    String EDIT = "/edit";
+    String EDIT = "/update";
     String DELETE = "/delete";
     String CANCEL = "/cancel";
     String GET_PAGE = "/page";
@@ -41,10 +38,7 @@ public interface ApiPath {
     String FORGOT_PASSWORD = "/forgot-password";
     String REFRESH_TOKEN = "/refresh-token";
 
-
-
     String BASE_API_URL = "/api/v1";
-
 
     // User
     String USER_API = BASE_API_URL + "/user";
@@ -53,28 +47,16 @@ public interface ApiPath {
     String USER_API_updateAvatar =  "/updateAvatar/{id}";
     String USER_API_updateBanner =  "/updateBanner/{id}";
 
-
     // Plant
     String PLANT_API = BASE_API_URL + "/plant";
-
+    String PAGINATE = "/paginate";
 
     // Plant
     String FARM_API = BASE_API_URL + "/farm";
 
-
     // Harvest
     String HARVEST_API = BASE_API_URL + "/harvest";
 
-
     // Report
     String REPORT_API = BASE_API_URL + "/report";
-
-
-
-
-
-
-
-
-
 }

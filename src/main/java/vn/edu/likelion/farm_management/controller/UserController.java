@@ -6,20 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.edu.likelion.farm_management.common.constants.ApiPath;
-import vn.edu.likelion.farm_management.common.exceptions.AppException;
-import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 import vn.edu.likelion.farm_management.dto.request.UserUpdateInfoRequest;
-import vn.edu.likelion.farm_management.mapper.UserMapper;
 import vn.edu.likelion.farm_management.service.user.UserService;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(ApiPath.USER_API)
@@ -45,7 +35,7 @@ public class UserController {
                 userService.findById(id)
         );
     }
-
+    
     @PutMapping(ApiPath.USER_API_updateInfo)
     public ResponseEntity<RestAPIResponse<Object>> updateInfo(
             @PathVariable String id, @RequestBody UserUpdateInfoRequest userUpdateInfoRequest) {
