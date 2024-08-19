@@ -1,4 +1,4 @@
-package vn.edu.likelion.farm_management.model.request;
+package vn.edu.likelion.farm_management.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

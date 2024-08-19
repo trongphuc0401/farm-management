@@ -13,8 +13,8 @@ import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
 import vn.edu.likelion.farm_management.entity.UserEntity;
-import vn.edu.likelion.farm_management.model.request.TokenRequest;
-import vn.edu.likelion.farm_management.model.response.AuthResponse;
+import vn.edu.likelion.farm_management.dto.request.TokenRequest;
+import vn.edu.likelion.farm_management.dto.response.AuthResponse;
 import vn.edu.likelion.farm_management.service.user.UserService;
 
 import java.util.Collections;

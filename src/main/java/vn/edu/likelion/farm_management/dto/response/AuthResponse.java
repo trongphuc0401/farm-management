@@ -1,4 +1,4 @@
-package vn.edu.likelion.farm_management.model.response;
+package vn.edu.likelion.farm_management.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
