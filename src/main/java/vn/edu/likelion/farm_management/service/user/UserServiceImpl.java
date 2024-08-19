@@ -37,8 +37,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Optional<UserResponse> create(UserEntity t) {
-        return Optional.empty();
+    public Optional<UserResponse> create(UserCreationRequest userCreationRequest) {
+        UserEntity userEntity = userMapper.toUser(userCreationRequest);
+        userEntity = userRepository.save(userEntity);
+        UserResponse userResponse = userMapper.toUserResponse(userEntity);
+        return Optional.of(userResponse);
     }
 
     @Override

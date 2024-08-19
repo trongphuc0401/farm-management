@@ -2,6 +2,8 @@ package vn.edu.likelion.farm_management.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +12,8 @@ import vn.edu.likelion.farm_management.common.exceptions.AppException;
 import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
+import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
+import vn.edu.likelion.farm_management.dto.request.UserCreationRequest;
 import vn.edu.likelion.farm_management.dto.request.UserUpdateInfoRequest;
 import vn.edu.likelion.farm_management.mapper.UserMapper;
 import vn.edu.likelion.farm_management.service.user.UserService;
@@ -44,6 +48,11 @@ public class UserController {
         return responseUtil.successResponse(
                 userService.findById(id)
         );
+    }
+
+    @PostMapping(value =ApiPath.ADD ,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE  )
+    public ResponseEntity<RestAPIResponse<Object>> createUser(@RequestBody UserCreationRequest userCreationRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.NO_RESULT, userService.create(userCreationRequest), HttpStatus.CREATED);
     }
 
     @PutMapping(ApiPath.USER_API_updateInfo)

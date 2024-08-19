@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BaseService <E, I, O> {
-    Optional<O> create(E t);
+    Optional<O> create(I t);
 
     Optional<O> update(I t);
 
