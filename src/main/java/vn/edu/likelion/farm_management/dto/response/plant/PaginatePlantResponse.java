@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaginatePlantResponse {
-    List<PlantResponse> data;
+    List<PlantResponse> results;
     int pageNo;
     int  pageSize;
     int totalElements;

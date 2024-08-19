@@ -107,7 +107,7 @@ public class PlantServiceImpl  implements PlantService{
         List<PlantEntity> plantEntityList = plantEntities.getContent();
         List<PlantResponse> data = plantEntityList.stream().map(plantMapper::toPlantResponse).toList();
         PaginatePlantResponse paginatePlantResponse = new PaginatePlantResponse();
-        paginatePlantResponse.setData(data);
+        paginatePlantResponse.setResults(data);
         paginatePlantResponse.setPageNo(plantEntities.getNumber());
         paginatePlantResponse.setPageSize(plantEntities.getSize());
         paginatePlantResponse.setTotalElements(plantEntities.getNumberOfElements());

@@ -35,7 +35,7 @@ public class UserController {
                 userService.findById(id)
         );
     }
-
+    
     @PutMapping(ApiPath.USER_API_updateInfo)
     public ResponseEntity<RestAPIResponse<Object>> updateInfo(
             @PathVariable String id, @RequestBody UserUpdateInfoRequest userUpdateInfoRequest) {
