@@ -9,6 +9,7 @@ import vn.edu.likelion.farm_management.common.constants.ApiPath;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 import vn.edu.likelion.farm_management.dto.request.UserUpdateInfoRequest;
+import vn.edu.likelion.farm_management.service.uploadFile.FileUpload;
 import vn.edu.likelion.farm_management.service.user.UserService;
 
 @RestController
@@ -21,6 +22,7 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
 
     @GetMapping(ApiPath.FIND_ALL)
     public ResponseEntity<RestAPIResponse<Object>> findAll() {
@@ -44,7 +46,7 @@ public class UserController {
         );
     }
 
-    @PostMapping(ApiPath.USER_API_updateAvatar)
+    @PutMapping(ApiPath.USER_API_updateAvatar)
     public ResponseEntity<RestAPIResponse<Object>> updateAvatar(
             @PathVariable String id,
             @RequestParam("image") MultipartFile file) {
@@ -53,7 +55,7 @@ public class UserController {
         );
     }
 
-    @PostMapping(ApiPath.USER_API_updateBanner)
+    @PutMapping(ApiPath.USER_API_updateBanner)
     public ResponseEntity<RestAPIResponse<Object>> updateBanner(
             @PathVariable String id,
             @RequestParam("image") MultipartFile file) {
