@@ -30,7 +30,6 @@ public enum ErrorCode {
     PLANT_EXIST(RestAPIStatus.EXISTED , -110,"Plant Exist","Already Exist","Cây trồng đã tồn tại"),
     PLANT_NOT_EXIST(RestAPIStatus.NOT_FOUND , -111,"Plant Not Exist","Not Found","Cây trồng không được tìm thấy"),
 
-
     UNAUTHORIZED_ACCESS(RestAPIStatus.UNAUTHORIZED, -201, "Unauthorized access", "Unauthorized", "Truy cập không được phép"),
     FORBIDDEN(RestAPIStatus.FORBIDDEN, -202, "Forbidden: You do not have permission", "Forbidden", "Cấm: Bạn không có quyền truy cập"),
     RESOURCE_NOT_FOUND(RestAPIStatus.NOT_FOUND, -301, "Resource not found", "Not Found", "Tài nguyên không tìm thấy"),
