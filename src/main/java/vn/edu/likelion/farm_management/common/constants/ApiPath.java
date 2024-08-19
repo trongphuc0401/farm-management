@@ -8,6 +8,10 @@ package vn.edu.likelion.farm_management.common.constants;
  * @throws
  */
 public interface ApiPath {
+
+    String DOMAIN = "https://drafarm.up.railway.app";
+    String DOMAIN_LOCAL_FE = "http://localhost:5173/";
+
     //http methods
     String ID = "/{id}";
 
