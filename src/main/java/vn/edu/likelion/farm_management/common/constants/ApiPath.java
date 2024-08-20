@@ -27,6 +27,7 @@ public interface ApiPath {
     String REGISTER = "/register";
     String DOWNLOAD = "/download";
     String FIND_ALL = "/findAll";
+    String FIND_BY_ID = "/findById";
 
     // Authenticate APIs
     String LOGIN = "/login";

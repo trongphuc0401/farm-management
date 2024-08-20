@@ -68,8 +68,8 @@ public class PlantController {
         return responseUtil.successResponse();
     }
 
-    @GetMapping(ApiPath.ID)
-    public ResponseEntity<RestAPIResponse<Object>> findById(@RequestParam(value = "id") String id) {
+    @GetMapping(ApiPath.FIND_BY_ID + ApiPath.ID)
+    public ResponseEntity<RestAPIResponse<Object>> findById(@PathVariable(value = "id") String id) {
         return responseUtil.successResponse(plantService.findById(id));
     }
 }

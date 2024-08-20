@@ -16,10 +16,4 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String> {
 
     boolean existsByName(String name);
 
-
-
-
-
-
-
 }
