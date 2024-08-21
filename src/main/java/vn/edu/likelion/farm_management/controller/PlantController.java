@@ -38,6 +38,12 @@ public class PlantController {
         return responseUtil.successResponse(plantService.findAll());
     }
 
+    @GetMapping(ApiPath.TYPE_PLANT)
+    public ResponseEntity<RestAPIResponse<Object>> findAllTypePlant() {
+        return responseUtil.successResponse(plantService.findAllTypePlant());
+    }
+
+
     @GetMapping(ApiPath.FIND_ALL+ ApiPath.PAGINATE)
     public ResponseEntity<RestAPIResponse<Object>> findAllByPagination(
             @RequestParam(value = "pageNo",defaultValue = "0",required = false) int pageNo,

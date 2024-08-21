@@ -25,14 +25,14 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TypePlantEntity extends BaseEntity  {
 
+    @Column
+    String code;
+
     @Column(nullable = false)
     String name;
 
     @Column()
     String description;
-
-    @Column()
-    String icon;
 
     @Column
     int isDeleted;
