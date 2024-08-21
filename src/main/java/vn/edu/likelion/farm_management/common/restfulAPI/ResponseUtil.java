@@ -31,9 +31,7 @@ public class ResponseUtil {
     private RestAPIResponse<Object> _createResponse(RestAPIStatus restApiStatus, ErrorCode errorCode) {
         return new RestAPIResponse<>(restApiStatus, errorCode);
     }
-
-
-
+    
     /**
      * Build HTTP Response
      * @param restApiStatus
@@ -44,8 +42,7 @@ public class ResponseUtil {
     public ResponseEntity<RestAPIResponse<Object>> buildResponse(RestAPIStatus restApiStatus, Object data, HttpStatus httpStatus) {
         return new ResponseEntity<>(_createResponse(restApiStatus, data), httpStatus);
     }
-
-
+    
     /**
      *
      * @param restApiStatus

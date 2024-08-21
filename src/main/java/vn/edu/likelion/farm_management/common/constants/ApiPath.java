@@ -9,10 +9,11 @@ package vn.edu.likelion.farm_management.common.constants;
  */
 public interface ApiPath {
 
+    String DOMAIN = "https://drafarm.up.railway.app";
+    String DOMAIN_LOCAL_FE = "http://localhost:5173/";
 
     //http methods
     String ID = "/{id}";
-
 
     String SLUG = "/slug/{slug}";
     String DETAIL = "/detail";
@@ -26,6 +27,7 @@ public interface ApiPath {
     String REGISTER = "/register";
     String DOWNLOAD = "/download";
     String FIND_ALL = "/findAll";
+    String FIND_BY_ID = "/findById";
 
     // Authenticate APIs
     String LOGIN = "/login";
@@ -41,10 +43,7 @@ public interface ApiPath {
     String FORGOT_PASSWORD = "/forgot-password";
     String REFRESH_TOKEN = "/refresh-token";
 
-
-
     String BASE_API_URL = "/api/v1";
-
 
     // User
     String USER_API = BASE_API_URL + "/user";
@@ -53,31 +52,17 @@ public interface ApiPath {
     String USER_API_updateAvatar =  "/updateAvatar/{id}";
     String USER_API_updateBanner =  "/updateBanner/{id}";
 
-
     // Plant
     String PLANT_API = BASE_API_URL + "/plant";
     String PAGINATE = "/paginate";
-
     String TYPE_PLANT ="/findAllType";
-
 
     // Farm
     String FARM_API = BASE_API_URL + "/farm";
 
-
     // Harvest
     String HARVEST_API = BASE_API_URL + "/harvest";
 
-
     // Report
     String REPORT_API = BASE_API_URL + "/report";
-
-
-
-
-
-
-
-
-
 }

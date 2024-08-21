@@ -14,6 +14,8 @@ import vn.edu.likelion.farm_management.dto.response.user.UserResponse;
 import vn.edu.likelion.farm_management.entity.UserEntity;
 import vn.edu.likelion.farm_management.mapper.UserMapper;
 import vn.edu.likelion.farm_management.repository.UserRepository;
+import vn.edu.likelion.farm_management.service.uploadFile.FileUpload;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    private final FileUpload fileUpload;
 
 
     @Override
@@ -106,9 +111,13 @@ public class UserServiceImpl implements UserService {
         try {
             // Lưu trữ file ảnh (ví dụ lưu vào thư mục local)
             String fileName = saveAvatar(file);
+
+
+            String photoUrl = fileUpload.uploadFile(file);
+
             UserEntity userEntity = userRepository.findById(id)
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXIST));
-            userEntity.setUrlAvatar(fileName);
+            userEntity.setUrlAvatar(photoUrl);
             UserEntity updatedUser = userRepository.save(userEntity);
             UserResponse userResponse = userMapper.toUserResponse(updatedUser);
 
@@ -124,9 +133,13 @@ public class UserServiceImpl implements UserService {
         try {
             // Lưu trữ file ảnh (ví dụ lưu vào thư mục local)
             String fileName = saveBanner(file);
+            System.out.println("Toi da toi day");
+            String photoUrl = fileUpload.uploadFile(file);
+
+            System.out.println("Toi da gui anh xong day: " + photoUrl);
             UserEntity userEntity = userRepository.findById(id)
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXIST));
-            userEntity.setUrlBanner(fileName);
+            userEntity.setUrlBanner(photoUrl);
             UserEntity updatedUser = userRepository.save(userEntity);
             UserResponse userResponse = userMapper.toUserResponse(updatedUser);
 

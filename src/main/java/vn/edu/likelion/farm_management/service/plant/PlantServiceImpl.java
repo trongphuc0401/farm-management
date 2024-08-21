@@ -34,7 +34,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class PlantServiceImpl  implements PlantService{
+public class PlantServiceImpl implements PlantService {
 
     @Autowired
     PlantRepository plantRepository;
@@ -46,18 +46,18 @@ public class PlantServiceImpl  implements PlantService{
     TypePlantRepository typePlantRepository;
 
 
-        @Override
-        public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
-                PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
-                plantEntity = plantRepository.save(plantEntity);
-                PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
-                return Optional.of(plantResponse);
+    @Override
+    public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
+        PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
+        plantEntity = plantRepository.save(plantEntity);
+        PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
+        return Optional.of(plantResponse);
 
-        }
+
+    }
 
     @Override
-    public Optional<PlantResponse> update(PlantCreationRequest t)
-    {
+    public Optional<PlantResponse> update(PlantCreationRequest t) {
         return Optional.empty();
     }
 
@@ -68,11 +68,11 @@ public class PlantServiceImpl  implements PlantService{
 
     @Override
     public void delete(String id) {
-            PlantEntity plantEntity = plantRepository.findById(id).
-                    orElseThrow(()-> new AppException(ErrorCode.PLANT_NOT_EXIST));
+        PlantEntity plantEntity = plantRepository.findById(id).
+                orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
 
-            plantEntity.setIsDeleted(1);
-            plantRepository.delete(plantEntity);
+        plantEntity.setIsDeleted(1);
+        plantRepository.delete(plantEntity);
 
     }
 
@@ -86,7 +86,7 @@ public class PlantServiceImpl  implements PlantService{
         return plantRepository.findById(id)
                 .map(plantMapper::toPlantResponse)
                 .or(() -> {
-                    throw  new AppException(ErrorCode.PLANT_NOT_EXIST);
+                    throw new AppException(ErrorCode.PLANT_NOT_EXIST);
                 });
     }
 
@@ -97,14 +97,14 @@ public class PlantServiceImpl  implements PlantService{
         if (plantEntities.isEmpty()) {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
         }
-        return  plantEntities.stream()
+        return plantEntities.stream()
                 .map(plantMapper::toPlantResponse)
                 .toList();
     }
 
     @Override
     public PaginatePlantResponse getAllByPagination(int pageNo, int pagSize) {
-        Pageable pageable = PageRequest.of(pageNo,pagSize);
+        Pageable pageable = PageRequest.of(pageNo, pagSize);
         Page<PlantEntity> plantEntities = plantRepository.findAll(pageable);
         if (plantEntities.isEmpty()) {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
@@ -134,14 +134,14 @@ public class PlantServiceImpl  implements PlantService{
 
     @Override
     public Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest plantUpdateInfoRequest) {
-       PlantEntity plantEntity = plantRepository.findById(id)
-               .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
+        PlantEntity plantEntity = plantRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
 
-       plantMapper.updatePlantEntity(plantEntity, plantUpdateInfoRequest);
+        plantMapper.updatePlantEntity(plantEntity, plantUpdateInfoRequest);
 
-       PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
-       PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
-     return Optional.of(plantResponse);
+        PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
+        PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
+        return Optional.of(plantResponse);
     }
 
 

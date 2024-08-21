@@ -15,7 +15,6 @@ public interface UserService extends BaseService<UserEntity, UserCreationRequest
 
     Optional<UserResponse> updateAvatar(String id, MultipartFile file);
 
-
     Optional<UserResponse> updateBanner(String id,  MultipartFile file);
 
 
