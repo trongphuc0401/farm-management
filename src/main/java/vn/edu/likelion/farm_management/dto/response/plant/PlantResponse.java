@@ -21,33 +21,49 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PlantResponse {
 
-    String id;
+    String id; // ID của chi tiết cây trồng
 
-    String name;
+    String typePlantId; // ID loại cây trồng
 
-    String description;
+    String farmId; // ID nông trại
 
-    LocalDateTime datePlanted;
+    String name; // Tên cây trồng
 
-    Double sellingDate;
+    String description; // Mô tả cây trồng
 
-    Double vegetativeStageDate;
+    Double area; // Diện tích cây trồng
 
-    Double floweringStageDate;
+    Double expectedYield; // Sản lượng dự kiến
 
-    Double fruitingStageDate;
+    Double price; // Giá cả
 
-    Double area;
+    int status; // Trạng thái cây trồng
 
-    Double expectedYield;
+    String statusName; // Tên trạng thái
 
-    Double price;
+    Integer seedlingDay; // Ngày bán
 
-    String typePlantId;
+    Integer vegetativeStageDay; // Ngày bắt đầu giai đoạn sinh trưởng
 
-    String farmId;
+    Integer floweringStageDay; // Ngày bắt đầu giai đoạn ra hoa
 
-    LocalDateTime createAt;
+    Integer fruitingStageDay; // Ngày bắt đầu giai đoạn tạo quả
+
+    LocalDateTime datePlanted; // Ngày trồng
+
+    LocalDateTime dateSeedlingFinish; // Ngày hoàn thành bán
+
+    LocalDateTime dateVegetativeStageFinish; // Ngày hoàn thành giai đoạn sinh trưởng
+
+    LocalDateTime dateFloweringStageFinish; // Ngày hoàn thành giai đoạn ra hoa
+
+    LocalDateTime dateFruitingStageFinish; // Ngày hoàn thành giai đoạn tạo quả
+
+    LocalDateTime dateHarvestFinish; // Ngày hoàn thành thu hoạch
+
+    int isDeleted; // Trạng thái xóa mềm
+
+    LocalDateTime createAt; // Ngày tạo
 
     LocalDateTime updateAt;
 }

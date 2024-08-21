@@ -27,6 +27,7 @@ public interface ApiPath {
     String REGISTER = "/register";
     String DOWNLOAD = "/download";
     String FIND_ALL = "/findAll";
+    String FIND_BY_ID = "/findById";
 
     // Authenticate APIs
     String LOGIN = "/login";
@@ -54,8 +55,9 @@ public interface ApiPath {
     // Plant
     String PLANT_API = BASE_API_URL + "/plant";
     String PAGINATE = "/paginate";
+    String TYPE_PLANT ="/findAllType";
 
-    // Plant
+    // Farm
     String FARM_API = BASE_API_URL + "/farm";
 
     // Harvest

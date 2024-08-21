@@ -4,6 +4,8 @@ package vn.edu.likelion.farm_management.dto.request.plant;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 
 /**
  * PlantCreationRequest -
@@ -20,24 +22,23 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PlantCreationRequest {
 
-    String name;
+    String typePlantId; // ID loại cây trồng
 
-    String description;
+    String name; // Tên cây trồng
 
-    Double sellingDate;
+    String description; // Mô tả cây trồng
 
-    Double vegetativeStageDate;
+    Double area; // Diện tích cây trồng
 
-    Double floweringStageDate;
+    Double expectedYield; // Sản lượng dự kiến
 
-    Double fruitingStageDate;
+    Double price; // Giá cả
 
-    Double area;
+    Integer seedlingDay; // Ngày bán
 
-    Double expectedYield;
+    Integer vegetativeStageDay; // Ngày bắt đầu giai đoạn sinh trưởng
 
-    Double price;
+    Integer floweringStageDay; // Ngày bắt đầu giai đoạn ra hoa
 
-    String typePlantId;
-
+    Integer fruitingStageDay; // Ngày bắt đầu giai đoạn tạo quả
 }

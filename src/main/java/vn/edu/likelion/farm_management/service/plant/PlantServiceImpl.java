@@ -14,9 +14,11 @@ import vn.edu.likelion.farm_management.dto.request.plant.PlantCreationRequest;
 import vn.edu.likelion.farm_management.dto.request.plant.PlantUpdateInfoRequest;
 import vn.edu.likelion.farm_management.dto.response.plant.PaginatePlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
+import vn.edu.likelion.farm_management.dto.response.plant.TypePlantResponse;
 import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.mapper.PlantMapper;
 import vn.edu.likelion.farm_management.repository.PlantRepository;
+import vn.edu.likelion.farm_management.repository.TypePlantRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class PlantServiceImpl  implements PlantService{
+public class PlantServiceImpl implements PlantService {
 
     @Autowired
     PlantRepository plantRepository;
@@ -40,19 +42,22 @@ public class PlantServiceImpl  implements PlantService{
     @Autowired
     PlantMapper plantMapper;
 
+    @Autowired
+    TypePlantRepository typePlantRepository;
 
-        @Override
-        public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
-                PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
-                plantEntity = plantRepository.save(plantEntity);
-                PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
-                return Optional.of(plantResponse);
-
-        }
 
     @Override
-    public Optional<PlantResponse> update(PlantCreationRequest t)
-    {
+    public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
+
+            PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
+            plantEntity = plantRepository.save(plantEntity);
+            PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
+            return Optional.of(plantResponse);
+
+    }
+
+    @Override
+    public Optional<PlantResponse> update(PlantCreationRequest t) {
         return Optional.empty();
     }
 
@@ -63,11 +68,11 @@ public class PlantServiceImpl  implements PlantService{
 
     @Override
     public void delete(String id) {
-            PlantEntity plantEntity = plantRepository.findById(id).
-                    orElseThrow(()-> new AppException(ErrorCode.PLANT_NOT_EXIST));
+        PlantEntity plantEntity = plantRepository.findById(id).
+                orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
 
-            plantEntity.setIsDeleted(1);
-            plantRepository.delete(plantEntity);
+        plantEntity.setIsDeleted(1);
+        plantRepository.delete(plantEntity);
 
     }
 
@@ -81,7 +86,7 @@ public class PlantServiceImpl  implements PlantService{
         return plantRepository.findById(id)
                 .map(plantMapper::toPlantResponse)
                 .or(() -> {
-                    throw  new AppException(ErrorCode.PLANT_NOT_EXIST);
+                    throw new AppException(ErrorCode.PLANT_NOT_EXIST);
                 });
     }
 
@@ -92,14 +97,14 @@ public class PlantServiceImpl  implements PlantService{
         if (plantEntities.isEmpty()) {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
         }
-        return  plantEntities.stream()
+        return plantEntities.stream()
                 .map(plantMapper::toPlantResponse)
                 .toList();
     }
 
     @Override
     public PaginatePlantResponse getAllByPagination(int pageNo, int pagSize) {
-        Pageable pageable = PageRequest.of(pageNo,pagSize);
+        Pageable pageable = PageRequest.of(pageNo, pagSize);
         Page<PlantEntity> plantEntities = plantRepository.findAll(pageable);
         if (plantEntities.isEmpty()) {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
@@ -116,15 +121,27 @@ public class PlantServiceImpl  implements PlantService{
     }
 
     @Override
+    public List<TypePlantResponse> findAllTypePlant() {
+        var typePlantEntities = typePlantRepository.findAll();
+
+        if (typePlantEntities.isEmpty()) {
+            throw new AppException(ErrorCode.TYPE_PLANT_NOT_EXIST);
+        }
+        return  typePlantEntities.stream()
+                .map(plantMapper::toTypePlantResponse)
+                .toList();
+    }
+
+    @Override
     public Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest plantUpdateInfoRequest) {
-       PlantEntity plantEntity = plantRepository.findById(id)
-               .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
+        PlantEntity plantEntity = plantRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
 
-       plantMapper.updatePlantEntity(plantEntity, plantUpdateInfoRequest);
+        plantMapper.updatePlantEntity(plantEntity, plantUpdateInfoRequest);
 
-       PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
-       PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
-     return Optional.of(plantResponse);
+        PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
+        PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
+        return Optional.of(plantResponse);
     }
 
 
