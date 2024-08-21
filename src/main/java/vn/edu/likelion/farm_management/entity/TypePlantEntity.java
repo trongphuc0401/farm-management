@@ -33,8 +33,4 @@ public class TypePlantEntity extends BaseEntity  {
 
     @Column()
     String description;
-
-    @Column
-    int isDeleted;
-
 }

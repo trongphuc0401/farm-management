@@ -1,9 +1,7 @@
 package vn.edu.likelion.farm_management.service.plant;
 
-import vn.edu.likelion.farm_management.dto.request.UserUpdateInfoRequest;
 import vn.edu.likelion.farm_management.dto.request.plant.PlantCreationRequest;
 import vn.edu.likelion.farm_management.dto.request.plant.PlantUpdateInfoRequest;
-import vn.edu.likelion.farm_management.dto.response.UserResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.PaginatePlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.TypePlantResponse;

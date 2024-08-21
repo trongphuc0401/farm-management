@@ -1,4 +1,4 @@
-package vn.edu.likelion.farm_management.dto.request;
+package vn.edu.likelion.farm_management.dto.request.user;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

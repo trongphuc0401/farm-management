@@ -48,6 +48,5 @@ public class HarvestEntity extends BaseEntity {
     @Column
     Double priceCurrently; // Giá hiện tại
 
-    @Column
-    int isDeleted;
+
 }

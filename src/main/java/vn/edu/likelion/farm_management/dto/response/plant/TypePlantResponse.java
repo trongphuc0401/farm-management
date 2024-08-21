@@ -28,6 +28,8 @@ public class TypePlantResponse {
 
     String name;
 
+    int isDeleted;
+
     String description;
 
     // LocalDateTime createAt;

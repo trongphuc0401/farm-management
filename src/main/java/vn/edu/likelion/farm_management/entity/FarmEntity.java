@@ -32,6 +32,4 @@ public class FarmEntity extends BaseEntity{
     @Column
     Double area;
 
-    @Column
-    int isDeleted;
 }
