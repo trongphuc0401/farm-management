@@ -17,21 +17,24 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PlantUpdateInfoRequest {
-    String name;
 
-    String description;
+    String typePlantId; // ID loại cây trồng
 
-    Double sellingDate;
+    String name; // Tên cây trồng
 
-    Double vegetativeStageDate;
+    String description; // Mô tả cây trồng
 
-    Double floweringStageDate;
+    Double area; // Diện tích cây trồng trong 1 ô
 
-    Double fruitingStageDate;
+    Double expectedYield; // Sản lượng dự kiến
 
-    Double area;
+    Double price; // Giá cả
 
-    Double expectedYield;
+    Integer seedlingDay; // Ngày bán
 
-    Double price;
+    Integer vegetativeStageDay; // Ngày bắt đầu giai đoạn sinh trưởng
+
+    Integer floweringStageDay; // Ngày bắt đầu giai đoạn ra hoa
+
+    Integer fruitingStageDay; // Ngày bắt đầu giai đoạn tạo quả
 }

@@ -1,25 +1,17 @@
-package vn.edu.likelion.farm_management.dto.response;
-
+package vn.edu.likelion.farm_management.dto.request.user;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
-    String username;
+public class UserUpdateInfoRequest {
     String firstName;
     String lastName;
     int gender;
     String email;
     String phone;
-    String urlAvatar;
-    String urlBanner;
     String local;
-//    int isDeleted;
-    LocalDateTime createAt;
-    LocalDateTime updateAt;
 }

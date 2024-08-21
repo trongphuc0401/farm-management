@@ -14,9 +14,11 @@ import vn.edu.likelion.farm_management.dto.request.plant.PlantCreationRequest;
 import vn.edu.likelion.farm_management.dto.request.plant.PlantUpdateInfoRequest;
 import vn.edu.likelion.farm_management.dto.response.plant.PaginatePlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
+import vn.edu.likelion.farm_management.dto.response.plant.TypePlantResponse;
 import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.mapper.PlantMapper;
 import vn.edu.likelion.farm_management.repository.PlantRepository;
+import vn.edu.likelion.farm_management.repository.TypePlantRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +42,17 @@ public class PlantServiceImpl implements PlantService {
     @Autowired
     PlantMapper plantMapper;
 
+    @Autowired
+    TypePlantRepository typePlantRepository;
+
+
     @Override
     public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
         PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
         plantEntity = plantRepository.save(plantEntity);
         PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
         return Optional.of(plantResponse);
+
 
     }
 
@@ -111,6 +118,18 @@ public class PlantServiceImpl implements PlantService {
         paginatePlantResponse.setTotalElements(plantEntities.getNumberOfElements());
         paginatePlantResponse.setTotalPages(plantEntities.getTotalPages());
         return paginatePlantResponse;
+    }
+
+    @Override
+    public List<TypePlantResponse> findAllTypePlant() {
+        var typePlantEntities = typePlantRepository.findAll();
+
+        if (typePlantEntities.isEmpty()) {
+            throw new AppException(ErrorCode.TYPE_PLANT_NOT_EXIST);
+        }
+        return  typePlantEntities.stream()
+                .map(plantMapper::toTypePlantResponse)
+                .toList();
     }
 
     @Override

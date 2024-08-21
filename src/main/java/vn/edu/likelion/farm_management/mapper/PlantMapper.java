@@ -7,7 +7,9 @@ import vn.edu.likelion.farm_management.dto.request.plant.PlantCreationRequest;
 import vn.edu.likelion.farm_management.dto.request.plant.PlantUpdateInfoRequest;
 import vn.edu.likelion.farm_management.dto.response.plant.PaginatePlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
+import vn.edu.likelion.farm_management.dto.response.plant.TypePlantResponse;
 import vn.edu.likelion.farm_management.entity.PlantEntity;
+import vn.edu.likelion.farm_management.entity.TypePlantEntity;
 
 import java.util.Optional;
 
@@ -28,6 +30,8 @@ public interface PlantMapper {
 
 
     PlantResponse toPlantResponse(PlantEntity plantEntity);
+
+    TypePlantResponse toTypePlantResponse(TypePlantEntity typePlantEntity);
 
     PaginatePlantResponse toPaginatePlantResponse(PlantEntity plantEntity);
 
