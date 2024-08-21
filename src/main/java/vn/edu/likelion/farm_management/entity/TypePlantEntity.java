@@ -25,7 +25,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TypePlantEntity extends BaseEntity  {
 
-    @Column
+    @Column (nullable = false)
     String code;
 
     @Column(nullable = false)
