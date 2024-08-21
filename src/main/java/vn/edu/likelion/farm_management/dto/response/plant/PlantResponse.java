@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PlantResponse {
 
-    Long id; // ID của chi tiết cây trồng
+    String id; // ID của chi tiết cây trồng
 
     String typePlantId; // ID loại cây trồng
 
