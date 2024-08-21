@@ -21,8 +21,8 @@ import java.util.Optional;
 public interface PlantService extends BaseService<PlantEntity , PlantCreationRequest, PlantResponse> {
     Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest PlantUpdateInfoRequest);
     PaginatePlantResponse getAllByPagination(int pageNo , int pagSize);
-
     List<TypePlantResponse> findAllTypePlant();
 
+    PaginatePlantResponse searchPlantsByPagination(String searchText, int pageNo , int pagSize);
 
 }
