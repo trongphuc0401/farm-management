@@ -24,8 +24,6 @@ public class TypePlantResponse {
 
     String id;
 
-    String code;
-
     String name;
 
     int isDeleted;

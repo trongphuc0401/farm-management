@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import vn.edu.likelion.farm_management.common.exceptions.AppException;
 import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
@@ -21,6 +22,7 @@ import vn.edu.likelion.farm_management.repository.PlantRepository;
 import vn.edu.likelion.farm_management.repository.TypePlantRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,7 +106,8 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public PaginatePlantResponse getAllByPagination(int pageNo, int pagSize) {
-        Pageable pageable = PageRequest.of(pageNo, pagSize);
+
+        Pageable pageable = PageRequest.of(pageNo, pagSize, Sort.by("createAt").descending());
         Page<PlantEntity> plantEntities = plantRepository.findAll(pageable);
         if (plantEntities.isEmpty()) {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
@@ -121,6 +124,28 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
+    public PaginatePlantResponse searchPlantsByPagination(String searchText, int pageNo, int pagSize) {
+
+
+        Pageable pageable = PageRequest.of(pageNo, pagSize, Sort.by("createAt").descending());
+        Page<PlantEntity> plantEntities = plantRepository.findPlantBySearchText(searchText,pageable);
+        if (plantEntities.isEmpty()) {
+            throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+        }
+        List<PlantEntity> plantEntityList = plantEntities.getContent();
+        List<PlantResponse> data = plantEntityList.stream().map(plantMapper::toPlantResponse).toList();
+        PaginatePlantResponse paginatePlantResponse = new PaginatePlantResponse();
+        paginatePlantResponse.setResults(data);
+        paginatePlantResponse.setPageNo(plantEntities.getNumber());
+        paginatePlantResponse.setPageSize(plantEntities.getSize());
+        paginatePlantResponse.setTotalElements(plantEntities.getNumberOfElements());
+        paginatePlantResponse.setTotalPages(plantEntities.getTotalPages());
+        return paginatePlantResponse;
+    }
+
+
+
+    @Override
     public List<TypePlantResponse> findAllTypePlant() {
         var typePlantEntities = typePlantRepository.findAll();
 
@@ -131,6 +156,8 @@ public class PlantServiceImpl implements PlantService {
                 .map(plantMapper::toTypePlantResponse)
                 .toList();
     }
+
+
 
     @Override
     public Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest plantUpdateInfoRequest) {

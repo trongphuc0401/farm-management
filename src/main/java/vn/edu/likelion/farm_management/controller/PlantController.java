@@ -51,6 +51,7 @@ public class PlantController {
         return responseUtil.successResponse(plantService.getAllByPagination(pageNo, pageSize));
     }
 
+
     @PostMapping(value = ApiPath.ADD, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestAPIResponse<Object>> addPlant(@RequestBody PlantCreationRequest plantCreationRequest) {
@@ -77,5 +78,13 @@ public class PlantController {
     @GetMapping(ApiPath.FIND_BY_ID + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> findById(@PathVariable(value = "id") String id) {
         return responseUtil.successResponse(plantService.findById(id));
+    }
+
+    @GetMapping(ApiPath.SEARCH)
+    public ResponseEntity<RestAPIResponse<Object>> searchPlants(
+            @RequestParam String searchText,
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return responseUtil.successResponse(plantService.searchPlantsByPagination(searchText,pageNo, pageSize));
     }
 }
