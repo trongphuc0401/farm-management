@@ -28,6 +28,7 @@ public interface ApiPath {
     String DOWNLOAD = "/download";
     String FIND_ALL = "/findAll";
     String FIND_BY_ID = "/findById";
+    String SEARCH = "/search";
 
     // Authenticate APIs
     String LOGIN = "/login";
