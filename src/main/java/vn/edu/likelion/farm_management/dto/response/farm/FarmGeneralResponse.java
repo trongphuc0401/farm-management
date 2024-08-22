@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FarmGeneralResponse {
 
-    Long id; // ID của chi tiết cây trồng
+    String id; // ID của chi tiết cây trồng
 
     String name; // Tên của chi tiết cây trồng
 
@@ -36,11 +36,11 @@ public class FarmGeneralResponse {
 
     LocalDateTime dateHarvest; // Ngày thu hoạch
 
-    Double yieldQuantity; // Sản lượng
+    Integer harvestablePlantCount; // Số
 
     String status; // Trạng thái
 
-    Integer isDeleted; // Trạng thái xóa mềm
+    int isDeleted; // Trạng thái xóa mềm
 
     LocalDateTime createAt; // Ngày tạo
 

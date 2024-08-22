@@ -19,7 +19,9 @@ import java.util.Optional;
  * @throws
  */
 public interface PlantService extends BaseService<PlantEntity , PlantCreationRequest, PlantResponse> {
-    Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest PlantUpdateInfoRequest);
+    Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest plantUpdateInfoRequest);
+    Optional<PlantResponse> addPlantToFarm(String plantId,String farmId);
+
     PaginatePlantResponse getAllByPagination(int pageNo , int pagSize);
     List<TypePlantResponse> findAllTypePlant();
 

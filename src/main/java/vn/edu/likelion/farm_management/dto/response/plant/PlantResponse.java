@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import vn.edu.likelion.farm_management.common.enums.StatusPlant;
 
 import java.time.LocalDateTime;
 
@@ -59,11 +60,12 @@ public class PlantResponse {
 
     LocalDateTime dateFruitingStageFinish; // Ngày hoàn thành giai đoạn tạo quả
 
-    LocalDateTime dateHarvestFinish; // Ngày hoàn thành thu hoạch
-
     int isDeleted; // Trạng thái xóa mềm
 
     LocalDateTime createAt; // Ngày tạo
 
     LocalDateTime updateAt;
+
+
+
 }

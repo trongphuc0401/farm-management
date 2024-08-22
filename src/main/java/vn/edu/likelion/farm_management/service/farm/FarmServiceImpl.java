@@ -36,8 +36,11 @@ public class FarmServiceImpl implements FarmService {
 
 
     @Override
-    public Optional<FarmGeneralResponse> create(FarmCreationRequest t) {
-        return Optional.empty();
+    public Optional<FarmGeneralResponse> create(FarmCreationRequest farmCreationRequest) {
+        FarmEntity farmEntity = farmMapper.toCreateFarm(farmCreationRequest);
+        farmEntity = farmRepository.save(farmEntity);
+        FarmGeneralResponse farmGeneralResponse = farmMapper.toFarmGeneralResponse(farmEntity);
+        return Optional.of(farmGeneralResponse);
     }
 
     @Override

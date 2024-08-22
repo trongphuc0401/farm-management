@@ -69,6 +69,16 @@ public class PlantController {
 
     }
 
+    @PutMapping(value = ApiPath.ADD_TO_FARM,consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestAPIResponse<Object>> addPlantToFarm(
+            @RequestParam String plantId,
+            @RequestParam String farmId ) {
+
+        return responseUtil.buildResponse(RestAPIStatus.OK,plantService.addPlantToFarm(plantId,farmId),HttpStatus.OK);
+
+    }
+
     @DeleteMapping(value = ApiPath.DELETE + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> deletePlant(@PathVariable String id) {
         plantService.delete(id);
@@ -87,4 +97,6 @@ public class PlantController {
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return responseUtil.successResponse(plantService.searchPlantsByPagination(searchText,pageNo, pageSize));
     }
+
+
 }
