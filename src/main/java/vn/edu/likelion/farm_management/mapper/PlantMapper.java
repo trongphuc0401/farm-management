@@ -26,6 +26,7 @@ public interface PlantMapper {
 
     PlantEntity toCreatePlant(PlantCreationRequest plantCreationRequest);
 
+
     PlantEntity toUpdatePlant(PlantUpdateInfoRequest plantUpdateInfoRequest);
 
 
