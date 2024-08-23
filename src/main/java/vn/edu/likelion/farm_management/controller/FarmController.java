@@ -41,10 +41,9 @@ public class FarmController {
         return responseUtil.successResponse(farmService.findAll());
     }
 
-    @PutMapping( ApiPath.EDIT + ApiPath.ID)
+    @PutMapping(ApiPath.EDIT + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> update(@PathVariable(value = "id") String id,
                                                           @RequestBody FarmCreationRequest farmCreationRequest) {
-        System.out.println("Farm update");
         return responseUtil.buildResponse(RestAPIStatus.OK, farmService.updateInfo(id, farmCreationRequest),
                 HttpStatus.OK);
     }
@@ -64,7 +63,13 @@ public class FarmController {
     @PostMapping(value = ApiPath.ADD, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestAPIResponse<Object>> addFarm(@RequestBody FarmCreationRequest farmCreationRequest) {
-        return responseUtil.buildResponse(RestAPIStatus.NO_RESULT,farmService.create(farmCreationRequest), HttpStatus.CREATED);
+        return responseUtil.buildResponse(RestAPIStatus.CREATED, farmService.create(farmCreationRequest),
+                HttpStatus.CREATED);
     }
 
+    @GetMapping(ApiPath.TOTAL_PLANTED_AREA_ALL_FARM)
+    public ResponseEntity<RestAPIResponse<Object>> getTotalPlantedAreaAllFarm() {
+        return responseUtil.buildResponse(RestAPIStatus.OK, farmService.getTotalPlantedAreaAllFarm(),
+                HttpStatus.OK);
+    }
 }

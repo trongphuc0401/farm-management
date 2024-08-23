@@ -3,7 +3,9 @@ package vn.edu.likelion.farm_management.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.likelion.farm_management.common.constants.ApiPath;
@@ -38,20 +40,17 @@ public class HarvestController {
 
 
 
+    @PutMapping(ApiPath.EDIT + ApiPath.ID)
+    public ResponseEntity<RestAPIResponse<Object>> update(@PathVariable(value = "id") String id,
+                                                          @RequestBody HarvestCreationRequest harvestCreationRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.updateInfo(id, harvestCreationRequest),
+                HttpStatus.OK);
+    }
+
     @PostMapping(value =ApiPath.ADD , consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestAPIResponse<Object>> create(@RequestBody HarvestCreationRequest harvestCreationRequest) {
         return responseUtil.buildResponse(RestAPIStatus.NO_RESULT,harvestService.create(harvestCreationRequest), HttpStatus.CREATED);
-    }
-
-
-
-    @PutMapping(ApiPath.EDIT + ApiPath.ID)
-    public ResponseEntity<RestAPIResponse<Object>> update(@PathVariable(value = "id") String id, @RequestBody
-    HarvestCreationRequest creationRequest) {
-        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.updateInfo(id, creationRequest),
-                HttpStatus.OK);
-
     }
 
     @GetMapping(ApiPath.FIND_BY_ID + ApiPath.ID)
@@ -65,11 +64,18 @@ public class HarvestController {
         return responseUtil.successResponse();
     }
 
-    @GetMapping(ApiPath.FIND_ALL + ApiPath.ID)
-    public ResponseEntity<RestAPIResponse<Object>> getAllHavertByDate(@PathVariable(value = "id") String id) {
-
-        return responseUtil.successResponse();
+    @GetMapping(ApiPath.FIND_ALL + ApiPath.DATE)
+    public ResponseEntity<RestAPIResponse<Object>> getAllHavertByDate(
+            @PathVariable(value = "date") String date,
+            @RequestParam(value = "pageNo",defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize",defaultValue = "10", required = false) int pageSize) {
+        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.getAllHarvestByDate(date, pageNo, pageSize ), HttpStatus.OK);
     }
 
+    @GetMapping("/getAllMoneyAndYieldGroupByDate")
+    public ResponseEntity<RestAPIResponse<Object>> getAllMoneyAndYieldGroupByDate() {
+        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.getAllMoneyAndYieldGroupDate(), HttpStatus.OK);
+    }
 
 }
+

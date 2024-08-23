@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HarvestResponse {
+
     String id; // ID của chi tiết cây trồng
 
     String plantId; // ID cây trồng

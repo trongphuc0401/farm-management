@@ -1,5 +1,8 @@
 package vn.edu.likelion.farm_management.dto.request.harvest;
 
+
+import jakarta.persistence.Column;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,6 +11,7 @@ import lombok.experimental.FieldDefaults;
  *
  * @param  
  * @return 
+
  * @throws  
  */
 @Data
@@ -16,8 +20,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HarvestCreationRequest {
-
-    Integer quantity;
+    Integer quantity; // 
     String plantId;
     String plantName;
     String typePlantId;
@@ -26,5 +29,4 @@ public class HarvestCreationRequest {
     String description;
     Integer totalYield;
     Double priceCurrently;
-
 }

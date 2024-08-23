@@ -50,15 +50,12 @@ public class PlantServiceImpl implements PlantService {
     TypePlantRepository typePlantRepository;
 
 
-
     @Override
     public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
-
             PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
             plantEntity = plantRepository.save(plantEntity);
             PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
             return Optional.of(plantResponse);
-
     }
 
     @Override
@@ -160,6 +157,7 @@ public class PlantServiceImpl implements PlantService {
                 .toList();
     }
 
+
     @Override
     public List<PlantResponse> findAllPlantByFarm(String farmId) {
 
@@ -181,9 +179,16 @@ public class PlantServiceImpl implements PlantService {
 
         plantMapper.updatePlantEntity(plantEntity, plantUpdateInfoRequest);
 
-        PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
-        PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
-        return Optional.of(plantResponse);
+        try {
+            PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
+
+            PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
+
+            return Optional.of(plantResponse);
+
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.UPDATE_FAILED);
+        }
     }
 
     @Override
@@ -198,6 +203,4 @@ public class PlantServiceImpl implements PlantService {
 
         return Optional.of(plantResponse);
     }
-
-
 }

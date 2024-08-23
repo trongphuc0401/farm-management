@@ -15,6 +15,9 @@ public interface ApiPath {
     //http methods
     String ID = "/{id}";
 
+    String DATE = "/{date}";
+
+
     String SLUG = "/slug/{slug}";
     String DETAIL = "/detail";
     String ADD = "/add";
@@ -64,6 +67,7 @@ public interface ApiPath {
     // Farm
     String FARM_API = BASE_API_URL + "/farm";
     String ADD_TO_FARM = "/addToFarm";
+    String TOTAL_PLANTED_AREA_ALL_FARM = "/totalPlantedAreaAllFarm";
 
     // Harvest
     String HARVEST_API = BASE_API_URL + "/harvest";

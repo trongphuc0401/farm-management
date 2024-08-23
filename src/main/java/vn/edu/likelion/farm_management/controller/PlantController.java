@@ -61,7 +61,7 @@ public class PlantController {
     @PostMapping(value = ApiPath.ADD, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestAPIResponse<Object>> addPlant(@RequestBody PlantCreationRequest plantCreationRequest) {
-        return responseUtil.buildResponse(RestAPIStatus.NO_RESULT, plantService.create(plantCreationRequest),
+        return responseUtil.buildResponse(RestAPIStatus.CREATED, plantService.create(plantCreationRequest),
                 HttpStatus.CREATED);
 
     }

@@ -43,7 +43,7 @@ public class HarvestEntity extends BaseEntity {
     String description; // Mô tả cây trồng
 
     @Column
-    Integer totalYield; // Sản lượng hiện tại có thể thu hoạch
+    Double totalYield; // Sản lượng hiện tại có thể thu hoạch
 
     @Column
     Double priceCurrently; // Giá hiện tại

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import vn.edu.likelion.farm_management.common.exceptions.AppException;
 import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 import vn.edu.likelion.farm_management.dto.request.farm.FarmCreationRequest;
+import vn.edu.likelion.farm_management.dto.response.farm.AllFarmGeneralResponse;
 import vn.edu.likelion.farm_management.dto.response.farm.FarmGeneralResponse;
+import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 import vn.edu.likelion.farm_management.entity.FarmEntity;
 import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.mapper.FarmMapper;
@@ -83,9 +85,15 @@ public class FarmServiceImpl implements FarmService {
             throw new AppException(ErrorCode.FARM_UPDATE_AREA_FAIL);
         }
 
-        // Cập nhật farm
-        FarmEntity farmEntityUpdate = farmRepository.save(farmEntity);
-        return Optional.of(farmGeneralResponse);
+        try {
+            // Cập nhật farm
+            FarmEntity farmEntityUpdate = farmRepository.save(farmEntity);
+
+            return Optional.of(farmGeneralResponse);
+
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.UPDATE_FAILED);
+        }
     }
 
     @Override
@@ -141,5 +149,18 @@ public class FarmServiceImpl implements FarmService {
                             FarmRepository.toFarmGeneralResponse(farmGeneralResponse, objects);
                             return farmGeneralResponse;
                         }).toList();
+    }
+
+    @Override
+    public AllFarmGeneralResponse getTotalPlantedAreaAllFarm() {
+
+        List<Object[]> list = farmRepository.getTotalPlantedAreaAllFarm();
+        if (list.isEmpty()) {
+            throw new AppException(ErrorCode.QUERY_NOT_FOUND);
+        }
+        AllFarmGeneralResponse allFarmGeneralResponse = new AllFarmGeneralResponse();
+                Object[] objects = list.get(0);
+        FarmRepository.toAllFarmGeneralResponse(allFarmGeneralResponse, objects);
+        return allFarmGeneralResponse;
     }
 }
