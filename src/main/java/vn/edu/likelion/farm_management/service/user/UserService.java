@@ -9,9 +9,7 @@ import vn.edu.likelion.farm_management.service.BaseService;
 
 import java.util.Optional;
 
-public interface UserService extends BaseService<UserEntity, UserCreationRequest, UserResponse> {
-
-    Optional<UserResponse> updateInfo(String id, UserUpdateInfoRequest userUpdateInfoRequest);
+public interface UserService extends BaseService<UserEntity, UserCreationRequest, UserResponse, UserUpdateInfoRequest> {
 
     Optional<UserResponse> updateAvatar(String id, MultipartFile file);
 

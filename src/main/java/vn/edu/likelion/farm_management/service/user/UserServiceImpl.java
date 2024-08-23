@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserResponse> update(UserCreationRequest t) {
+    public Optional<UserResponse> update(UserUpdateInfoRequest t) {
         return Optional.empty();
     }
 

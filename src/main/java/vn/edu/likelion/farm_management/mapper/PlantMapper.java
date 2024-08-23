@@ -1,16 +1,23 @@
 package vn.edu.likelion.farm_management.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
+import org.springframework.cglib.core.Local;
+import vn.edu.likelion.farm_management.common.enums.StatusPlant;
+import vn.edu.likelion.farm_management.common.utils.PlantLifecycleUtils;
 import vn.edu.likelion.farm_management.dto.request.plant.PlantCreationRequest;
 import vn.edu.likelion.farm_management.dto.request.plant.PlantUpdateInfoRequest;
+import vn.edu.likelion.farm_management.dto.request.plant.PlantUpdateToFarmRequest;
 import vn.edu.likelion.farm_management.dto.response.plant.PaginatePlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.TypePlantResponse;
 import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.entity.TypePlantEntity;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -28,7 +35,8 @@ public interface PlantMapper {
 
     PlantEntity toUpdatePlant(PlantUpdateInfoRequest plantUpdateInfoRequest);
 
-
+    @Mapping(target = "status", source = ".", qualifiedByName = "calculateStatus")
+    @Mapping(target = "statusName", source = ".", qualifiedByName = "calculateStatusName")
     PlantResponse toPlantResponse(PlantEntity plantEntity);
 
     TypePlantResponse toTypePlantResponse(TypePlantEntity typePlantEntity);
@@ -36,5 +44,50 @@ public interface PlantMapper {
     PaginatePlantResponse toPaginatePlantResponse(PlantEntity plantEntity);
 
     void updatePlantEntity(@MappingTarget PlantEntity plantEntity, PlantUpdateInfoRequest plantUpdateInfoRequest );
+
+    static PlantEntity toUpdateToFarmPlant(PlantEntity plantEntity,String farmId){
+
+        LocalDateTime datePlanted = LocalDateTime.now();
+        plantEntity.setDatePlanted(datePlanted);
+        plantEntity.setFarmId(farmId);
+        plantEntity.setDateSeedlingFinish(PlantLifecycleUtils.calculateSeedlingDate(plantEntity.getSeedlingDay(),datePlanted));
+        plantEntity.setDateVegetativeStageFinish(PlantLifecycleUtils.calculateVegetativeDate(plantEntity.getVegetativeStageDay(),plantEntity.getDateSeedlingFinish()));
+        plantEntity.setDateFloweringStageFinish(PlantLifecycleUtils.calculateFloweringDate(plantEntity.getFloweringStageDay(),plantEntity.getDateVegetativeStageFinish()));
+        plantEntity.setDateFruitingStageFinish(PlantLifecycleUtils.calculateFruitingDate(plantEntity.getFruitingStageDay(),plantEntity.getDateFloweringStageFinish()));
+        plantEntity.setUpdateAt(LocalDateTime.now());
+
+        return plantEntity;
+
+    }
+
+    @Named("calculateStatus")
+    default int calculateStatus(PlantEntity plant) {
+        return getStatusPlant(plant).getCode();
+    }
+
+    @Named("calculateStatusName")
+    default String calculateStatusName(PlantEntity plant) {
+        return getStatusPlant(plant).getDisplayName();
+    }
+
+    @Named("getStatusPlant")
+    default StatusPlant getStatusPlant(PlantEntity plant) {
+        LocalDateTime now = LocalDateTime.now();
+
+        if (plant.getDateFruitingStageFinish() != null && now.isAfter(plant.getDateFruitingStageFinish())) {
+            return StatusPlant.HARVESTED;
+        } else if (plant.getDateFloweringStageFinish() != null && now.isAfter(plant.getDateFloweringStageFinish())) {
+            return StatusPlant.FRUITING;
+        } else if (plant.getDateVegetativeStageFinish() != null && now.isAfter(plant.getDateVegetativeStageFinish())) {
+            return StatusPlant.FLOWERING;
+        } else if (plant.getDateSeedlingFinish() != null && now.isAfter(plant.getDateSeedlingFinish())) {
+            return StatusPlant.VEGETATIVE;
+        } else if (plant.getDatePlanted() != null && now.isAfter(plant.getDatePlanted())) {
+            return StatusPlant.SEEDLING;
+        } else {
+            return StatusPlant.UNPLANNED;
+        }
+    }
+
 
 }

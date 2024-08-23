@@ -71,10 +71,10 @@ public class PlantEntity extends BaseEntity {
     LocalDateTime datePlanted; // Ngày trồng
 
     @Column
-    LocalDateTime dateSeedlingFinish; // Ngày hoàn thành bán
+    LocalDateTime dateSeedlingFinish; // Ngày hoàn thành nảy mầm
 
     @Column
-    LocalDateTime dateVegetativeStageFinish; // Ngày hoàn thành giai đoạn sinh trưởng
+    LocalDateTime dateVegetativeStageFinish; // Ngày hoàn thành giai đoạn lá
 
     @Column
     LocalDateTime dateFloweringStageFinish; // Ngày hoàn thành giai đoạn ra hoa

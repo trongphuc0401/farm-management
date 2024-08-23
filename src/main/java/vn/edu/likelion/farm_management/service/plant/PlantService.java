@@ -18,8 +18,13 @@ import java.util.Optional;
  * @return
  * @throws
  */
-public interface PlantService extends BaseService<PlantEntity , PlantCreationRequest, PlantResponse> {
-    Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest PlantUpdateInfoRequest);
+
+public interface PlantService extends BaseService<PlantEntity , PlantCreationRequest, PlantResponse, PlantUpdateInfoRequest> {
+//    Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest PlantUpdateInfoRequest);
+
+  
+    Optional<PlantResponse> addPlantToFarm(String plantId,String farmId);
+
     PaginatePlantResponse getAllByPagination(int pageNo , int pagSize);
     List<TypePlantResponse> findAllTypePlant();
 
