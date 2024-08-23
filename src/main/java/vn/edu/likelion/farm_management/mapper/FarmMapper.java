@@ -2,6 +2,7 @@ package vn.edu.likelion.farm_management.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import vn.edu.likelion.farm_management.common.enums.StatusFarm;
@@ -25,6 +26,8 @@ public interface FarmMapper {
 
     @Mapping(target = "status", source = "status", qualifiedByName = "statusToString")
     FarmGeneralResponse toFarmGeneralResponse(FarmEntity farmEntity);
+
+    void updateEntity(@MappingTarget FarmEntity farmEntity, FarmCreationRequest farmCreationRequest);
 
     @Named("stringToStatus")
     default StatusFarm stringToStatus(String status) {
