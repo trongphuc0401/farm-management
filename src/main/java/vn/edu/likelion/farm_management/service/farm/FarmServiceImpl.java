@@ -8,19 +8,17 @@ import org.springframework.stereotype.Service;
 import vn.edu.likelion.farm_management.common.exceptions.AppException;
 import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 import vn.edu.likelion.farm_management.dto.request.farm.FarmCreationRequest;
+import vn.edu.likelion.farm_management.dto.response.dashboard.MonthlyPlantHarvestSummaryDTO;
+import vn.edu.likelion.farm_management.dto.response.dashboard.YieldAndMoneyDashboard;
 import vn.edu.likelion.farm_management.dto.response.farm.AllFarmGeneralResponse;
 import vn.edu.likelion.farm_management.dto.response.farm.FarmGeneralResponse;
-import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 import vn.edu.likelion.farm_management.entity.FarmEntity;
-import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.mapper.FarmMapper;
-import vn.edu.likelion.farm_management.mapper.PlantMapper;
 import vn.edu.likelion.farm_management.repository.FarmRepository;
+import vn.edu.likelion.farm_management.repository.HarvestRepository;
 import vn.edu.likelion.farm_management.repository.PlantRepository;
-import vn.edu.likelion.farm_management.repository.TypePlantRepository;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +37,9 @@ public class FarmServiceImpl implements FarmService {
 
     @Autowired
     PlantRepository plantRepository;
+
+    @Autowired
+    HarvestRepository harvestRepository;
 
     @Autowired
     FarmMapper farmMapper;
@@ -162,5 +163,23 @@ public class FarmServiceImpl implements FarmService {
                 Object[] objects = list.get(0);
         FarmRepository.toAllFarmGeneralResponse(allFarmGeneralResponse, objects);
         return allFarmGeneralResponse;
+    }
+
+    @Override
+    public YieldAndMoneyDashboard getMonthlyPlantAndHarvestSummary() {
+        YieldAndMoneyDashboard yieldAndMoneyDashboard = new YieldAndMoneyDashboard();
+        List<Object[]> list = farmRepository.getMonthlyPlantAndHarvestSummary();
+        if (list.isEmpty()) {
+            throw new AppException(ErrorCode.QUERY_NOT_FOUND);
+        }
+
+        list.forEach(
+                item -> {
+                    MonthlyPlantHarvestSummaryDTO monthlyPlantHarvestSummaryDTO = new MonthlyPlantHarvestSummaryDTO();
+                    FarmRepository.toMonthlyPlantHarvestSummaryDTO(monthlyPlantHarvestSummaryDTO, item);
+                    yieldAndMoneyDashboard.getMonthlyPlantHarvestSummaryDTOArrayList().add(monthlyPlantHarvestSummaryDTO);
+                }
+        );
+        return yieldAndMoneyDashboard;
     }
 }

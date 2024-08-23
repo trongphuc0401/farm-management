@@ -72,6 +72,9 @@ public interface ApiPath {
     // Harvest
     String HARVEST_API = BASE_API_URL + "/harvest";
 
+    // Dashboard
+    String DASHBOARD_API = BASE_API_URL + "/dashboard";
+
     // Report
     String REPORT_API = BASE_API_URL + "/report";
 }
