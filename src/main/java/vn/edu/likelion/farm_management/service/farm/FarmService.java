@@ -16,7 +16,6 @@ import java.util.Optional;
  *
  * @param
  */
-public interface FarmService
-        extends BaseService<FarmEntity, FarmCreationRequest, FarmGeneralResponse, FarmCreationRequest> {
+public interface FarmService extends BaseService<FarmEntity, FarmCreationRequest, FarmGeneralResponse, FarmCreationRequest> {
 
 }
