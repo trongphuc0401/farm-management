@@ -61,7 +61,7 @@ public class FarmServiceImpl implements FarmService {
         // Kiểm tra tồn tại nông trại
         FarmEntity farmEntity = farmRepository.findById(id).
                 orElseThrow(() -> new AppException(ErrorCode.FARM_NOT_EXIST));
-
+        farmEntity.setUpdateAt(LocalDateTime.now());
         // Cập nhật nông trại Entity thông qua Mapper
         farmMapper.updateEntity(farmEntity, t);
 
@@ -129,21 +129,17 @@ public class FarmServiceImpl implements FarmService {
 
     @Override
     public List<FarmGeneralResponse> findAll() {
-        List<FarmGeneralResponse> list =
-                farmRepository.findAll()
+        return farmRepository.findAll()
                         .stream()
                         .map(a -> {
                             FarmGeneralResponse farmGeneralResponse = farmMapper.toFarmGeneralResponse(a);
-                            List<Object[]> list2 = farmRepository.findFarmInformationToFarmResponse(a.getId());
-                            if (list2.isEmpty()) {
+                            List<Object[]> list = farmRepository.findFarmInformationToFarmResponse(a.getId());
+                            if (list.isEmpty()) {
                                 return farmGeneralResponse;
                             }
-                            Object[] objects = list2.get(0);
+                            Object[] objects = list.get(0);
                             FarmRepository.toFarmGeneralResponse(farmGeneralResponse, objects);
                             return farmGeneralResponse;
                         }).toList();
-        return list;
     }
-
-
 }
