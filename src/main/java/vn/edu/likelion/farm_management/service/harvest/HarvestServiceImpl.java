@@ -1,5 +1,6 @@
 package vn.edu.likelion.farm_management.service.harvest;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +10,13 @@ import org.springframework.stereotype.Service;
 import vn.edu.likelion.farm_management.common.exceptions.AppException;
 import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 import vn.edu.likelion.farm_management.common.utils.DateTimeUtils;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationRequest;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestGroupDateResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponse;
@@ -16,10 +24,16 @@ import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponsePagin
 import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 import vn.edu.likelion.farm_management.entity.FarmEntity;
 import vn.edu.likelion.farm_management.entity.HarvestEntity;
+
 import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.mapper.HarvestMapper;
 import vn.edu.likelion.farm_management.repository.FarmRepository;
 import vn.edu.likelion.farm_management.repository.HarvestRepository;
+
+import vn.edu.likelion.farm_management.mapper.HarvestMapper;
+import vn.edu.likelion.farm_management.mapper.PlantMapper;
+import vn.edu.likelion.farm_management.repository.HarvestRepository;
+import vn.edu.likelion.farm_management.repository.PlantRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,18 +50,25 @@ import java.util.Optional;
  */
 
 @Service
-public class HarvestServiceImpl implements HarvestService {
-
-    @Autowired
-    HarvestMapper harvestMapper;
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class HarvestServiceImpl implements HarvestService{
 
     @Autowired
     HarvestRepository harvestRepository;
 
+    @Autowired
+    HarvestMapper harvestMapper;
+
 
     @Override
-    public Optional<HarvestResponse> create(HarvestCreationRequest t) {
-        return Optional.empty();
+    public Optional<HarvestResponse> create(HarvestCreationRequest harvestCreationRequest) {
+
+        HarvestEntity harvestEntity = harvestMapper.toCreateHarvest(harvestCreationRequest);
+        harvestEntity = harvestRepository.save(harvestEntity);
+        HarvestResponse harvestResponse = harvestMapper.toHarvestResponse(harvestEntity);
+        return Optional.of(harvestResponse);
+
     }
 
     @Override

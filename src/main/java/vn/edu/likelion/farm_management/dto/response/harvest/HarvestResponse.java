@@ -33,7 +33,7 @@ public class HarvestResponse {
 
     String description; // Mô tả cây trồng
 
-    Double yieldTotal; // Sản lượng hiện tại
+    Double totalYield; // Sản lượng hiện tại
 
     Double priceCurrently; // Giá hiện tại
 

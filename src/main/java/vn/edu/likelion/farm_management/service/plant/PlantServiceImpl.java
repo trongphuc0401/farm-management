@@ -49,8 +49,6 @@ public class PlantServiceImpl implements PlantService {
     @Autowired
     TypePlantRepository typePlantRepository;
 
-    @Autowired
-    FarmRepository farmRepository;
 
     @Override
     public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
@@ -158,6 +156,21 @@ public class PlantServiceImpl implements PlantService {
                 .map(plantMapper::toTypePlantResponse)
                 .toList();
     }
+
+
+    @Override
+    public List<PlantResponse> findAllPlantByFarm(String farmId) {
+
+        var plantEntities = plantRepository.findPlantByFarmId(farmId);
+
+        if (plantEntities.isEmpty()) {
+            throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+        }
+        return plantEntities.stream()
+                .map(plantMapper::toPlantResponse)
+                .toList();
+    }
+
 
     @Override
     public Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest plantUpdateInfoRequest) {

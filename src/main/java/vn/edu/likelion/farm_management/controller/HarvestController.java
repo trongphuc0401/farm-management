@@ -3,6 +3,9 @@ package vn.edu.likelion.farm_management.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
+import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.likelion.farm_management.common.constants.ApiPath;
@@ -36,11 +39,18 @@ public class HarvestController {
     private FarmRepository farmRepository;
 
 
+
     @PutMapping(ApiPath.EDIT + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> update(@PathVariable(value = "id") String id,
                                                           @RequestBody HarvestCreationRequest harvestCreationRequest) {
         return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.updateInfo(id, harvestCreationRequest),
                 HttpStatus.OK);
+    }
+
+    @PostMapping(value =ApiPath.ADD , consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestAPIResponse<Object>> create(@RequestBody HarvestCreationRequest harvestCreationRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.NO_RESULT,harvestService.create(harvestCreationRequest), HttpStatus.CREATED);
     }
 
     @GetMapping(ApiPath.FIND_BY_ID + ApiPath.ID)
@@ -67,6 +77,5 @@ public class HarvestController {
         return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.getAllMoneyAndYieldGroupDate(), HttpStatus.OK);
     }
 
-
-
 }
+
