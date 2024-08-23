@@ -20,6 +20,7 @@ public interface ApiPath {
     String ADD = "/add";
     String EDIT = "/update";
     String DELETE = "/delete";
+    String DELETE_ALL = "/deleteAll";
     String CANCEL = "/cancel";
     String GET_PAGE = "/page";
     String EXPORT = "/export";

@@ -57,32 +57,35 @@ public class FarmServiceImpl implements FarmService {
 
     @Override
     public Optional<FarmGeneralResponse> updateInfo(String id, FarmCreationRequest t) {
+
+        // Kiểm tra tồn tại nông trại
         FarmEntity farmEntity = farmRepository.findById(id).
                 orElseThrow(() -> new AppException(ErrorCode.FARM_NOT_EXIST));
 
+        // Cập nhật nông trại Entity thông qua Mapper
         farmMapper.updateEntity(farmEntity, t);
 
-        FarmGeneralResponse farmGeneralResponse = farmMapper.toFarmGeneralResponse(farmEntity);
+        // Lấy dữ liệu tổng diện tích cây trồng trong farm
+        Double area = farmEntity.getArea();
+        Double area_planted = 0.00;
 
+        FarmGeneralResponse farmGeneralResponse = farmMapper.toFarmGeneralResponse(farmEntity);
         List<Object[]> list = farmRepository.findFarmInformationToFarmResponse(id);
+        if (list.isEmpty()) {
+            area_planted = 0.00;
+        }
         Object[] objects = list.get(0);
         FarmRepository.toFarmGeneralResponse(farmGeneralResponse, objects);
+        area_planted = (Double) objects[2];
 
-        Double area = farmEntity.getArea();
-
-        Double area_planted = (Double) objects[2];
-
+        // Kiểm tra nếu diện tích mới cập nhật không phù hợp
         if ( area < area_planted) {
             throw new AppException(ErrorCode.FARM_UPDATE_AREA_FAIL);
         }
 
+        // Cập nhật farm
         FarmEntity farmEntityUpdate = farmRepository.save(farmEntity);
-        FarmGeneralResponse farmGeneralResponse2 = farmMapper.toFarmGeneralResponse(farmEntityUpdate);
-        List<Object[]> list2 = farmRepository.findFarmInformationToFarmResponse(id);
-        Object[] objects2 = list2.get(0);
-        FarmRepository.toFarmGeneralResponse(farmGeneralResponse2, objects2);
-
-        return Optional.of(farmGeneralResponse2);
+        return Optional.of(farmGeneralResponse);
     }
 
     @Override
@@ -115,6 +118,10 @@ public class FarmServiceImpl implements FarmService {
                         .orElseThrow(() -> new AppException(ErrorCode.FARM_NOT_EXIST));
 
         List<Object[]> list = farmRepository.findFarmInformationToFarmResponse(id);
+        if (list.isEmpty()) {
+            return Optional.of(farmGeneralResponse);
+        }
+
         Object[] objects = list.get(0);
         FarmRepository.toFarmGeneralResponse(farmGeneralResponse, objects);
         return Optional.of(farmGeneralResponse);
@@ -122,13 +129,15 @@ public class FarmServiceImpl implements FarmService {
 
     @Override
     public List<FarmGeneralResponse> findAll() {
-
         List<FarmGeneralResponse> list =
                 farmRepository.findAll()
                         .stream()
                         .map(a -> {
                             FarmGeneralResponse farmGeneralResponse = farmMapper.toFarmGeneralResponse(a);
                             List<Object[]> list2 = farmRepository.findFarmInformationToFarmResponse(a.getId());
+                            if (list2.isEmpty()) {
+                                return farmGeneralResponse;
+                            }
                             Object[] objects = list2.get(0);
                             FarmRepository.toFarmGeneralResponse(farmGeneralResponse, objects);
                             return farmGeneralResponse;

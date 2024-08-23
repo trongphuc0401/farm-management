@@ -56,7 +56,7 @@ public class FarmController {
     }
 
     @DeleteMapping(value = ApiPath.DELETE + ApiPath.ID)
-    public ResponseEntity<RestAPIResponse<Object>> deletePlant(@PathVariable(value = "id") String id) {
+    public ResponseEntity<RestAPIResponse<Object>> delete(@PathVariable(value = "id") String id) {
         farmService.delete(id);
         return responseUtil.successResponse();
     }
