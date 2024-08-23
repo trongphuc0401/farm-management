@@ -31,7 +31,7 @@ public class HarvestGroupDateResponse {
 
     Double priceTotal; // Tổng giá trị
 
-    Integer isDeleted; // Trạng thái xóa mềm
+    int isDeleted; // Trạng thái xóa mềm
 
     LocalDateTime createAt; // Ngày tạo
 

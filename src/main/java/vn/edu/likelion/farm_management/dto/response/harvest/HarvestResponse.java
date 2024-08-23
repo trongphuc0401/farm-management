@@ -32,11 +32,11 @@ public class HarvestResponse {
 
     String description; // Mô tả cây trồng
 
-    Double yieldCurrently; // Sản lượng hiện tại
+    Integer yieldCurrently; // Sản lượng hiện tại
 
     Double priceCurrently; // Giá hiện tại
 
-    Integer isDeleted; // Trạng thái xóa mềm
+    int isDeleted; // Trạng thái xóa mềm
 
     LocalDateTime createAt; // Ngày tạo
 

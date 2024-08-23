@@ -14,7 +14,7 @@ public enum StatusFarm {
 
     private final String displayName;
 
-    private StatusFarm(String displayName) {
+     StatusFarm(String displayName) {
         this.displayName = displayName;
     }
     public String getDisplayName() {

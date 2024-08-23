@@ -34,7 +34,7 @@ public class HarvestEntity extends BaseEntity {
     String typePlantId; // ID loại cây trồng
 
     @Column
-    String farmId; // ID nông trại
+    String farmId; // ID nông trạiHa
 
     @Column
     String farmName; // Tên nông trại
@@ -43,7 +43,10 @@ public class HarvestEntity extends BaseEntity {
     String description; // Mô tả cây trồng
 
     @Column
-    Double yieldCurrently; // Sản lượng hiện tại
+    Integer yieldCurrently; // Sản lượng hiện tại
+
+    @Column
+    Double averageWeightPerFruit; // Cân nặng trung bình trên 1 trái
 
     @Column
     Double priceCurrently; // Giá hiện tại
