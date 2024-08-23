@@ -1,8 +1,17 @@
 package vn.edu.likelion.farm_management.service.harvest;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationRequest;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponse;
 import vn.edu.likelion.farm_management.entity.HarvestEntity;
+import vn.edu.likelion.farm_management.mapper.HarvestMapper;
+import vn.edu.likelion.farm_management.mapper.PlantMapper;
+import vn.edu.likelion.farm_management.repository.HarvestRepository;
+import vn.edu.likelion.farm_management.repository.PlantRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +23,25 @@ import java.util.Optional;
  * @return
  * @throws
  */
+@Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HarvestServiceImpl implements HarvestService{
-    @Override public Optional<HarvestResponse> create(HarvestCreationRequest t) {
-        return Optional.empty();
+
+    @Autowired
+    HarvestRepository harvestRepository;
+
+    @Autowired
+    HarvestMapper harvestMapper;
+
+
+    @Override
+    public Optional<HarvestResponse> create(HarvestCreationRequest harvestCreationRequest) {
+
+        HarvestEntity harvestEntity = harvestMapper.toCreateHarvest(harvestCreationRequest);
+        harvestEntity = harvestRepository.save(harvestEntity);
+        HarvestResponse harvestResponse = harvestMapper.toHarvestResponse(harvestEntity);
+        return Optional.of(harvestResponse);
     }
 
     @Override public Optional<HarvestResponse> update(HarvestCreationRequest harvestCreationRequest) {

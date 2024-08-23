@@ -43,6 +43,13 @@ public class PlantController {
         return responseUtil.successResponse(plantService.findAllTypePlant());
     }
 
+    @GetMapping(ApiPath.FIND_ALL_PLANT_BY_FARM + ApiPath.ID)
+    public ResponseEntity<RestAPIResponse<Object>> findAllPlantByFarm(
+            @PathVariable String id
+    ) {
+        return responseUtil.successResponse(plantService.findAllPlantByFarm(id));
+    }
+
     @GetMapping(ApiPath.FIND_ALL+ ApiPath.PAGINATE)
     public ResponseEntity<RestAPIResponse<Object>> findAllByPagination(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
@@ -96,6 +103,4 @@ public class PlantController {
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return responseUtil.successResponse(plantService.searchPlantsByPagination(searchText,pageNo, pageSize));
     }
-
-
 }

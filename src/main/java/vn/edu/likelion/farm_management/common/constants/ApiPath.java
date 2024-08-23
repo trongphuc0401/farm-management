@@ -59,6 +59,8 @@ public interface ApiPath {
     String PAGINATE = "/paginate";
     String TYPE_PLANT ="/findAllType";
 
+    String FIND_ALL_PLANT_BY_FARM = "/findPlantByFarm";
+
     // Farm
     String FARM_API = BASE_API_URL + "/farm";
     String ADD_TO_FARM = "/addToFarm";

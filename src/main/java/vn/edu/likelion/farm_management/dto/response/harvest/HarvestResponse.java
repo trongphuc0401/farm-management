@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HarvestResponse {
-    Long id; // ID của chi tiết cây trồng
+    String id; // ID của chi tiết cây trồng
 
     String plantId; // ID cây trồng
 
@@ -32,7 +32,7 @@ public class HarvestResponse {
 
     String description; // Mô tả cây trồng
 
-    Double yieldCurrently; // Sản lượng hiện tại
+    Double totalYield; // Sản lượng hiện tại
 
     Double priceCurrently; // Giá hiện tại
 
