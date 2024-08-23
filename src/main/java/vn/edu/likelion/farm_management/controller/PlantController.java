@@ -44,7 +44,6 @@ public class PlantController {
     }
 
     @GetMapping(ApiPath.FIND_ALL+ ApiPath.PAGINATE)
-
     public ResponseEntity<RestAPIResponse<Object>> findAllByPagination(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {

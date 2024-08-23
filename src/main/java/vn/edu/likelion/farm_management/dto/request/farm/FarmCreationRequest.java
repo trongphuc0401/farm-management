@@ -19,10 +19,8 @@ import lombok.experimental.FieldDefaults;
 public class FarmCreationRequest {
 
     String name;
-    String area;
-    Double yieldQuantity;
+    Double area;
+//    Double yieldQuantity;
     String status;
     String description;
-
-
 }

@@ -59,7 +59,7 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public Optional<PlantResponse> update(PlantCreationRequest t) {
+    public Optional<PlantResponse> update(PlantUpdateInfoRequest t) {
         return Optional.empty();
     }
 
