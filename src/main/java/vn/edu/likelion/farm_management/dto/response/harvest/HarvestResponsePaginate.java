@@ -5,28 +5,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * HarvestGroupDateResponse -
+ * PaginatePlantResponse -
  *
  * @param
  * @return
  * @throws
  */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class HarvestGroupDateResponse {
-
-    String date; // Ngày thu hoạch
-
-    Double yieldTotal; // Tổng sản lượng
-
-    Double priceTotal; // Tổng giá trị
-
-    String description; // Mô tả cây trồng
-    
+public class HarvestResponsePaginate {
+    List<HarvestResponse> results;
+    int pageNo;
+    int  pageSize;
+    int totalElements;
+    int totalPages;
 }
