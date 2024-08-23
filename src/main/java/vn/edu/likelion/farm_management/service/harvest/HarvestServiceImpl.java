@@ -14,26 +14,15 @@ import vn.edu.likelion.farm_management.common.utils.DateTimeUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationRequest;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestGroupDateResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponsePaginate;
-import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
-import vn.edu.likelion.farm_management.entity.FarmEntity;
 import vn.edu.likelion.farm_management.entity.HarvestEntity;
 
-import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.mapper.HarvestMapper;
-import vn.edu.likelion.farm_management.repository.FarmRepository;
 import vn.edu.likelion.farm_management.repository.HarvestRepository;
-
-import vn.edu.likelion.farm_management.mapper.HarvestMapper;
-import vn.edu.likelion.farm_management.mapper.PlantMapper;
-import vn.edu.likelion.farm_management.repository.HarvestRepository;
-import vn.edu.likelion.farm_management.repository.PlantRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
