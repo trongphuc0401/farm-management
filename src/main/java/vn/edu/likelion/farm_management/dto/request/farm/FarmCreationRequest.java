@@ -20,5 +20,6 @@ public class FarmCreationRequest {
 
     String name;
     Double area;
+    String status;
     String description;
 }

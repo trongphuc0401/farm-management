@@ -33,7 +33,6 @@ public enum ErrorCode {
 
     FARM_EXIST(RestAPIStatus.EXISTED,-120,"Farm Exist","Already Exist","Nông trại đã tồn tại"),
     FARM_NOT_EXIST(RestAPIStatus.NOT_FOUND,-121,"Farm not Exist","Not found","Nông trại không tồn tại"),
-
     FARM_FULL(RestAPIStatus.BAD_REQUEST,-122,"Farm full","Bad request","Nông trại hết chỗ"),
     FARM_UPDATE_AREA_FAIL(RestAPIStatus.BAD_REQUEST,-123,"Area Farm is not update","Bad request","Không thể cập nhật diện tích nông trại!"),
 
