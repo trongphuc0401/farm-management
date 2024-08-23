@@ -60,6 +60,7 @@ public interface ApiPath {
 
     // Farm
     String FARM_API = BASE_API_URL + "/farm";
+    String ADD_TO_FARM = "/addToFarm";
 
     // Harvest
     String HARVEST_API = BASE_API_URL + "/harvest";

@@ -34,13 +34,13 @@ public class FarmGeneralResponse {
 
     LocalDateTime dateHarvest; // Ngày thu hoạch
 
-    int harvestablePlantCount; // Số lượng cây trồng có thể thu hoạch
+    String description; // Mô tả
+
+    Integer harvestablePlantCount; // Số
 
     String status; // Trạng thái
 
-    String description; // Mô tả
-
-    Integer isDeleted; // Trạng thái xóa mềm
+    int isDeleted; // Trạng thái xóa mềm
 
     LocalDateTime createAt; // Ngày tạo
 

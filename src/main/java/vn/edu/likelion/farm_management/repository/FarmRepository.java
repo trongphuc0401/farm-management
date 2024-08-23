@@ -10,10 +10,13 @@ import vn.edu.likelion.farm_management.common.utils.Convert;
 import vn.edu.likelion.farm_management.dto.response.farm.FarmGeneralResponse;
 import vn.edu.likelion.farm_management.entity.FarmEntity;
 
+
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import java.util.Optional;
 
 
 /**
@@ -26,7 +29,6 @@ import java.util.List;
 
 @Repository
 public interface FarmRepository extends JpaRepository<FarmEntity,String> {
-
     // Query native reference
     @Query(value = "SELECT tp.name as plant_name, ttp.name as type_plant_name, " +
                    "SUM(tp.area) as area_planted," +
