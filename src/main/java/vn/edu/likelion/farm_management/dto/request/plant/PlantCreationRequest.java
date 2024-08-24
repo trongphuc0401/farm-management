@@ -30,7 +30,7 @@ public class PlantCreationRequest {
 
     Double area; // Diện tích cây trồng
 
-    Double expectedYield; // Sản lượng dự kiến
+    Double yield; // Sản lượng dự kiến
 
     Double price; // Giá cả
 

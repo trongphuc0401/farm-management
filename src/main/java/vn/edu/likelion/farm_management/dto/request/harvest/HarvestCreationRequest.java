@@ -27,6 +27,6 @@ public class HarvestCreationRequest {
     String farmId;
     String farmName;
     String description;
-    Integer totalYield;
-    Double priceCurrently;
+    Double yieldActual;
+    Double priceActual;
 }

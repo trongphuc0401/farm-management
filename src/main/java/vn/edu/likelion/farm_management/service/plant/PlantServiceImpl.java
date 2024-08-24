@@ -53,9 +53,17 @@ public class PlantServiceImpl implements PlantService {
     @Override
     public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
             PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
-            plantEntity = plantRepository.save(plantEntity);
-            PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
-            return Optional.of(plantResponse);
+
+            try {
+
+                plantEntity = plantRepository.save(plantEntity);
+                PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
+                return Optional.of(plantResponse);
+            }catch (Exception e) {
+                e.printStackTrace();
+                throw new AppException(ErrorCode.UPDATE_FAILED);
+            }
+
     }
 
     @Override

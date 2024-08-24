@@ -34,41 +34,41 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PlantEntity extends BaseEntity {
 
-    @Column
+    @Column(nullable = false)
     String typePlantId; // ID loại cây trồng
 
     @Column
     String farmId; // ID nông trại
 
-    @Column
+    @Column(nullable = false)
     String name; // Tên cây trồng
 
     @Column
     String description; // Mô tả cây trồng
 
-    @Column
+    @Column(nullable = false)
     Double area; // Diện tích cây trồng
 
-    @Column
-    Double expectedYield; // Sản lượng dự kiến
+    @Column(nullable = false)
+    Double yield; // Sản lượng dự kiến
 
-    @Column
+    @Column(nullable = false)
     Double price; // Giá cả
 
-    @Column
-    Integer seedlingDay; // Ngày bán
+    @Column(nullable = false)
+    Integer seedlingDay; // Số ngày để hoàn thành giai đoạn nảy mầm
+
+    @Column(nullable = false)
+    Integer vegetativeStageDay; //Số ngày để hoàn thành giai đoạn sinh trưởng
+
+    @Column(nullable = false)
+    Integer floweringStageDay; // Số ngày để hoàn thành giai đoạn ra hoa
+
+    @Column(nullable = false)
+    Integer fruitingStageDay; // Số ngày để hoàn thành giai đoạn tạo quả
 
     @Column
-    Integer vegetativeStageDay; // Ngày bắt đầu giai đoạn sinh trưởng
-
-    @Column
-    Integer floweringStageDay; // Ngày bắt đầu giai đoạn ra hoa
-
-    @Column
-    Integer fruitingStageDay; // Ngày bắt đầu giai đoạn tạo quả
-
-    @Column
-    LocalDateTime datePlanted; // Ngày trồng
+    LocalDateTime datePlanted; // Ngày bắt đầu trồng
 
     @Column
     LocalDateTime dateSeedlingFinish; // Ngày hoàn thành nảy mầm

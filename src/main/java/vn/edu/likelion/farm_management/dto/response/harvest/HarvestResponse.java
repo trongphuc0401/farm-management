@@ -33,9 +33,9 @@ public class HarvestResponse {
 
     String description; // Mô tả cây trồng
 
-    Double totalYield; // Sản lượng hiện tại
+    Double yieldActual; // Sản lượng hiện tại
 
-    Double priceCurrently; // Giá hiện tại
+    Double priceActual; // Giá hiện tại
 
     Integer isDeleted; // Trạng thái xóa mềm
 

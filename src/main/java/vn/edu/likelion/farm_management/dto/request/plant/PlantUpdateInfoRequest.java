@@ -26,7 +26,7 @@ public class PlantUpdateInfoRequest {
 
     Double area; // Diện tích cây trồng trong 1 ô
 
-    Double expectedYield; // Sản lượng dự kiến
+    Double yield; // Sản lượng dự kiến
 
     Double price; // Giá cả
 

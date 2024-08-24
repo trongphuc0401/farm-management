@@ -42,12 +42,12 @@ public interface HarvestRepository extends JpaRepository<HarvestEntity,String> {
     static void toHarvestGroupDateResponse(HarvestGroupDateResponse harvestGroupDateResponse, Object[] objects) {
         harvestGroupDateResponse.setDate(DateTimeUtils.convertDateToString((Date) objects[0]));
 
-        Double yield_total = (Double) objects[1];
-        if (yield_total == null) yield_total = 0.00;
-        Double price_total = (Double) objects[2];
-        if (price_total == null) price_total = 0.00;
-        harvestGroupDateResponse.setYieldTotal(yield_total);
-        harvestGroupDateResponse.setPriceTotal(price_total);
+        Double totalYield = (Double) objects[1];
+        if (totalYield == null) totalYield = 0.00;
+        Double totalMoney = (Double) objects[2];
+        if (totalMoney == null) totalMoney = 0.00;
+        harvestGroupDateResponse.setTotalYieldActual(totalYield);
+        harvestGroupDateResponse.setTotalMoneyActual(totalMoney);
     }
 
     @Query(value = "SELECT h FROM HarvestEntity h WHERE DATE(h.createAt) = :date")
@@ -73,8 +73,8 @@ public interface HarvestRepository extends JpaRepository<HarvestEntity,String> {
         entity.setFarmId(response.getFarmId());
         entity.setFarmName(response.getFarmName());
         entity.setDescription(response.getDescription());
-        entity.setTotalYield(response.getTotalYield());
-        entity.setPriceCurrently(response.getPriceCurrently());
+        entity.setYieldActual(response.getYieldActual() );
+        entity.setPriceActual(response.getPriceActual());
         entity.setIsDeleted(response.getIsDeleted());
         entity.setCreateAt(response.getCreateAt());
         return entity;

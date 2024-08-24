@@ -23,9 +23,9 @@ public class HarvestGroupDateResponse {
 
     String date; // Ngày thu hoạch
 
-    Double yieldTotal; // Tổng sản lượng
+    Double totalYieldActual; // Tổng sản lượng
 
-    Double priceTotal; // Tổng giá trị
+    Double totalMoneyActual; // Tổng giá trị
 
     String description; // Mô tả cây trồng
     

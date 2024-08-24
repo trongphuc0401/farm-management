@@ -24,7 +24,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HarvestEntity extends BaseEntity {
 
-    @Column(nullable = false)
+
+    @Column(nullable = false,unique = true)
     String plantId; // ID của cây trồng
 
     @Column(nullable = false)
@@ -42,10 +43,10 @@ public class HarvestEntity extends BaseEntity {
     @Column
     String description; // Mô tả cây trồng
 
-    @Column
-    Double totalYield; // Sản lượng hiện tại có thể thu hoạch
+    @Column(nullable = false)
+    Double yieldActual; // Sản lượng hiện tại có thể thu hoạch (kg)
 
-    @Column
-    Double priceCurrently; // Giá hiện tại
+    @Column(nullable = false)
+    Double priceActual; // Giá hiện tại trên 1 (kg)
 
 }

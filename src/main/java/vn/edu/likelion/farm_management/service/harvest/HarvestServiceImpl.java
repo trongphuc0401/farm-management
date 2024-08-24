@@ -205,7 +205,7 @@ public class HarvestServiceImpl implements HarvestService{
         int quantityToHarvest = Math.min(harvestCreationRequest.getQuantity(),readyToHarvestPlants.size());
 
 
-        Double yieldPerPlant = (double) harvestCreationRequest.getTotalYield() / quantityToHarvest;
+        Double yieldPerPlant = (double) harvestCreationRequest.getYieldActual() / quantityToHarvest;
 
         for(int i = 0 ; i < quantityToHarvest ; i++) {
 
@@ -217,8 +217,8 @@ public class HarvestServiceImpl implements HarvestService{
             response.setFarmId(plantEntity.getFarmId());
             response.setFarmName(plantEntity.getName());
             response.setDescription(plantEntity.getDescription());
-            response.setTotalYield(yieldPerPlant);
-            response.setPriceCurrently(harvestCreationRequest.getPriceCurrently());
+            response.setYieldActual(yieldPerPlant);
+            response.setPriceActual(harvestCreationRequest.getPriceActual());
             response.setIsDeleted(0);
             response.setCreateAt(LocalDateTime.now());
             harvestResponses.add(response);
