@@ -24,19 +24,19 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HarvestEntity extends BaseEntity {
 
-    @Column
+    @Column(nullable = false)
     String plantId; // ID của cây trồng
 
-    @Column
+    @Column(nullable = false)
     String plantName; // Tên cây trồng
 
-    @Column
+    @Column(nullable = false)
     String typePlantId; // ID loại cây trồng
 
-    @Column
+    @Column(nullable = false)
     String farmId; // ID nông trại
 
-    @Column
+    @Column(nullable = false)
     String farmName; // Tên nông trại
 
     @Column

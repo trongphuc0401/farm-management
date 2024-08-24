@@ -15,14 +15,17 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationAllRequest;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationRequest;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestGroupDateResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponsePaginate;
 import vn.edu.likelion.farm_management.entity.HarvestEntity;
 
+import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.mapper.HarvestMapper;
 import vn.edu.likelion.farm_management.repository.HarvestRepository;
+import vn.edu.likelion.farm_management.repository.PlantRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,7 +50,12 @@ public class HarvestServiceImpl implements HarvestService{
     HarvestRepository harvestRepository;
 
     @Autowired
+    PlantRepository plantRepository;
+
+    @Autowired
     HarvestMapper harvestMapper;
+
+
 
 
     @Override
@@ -87,6 +95,7 @@ public class HarvestServiceImpl implements HarvestService{
     @Override
     public List<HarvestResponse> saveAll(List<HarvestEntity> ts) {
         return List.of();
+
     }
 
     @Override
@@ -177,12 +186,55 @@ public class HarvestServiceImpl implements HarvestService{
                 }
         );
 
-
         if (harvestGroupDateResponses.isEmpty()) {
             throw new AppException(ErrorCode.HARVEST_NOT_EXIST);
         }
-
         return harvestGroupDateResponses;
+    }
+
+    @Override
+    public List<HarvestResponse> harvestByNumber(HarvestCreationRequest harvestCreationRequest) {
+        List<HarvestResponse> harvestResponses = new ArrayList<>();
+
+        List<PlantEntity> readyToHarvestPlants  = plantRepository.findByDateFruitingStageFinishLessThanEqualOrderByDateFruitingStageFinishAsc(LocalDateTime.now());
+
+        if (readyToHarvestPlants.isEmpty()) {
+            throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+        }
+
+        int quantityToHarvest = Math.min(harvestCreationRequest.getQuantity(),readyToHarvestPlants.size());
+
+
+        Double yieldPerPlant = (double) harvestCreationRequest.getTotalYield() / quantityToHarvest;
+
+        for(int i = 0 ; i < quantityToHarvest ; i++) {
+
+            PlantEntity plantEntity = readyToHarvestPlants.get(i);
+
+            HarvestResponse response = new HarvestResponse();
+            response.setPlantId(plantEntity.getId());
+            response.setPlantName(plantEntity.getName());
+            response.setFarmId(plantEntity.getFarmId());
+            response.setFarmName(plantEntity.getName());
+            response.setDescription(plantEntity.getDescription());
+            response.setTotalYield(yieldPerPlant);
+            response.setPriceCurrently(harvestCreationRequest.getPriceCurrently());
+            response.setIsDeleted(0);
+            response.setCreateAt(LocalDateTime.now());
+            harvestResponses.add(response);
+
+            harvestRepository.saveAll(harvestResponses);
+
+        }
+        return harvestResponses;
+    }
+
+
+    @Override
+    public List<HarvestResponse> harvestAll(List<HarvestCreationAllRequest> harvestCreationAllRequests) {
+        List<HarvestEntity> harvestEntities = harvestMapper.toCreateAllHarvest(harvestCreationAllRequests);
+
+        return harvestRepository.saveAll(harvestEntities).stream().map(harvestMapper::toHarvestResponse).toList();
     }
 
     @Override

@@ -1,26 +1,22 @@
 package vn.edu.likelion.farm_management.dto.request.harvest;
 
-
-import jakarta.persistence.Column;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 /**
- * HarvestCreationRequest - 
+ * HarvestCreationAllRequest -
  *
- * @param  
- * @return 
-
- * @throws  
+ * @param
+ * @return
+ * @throws
  */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class HarvestCreationRequest {
-    Integer quantity;
+public class HarvestCreationAllRequest {
     String plantId;
     String plantName;
     String typePlantId;

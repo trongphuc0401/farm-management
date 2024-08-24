@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import vn.edu.likelion.farm_management.dto.response.plant.PaginatePlantResponse;
 import vn.edu.likelion.farm_management.entity.PlantEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,6 +35,8 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String>, Pagi
 
 
     List<PlantEntity> findPlantByFarmId(String farmId);
+
+    List<PlantEntity> findByDateFruitingStageFinishLessThanEqualOrderByDateFruitingStageFinishAsc(LocalDateTime date);
 
 
 }
