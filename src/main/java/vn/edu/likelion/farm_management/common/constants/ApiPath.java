@@ -20,6 +20,7 @@ public interface ApiPath {
     String ADD = "/add";
     String EDIT = "/update";
     String DELETE = "/delete";
+    String DELETE_ALL = "/deleteAll";
     String CANCEL = "/cancel";
     String GET_PAGE = "/page";
     String EXPORT = "/export";
@@ -60,6 +61,7 @@ public interface ApiPath {
 
     // Farm
     String FARM_API = BASE_API_URL + "/farm";
+    String ADD_TO_FARM = "/addToFarm";
 
     // Harvest
     String HARVEST_API = BASE_API_URL + "/harvest";

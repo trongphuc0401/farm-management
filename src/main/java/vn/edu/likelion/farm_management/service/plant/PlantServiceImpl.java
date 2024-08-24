@@ -16,8 +16,10 @@ import vn.edu.likelion.farm_management.dto.request.plant.PlantUpdateInfoRequest;
 import vn.edu.likelion.farm_management.dto.response.plant.PaginatePlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.TypePlantResponse;
+import vn.edu.likelion.farm_management.entity.FarmEntity;
 import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.mapper.PlantMapper;
+import vn.edu.likelion.farm_management.repository.FarmRepository;
 import vn.edu.likelion.farm_management.repository.PlantRepository;
 import vn.edu.likelion.farm_management.repository.TypePlantRepository;
 
@@ -47,6 +49,9 @@ public class PlantServiceImpl implements PlantService {
     @Autowired
     TypePlantRepository typePlantRepository;
 
+    @Autowired
+    FarmRepository farmRepository;
+
 
     @Override
     public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
@@ -59,7 +64,7 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public Optional<PlantResponse> update(PlantCreationRequest t) {
+    public Optional<PlantResponse> update(PlantUpdateInfoRequest t) {
         return Optional.empty();
     }
 
@@ -168,6 +173,19 @@ public class PlantServiceImpl implements PlantService {
 
         PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
         PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
+        return Optional.of(plantResponse);
+    }
+
+    @Override
+    public Optional<PlantResponse> addPlantToFarm(String plantId,String farmId) {
+
+        PlantEntity plantEntity = plantRepository.findById(plantId)
+                .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
+
+        PlantMapper.toUpdateToFarmPlant(plantEntity,farmId);
+        PlantEntity updatePlantToFarm = plantRepository.save(plantEntity);
+        PlantResponse plantResponse = plantMapper.toPlantResponse(updatePlantToFarm);
+
         return Optional.of(plantResponse);
     }
 

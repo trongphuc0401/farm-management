@@ -1,9 +1,6 @@
 package vn.edu.likelion.farm_management.dto.response.farm;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
@@ -19,10 +16,11 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FarmGeneralResponse {
 
-    Long id; // ID của chi tiết cây trồng
+    String id; // ID của chi tiết cây trồng
 
     String name; // Tên của chi tiết cây trồng
 
@@ -36,11 +34,13 @@ public class FarmGeneralResponse {
 
     LocalDateTime dateHarvest; // Ngày thu hoạch
 
-    Double yieldQuantity; // Sản lượng
+    String description; // Mô tả
+
+    Integer harvestablePlantCount; // Số
 
     String status; // Trạng thái
 
-    Integer isDeleted; // Trạng thái xóa mềm
+    int isDeleted; // Trạng thái xóa mềm
 
     LocalDateTime createAt; // Ngày tạo
 

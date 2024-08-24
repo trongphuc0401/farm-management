@@ -33,5 +33,4 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String>, Pagi
     Page<PlantEntity> findPlantBySearchText(@Param("searchText") String searchText, Pageable pageable);
 
 
-
 }
