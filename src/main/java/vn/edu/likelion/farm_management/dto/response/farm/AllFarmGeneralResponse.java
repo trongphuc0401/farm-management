@@ -28,4 +28,5 @@ public class AllFarmGeneralResponse {
 
     Double priceTotal; // Tổng doanh thu dự kiến thu được
 
+
 }

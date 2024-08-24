@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.edu.likelion.farm_management.common.utils.Convert;
+import vn.edu.likelion.farm_management.dto.response.dashboard.HarvestReport;
 import vn.edu.likelion.farm_management.dto.response.dashboard.MonthlyPlantHarvestSummaryDTO;
 import vn.edu.likelion.farm_management.dto.response.farm.AllFarmGeneralResponse;
 import vn.edu.likelion.farm_management.dto.response.farm.FarmGeneralResponse;
@@ -125,4 +126,43 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
         monthlyPlantHarvestSummaryDTO.setTotalMoneyActual((Double) objects[6]);
     }
 
+
+
+    @Query(value = "SELECT " +
+            "tp.id AS plant_id, " +
+            "tp.name AS plant_name, " +
+            "tp.farm_id AS farm_id, " +
+            "tf.name AS farm_name, " +
+            "ttp.id AS type_plant_id, " +
+            "ttp.name AS type_plant_name, " +
+            "tp.expected_yield AS total_yield_planted, " +
+            "tp.price AS total_money_planted, " +
+            "th.yield_currently AS total_yield_actual, " +
+            "th.price_currently AS total_money_actual " +
+            "FROM tbl_harvest th " +
+            "LEFT JOIN tbl_plant tp ON tp.id = th.plant_id " +
+            "LEFT JOIN tbl_farm tf ON tf.id = tp.farm_id " +
+            "LEFT JOIN tbl_type_plant ttp ON ttp.id = tp.type_plant_id " +
+            "WHERE EXTRACT(MONTH FROM th.create_at) = :month " +
+            "AND EXTRACT(YEAR FROM th.create_at) = :year",
+            nativeQuery = true)
+    List<Object[]> getReportDashboard(@Param("month") int month, @Param("year") int year);
+
+    static void toHarvestReport(HarvestReport harvestReport, Object[] objects) {
+        harvestReport.setPlantId(objects[0] != null ? (String) objects[0] : "");
+        harvestReport.setPlantName(objects[1] != null ? (String) objects[1] : "");
+        harvestReport.setFarmId(objects[2] != null ? (String) objects[2] : "");
+        harvestReport.setFarmName(objects[3] != null ? (String) objects[3] : "");
+        harvestReport.setTypePlantId(objects[4] != null ? (String) objects[4] : "");
+        harvestReport.setTypePlantName(objects[5] != null ? (String) objects[5] : "");
+        harvestReport.setTotalYieldPlanted(objects[6] != null ? (Double) objects[6] : 0.0);
+        harvestReport.setTotalMoneyPlanted(objects[7] != null ? (Double) objects[7] : 0.0);
+        harvestReport.setTotalYieldActual(objects[8] != null ? (Double) objects[8] : 0.0);
+        harvestReport.setTotalMoneyActual(objects[9] != null ? (Double) objects[9] : 0.0);
+    }
+
+
+    // Reference How to query with key word ? in Spring JPA
+    // @Query(value = "SELECT * FROM employee e WHERE e.department = ?1 AND e.salary > ?2", nativeQuery = true)
+    // List<Employee> findEmployeesByDepartmentAndSalary(String department, Double salary);
 }
