@@ -7,6 +7,4 @@ import vn.edu.likelion.farm_management.entity.UserEntity;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity,String> {
-
-
 }

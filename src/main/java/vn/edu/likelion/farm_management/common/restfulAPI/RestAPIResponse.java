@@ -1,42 +1,51 @@
 package vn.edu.likelion.farm_management.common.restfulAPI;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
+import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY) // Bất kỳ cái nào không có dữ liệu, thì không hiển thị
 public class RestAPIResponse <T extends Object>  implements Serializable {
+    private int status;
     private int code;
-    private String message;
+    private String messageEng;
+    private String messageVN;
     private  T data;
-    private String description;
+    private LocalDateTime timestamp;
 
     public RestAPIResponse(RestAPIStatus restApiStatus, T data) {
 
         if (restApiStatus == null) {
             throw new IllegalArgumentException("APIStatus must not be null");
         }
-
-        this.code = restApiStatus.getCode();
-        this.message = restApiStatus.getDescription();
+        this.status = restApiStatus.getCode();
+        this.code = ErrorCode.OK.getCodeError();
+        this.messageEng = restApiStatus.getDescription();
         this.data = data;
-        this.description = "";
+        this.timestamp = LocalDateTime.now();
+
     }
-    public RestAPIResponse(RestAPIStatus restApiStatus, T data, String description) {
+
+
+
+    public RestAPIResponse(RestAPIStatus restApiStatus, ErrorCode errorCode) {
 
         if (restApiStatus == null) {
             throw new IllegalArgumentException("APIStatus must not be null");
         }
+        this.status = restApiStatus.getCode();
+        this.code = errorCode.getCodeError();
+        this.messageEng = errorCode.getMessageEng();
+        this.messageVN = errorCode.getMessageVN();
+        this.timestamp = LocalDateTime.now();
 
-        this.code = restApiStatus.getCode();
-        this.message = restApiStatus.getDescription();
-        this.data = data;
-        this.description = description;
     }
 }

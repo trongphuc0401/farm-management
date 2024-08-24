@@ -1,12 +1,11 @@
 package vn.edu.likelion.farm_management.common.restfulAPI;
 
-
 import lombok.Getter;
 
-@Getter
+
 public enum RestAPIStatus {
     OK(200, "OK"),
-    NO_RESULT(201, "No more result."),
+    CREATED(201, "Create successfull."),
     FAIL(202, "Fail"),
     NON_AUTHORITATIVE_INFORMATION(203, ""),
     BAD_REQUEST(400, "Bad request"),
@@ -25,15 +24,14 @@ public enum RestAPIStatus {
     INVALID_VERIFIED_CODE(409, "Invalid verified code"),
     INVALID_CREDENTIAL(401, "Lacking or incorrect credential"),
     MUlTIPLE_REQUEST_CODE(410, "You are request the authen code to fast"),
-    VIETQR_API_ERROR(646, "VIETQR API has error");
+    VIETQR_API_ERROR(646, "VIETQR API has error"),
+    UNPROCESSABLE(422,"Unprocessable Entity"),
+    NOT_IMPLEMENTED(501,"Not Implemented");
 
     private final int code;
     private final String description;
 
-
-
-
-    private RestAPIStatus(int s, String v) {
+     RestAPIStatus(int s, String v) {
         code = s;
         description = v;
     }
@@ -44,4 +42,12 @@ public enum RestAPIStatus {
         throw new IllegalArgumentException();
     }
 
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

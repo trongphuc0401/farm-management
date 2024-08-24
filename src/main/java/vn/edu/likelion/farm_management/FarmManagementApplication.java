@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FarmManagementApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(FarmManagementApplication.class, args);
+
 	}
 
 }

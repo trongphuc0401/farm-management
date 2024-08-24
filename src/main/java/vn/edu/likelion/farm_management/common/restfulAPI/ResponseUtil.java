@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 
 @Component
 public class ResponseUtil {
@@ -23,14 +24,14 @@ public class ResponseUtil {
      * @param data
      * @return
      */
-    private RestAPIResponse<Object> _createResponse(RestAPIStatus restApiStatus, Object data) {
+    private RestAPIResponse<Object> _createResponse(RestAPIStatus restApiStatus,Object data) {
         return new RestAPIResponse<>(restApiStatus, data);
     }
 
-    private RestAPIResponse<Object> _createResponse(RestAPIStatus restApiStatus, Object data, String description) {
-        return new RestAPIResponse<>(restApiStatus, data, description);
+    private RestAPIResponse<Object> _createResponse(RestAPIStatus restApiStatus, ErrorCode errorCode) {
+        return new RestAPIResponse<>(restApiStatus, errorCode);
     }
-
+    
     /**
      * Build HTTP Response
      * @param restApiStatus
@@ -41,17 +42,16 @@ public class ResponseUtil {
     public ResponseEntity<RestAPIResponse<Object>> buildResponse(RestAPIStatus restApiStatus, Object data, HttpStatus httpStatus) {
         return new ResponseEntity<>(_createResponse(restApiStatus, data), httpStatus);
     }
-
+    
     /**
-     * Build HTTP Response with description
+     *
      * @param restApiStatus
-     * @param data
-     * @param description
+     * @param errorCode
      * @param httpStatus
      * @return
      */
-    public ResponseEntity<RestAPIResponse<Object>> buildResponse(RestAPIStatus restApiStatus, Object data, String description, HttpStatus httpStatus) {
-        return new ResponseEntity<>(_createResponse(restApiStatus, data, description), httpStatus);
+    public ResponseEntity<RestAPIResponse<Object>> buildResponse(RestAPIStatus restApiStatus, ErrorCode errorCode, HttpStatus httpStatus) {
+        return new ResponseEntity<>(_createResponse(restApiStatus, errorCode), httpStatus);
     }
 
     /**
@@ -62,16 +62,8 @@ public class ResponseUtil {
     public ResponseEntity<RestAPIResponse<Object>> successResponse(Object data) {
         return buildResponse(RestAPIStatus.OK, data, HttpStatus.OK);
     }
-
-    /**
-     * Return success HTTP Request with description
-     * @param data
-     * @param description
-     * @return
-     */
-    public ResponseEntity<RestAPIResponse<Object>> successResponse(Object data, String description) {
-        return buildResponse(RestAPIStatus.OK, data, description, HttpStatus    .OK);
+    public ResponseEntity<RestAPIResponse<Object>> successResponse() {
+        return buildResponse(RestAPIStatus.OK, ErrorCode.OK, HttpStatus.OK);
     }
-
 
 }
