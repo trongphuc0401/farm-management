@@ -49,17 +49,20 @@ public class PlantServiceImpl implements PlantService {
     @Autowired
     TypePlantRepository typePlantRepository;
 
-    @Autowired
-    FarmRepository farmRepository;
-
 
     @Override
     public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
-
             PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
-            plantEntity = plantRepository.save(plantEntity);
-            PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
-            return Optional.of(plantResponse);
+
+            try {
+
+                plantEntity = plantRepository.save(plantEntity);
+                PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
+                return Optional.of(plantResponse);
+            }catch (Exception e) {
+                e.printStackTrace();
+                throw new AppException(ErrorCode.UPDATE_FAILED);
+            }
 
     }
 
@@ -163,6 +166,19 @@ public class PlantServiceImpl implements PlantService {
     }
 
 
+    @Override
+    public List<PlantResponse> findAllPlantByFarm(String farmId) {
+
+        var plantEntities = plantRepository.findPlantByFarmId(farmId);
+
+        if (plantEntities.isEmpty()) {
+            throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+        }
+        return plantEntities.stream()
+                .map(plantMapper::toPlantResponse)
+                .toList();
+    }
+
 
     @Override
     public Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest plantUpdateInfoRequest) {
@@ -171,9 +187,16 @@ public class PlantServiceImpl implements PlantService {
 
         plantMapper.updatePlantEntity(plantEntity, plantUpdateInfoRequest);
 
-        PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
-        PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
-        return Optional.of(plantResponse);
+        try {
+            PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
+
+            PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
+
+            return Optional.of(plantResponse);
+
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.UPDATE_FAILED);
+        }
     }
 
     @Override
@@ -188,6 +211,4 @@ public class PlantServiceImpl implements PlantService {
 
         return Optional.of(plantResponse);
     }
-
-
 }
