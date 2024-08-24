@@ -50,6 +50,8 @@ public interface HarvestRepository extends JpaRepository<HarvestEntity,String> {
         harvestGroupDateResponse.setTotalMoneyActual(totalMoney);
     }
 
+
+
     @Query(value = "SELECT h FROM HarvestEntity h WHERE DATE(h.createAt) = :date")
     Page<HarvestEntity> findAllByCreateAt(@Param("date") LocalDate date, Pageable pageable);
 
@@ -70,6 +72,7 @@ public interface HarvestRepository extends JpaRepository<HarvestEntity,String> {
         HarvestEntity entity = new HarvestEntity();
         entity.setPlantId(response.getPlantId());
         entity.setPlantName(response.getPlantName());
+        entity.setTypePlantId(response.getTypePlantId());
         entity.setFarmId(response.getFarmId());
         entity.setFarmName(response.getFarmName());
         entity.setDescription(response.getDescription());

@@ -26,7 +26,7 @@ public interface HarvestService
     List<HarvestGroupDateResponse> getAllMoneyAndYieldGroupDate();
 
     List<HarvestResponse> harvestByNumber(HarvestCreationRequest harvestCreationRequest);
-    List<HarvestResponse> harvestAll(List<HarvestCreationAllRequest> harvestCreationAllRequests);
+    List<HarvestResponse> harvestAll(HarvestCreationAllRequest harvestCreationAllRequests);
 
     List<HarvestResponse> findAllByCreateAt(String date);
 

@@ -17,11 +17,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HarvestCreationAllRequest {
-    String plantId;
-    String plantName;
-    String typePlantId;
     String farmId;
-    String farmName;
     String description;
     Double yieldActual;
     Double priceActual;

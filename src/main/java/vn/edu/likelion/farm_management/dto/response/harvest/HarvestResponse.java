@@ -27,6 +27,8 @@ public class HarvestResponse {
 
     String plantName; // Tên cây trồng
 
+    String typePlantId;
+
     String farmId; // ID nông trại
 
     String farmName; // Tên nông trại

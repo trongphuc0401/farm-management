@@ -58,7 +58,7 @@ public class HarvestController {
 
     @PostMapping(value =ApiPath.ADD_ALL , consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestAPIResponse<Object>> createAll(@RequestBody List<HarvestCreationAllRequest> harvestCreationAllRequest) {
+    public ResponseEntity<RestAPIResponse<Object>> createAll(@RequestBody HarvestCreationAllRequest harvestCreationAllRequest) {
         return responseUtil.buildResponse(RestAPIStatus.CREATED,harvestService.harvestAll(harvestCreationAllRequest), HttpStatus.CREATED);
     }
 

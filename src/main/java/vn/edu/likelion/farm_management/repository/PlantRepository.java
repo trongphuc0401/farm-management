@@ -38,5 +38,4 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String>, Pagi
 
     List<PlantEntity> findByDateFruitingStageFinishLessThanEqualOrderByDateFruitingStageFinishAsc(LocalDateTime date);
 
-
 }

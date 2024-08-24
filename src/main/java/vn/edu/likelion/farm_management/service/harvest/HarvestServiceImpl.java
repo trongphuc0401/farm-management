@@ -1,6 +1,7 @@
 package vn.edu.likelion.farm_management.service.harvest;
 
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * HarvestServiceImpl -
@@ -193,49 +195,82 @@ public class HarvestServiceImpl implements HarvestService{
     }
 
     @Override
+    @Transactional
     public List<HarvestResponse> harvestByNumber(HarvestCreationRequest harvestCreationRequest) {
         List<HarvestResponse> harvestResponses = new ArrayList<>();
 
+        // Lấy danh sách các cây có status là Harvested
         List<PlantEntity> readyToHarvestPlants  = plantRepository.findByDateFruitingStageFinishLessThanEqualOrderByDateFruitingStageFinishAsc(LocalDateTime.now());
 
         if (readyToHarvestPlants.isEmpty()) {
-            throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+            throw new AppException(ErrorCode.NO_PLANTS_READY_TO_HARVEST);
         }
 
-        int quantityToHarvest = Math.min(harvestCreationRequest.getQuantity(),readyToHarvestPlants.size());
+        int quantityToHarvest = Math.min(harvestCreationRequest.getQuantity(), readyToHarvestPlants.size());
 
-
-        Double yieldPerPlant = (double) harvestCreationRequest.getYieldActual() / quantityToHarvest;
-
-        for(int i = 0 ; i < quantityToHarvest ; i++) {
-
+        for (int i = 0; i < quantityToHarvest; i++) {
             PlantEntity plantEntity = readyToHarvestPlants.get(i);
 
             HarvestResponse response = new HarvestResponse();
+            response.setId(UUID.randomUUID().toString()); // Tạo ID mới cho mỗi harvest
             response.setPlantId(plantEntity.getId());
             response.setPlantName(plantEntity.getName());
-            response.setFarmId(plantEntity.getFarmId());
-            response.setFarmName(plantEntity.getName());
-            response.setDescription(plantEntity.getDescription());
-            response.setYieldActual(yieldPerPlant);
+            response.setTypePlantId(plantEntity.getTypePlantId());
+            response.setFarmId(harvestCreationRequest.getFarmId());
+            response.setFarmName(harvestCreationRequest.getFarmId()); // Giả sử PlantEntity có reference đến Farm
+            response.setDescription(harvestCreationRequest.getDescription());
+            response.setYieldActual(harvestCreationRequest.getYieldActual() / quantityToHarvest);
             response.setPriceActual(harvestCreationRequest.getPriceActual());
             response.setIsDeleted(0);
             response.setCreateAt(LocalDateTime.now());
+
             harvestResponses.add(response);
 
-            harvestRepository.saveAll(harvestResponses);
 
+            plantEntity.setIsDeleted(1);
+            plantRepository.save(plantEntity);
         }
+
+        harvestRepository.saveAll(harvestResponses);
+
         return harvestResponses;
     }
 
 
     @Override
-    public List<HarvestResponse> harvestAll(List<HarvestCreationAllRequest> harvestCreationAllRequests) {
-        List<HarvestEntity> harvestEntities = harvestMapper.toCreateAllHarvest(harvestCreationAllRequests);
+    public List<HarvestResponse> harvestAll(HarvestCreationAllRequest harvestCreationAllRequests) {
+        List<HarvestResponse> harvestResponses = new ArrayList<>();
 
-        return harvestRepository.saveAll(harvestEntities).stream().map(harvestMapper::toHarvestResponse).toList();
-    }
+        List<PlantEntity> readyToHarvestPlants  = plantRepository.findByDateFruitingStageFinishLessThanEqualOrderByDateFruitingStageFinishAsc(LocalDateTime.now());
+
+        if (readyToHarvestPlants.isEmpty()) {
+            throw new AppException(ErrorCode.NO_PLANTS_READY_TO_HARVEST);
+        }
+
+        for (PlantEntity plantEntity : readyToHarvestPlants) {
+            HarvestEntity harvestEntity = new HarvestEntity();
+            harvestEntity.setId(UUID.randomUUID().toString());
+            harvestEntity.setPlantId(plantEntity.getId());
+            harvestEntity.setPlantName(plantEntity.getName());
+            harvestEntity.setFarmId(harvestCreationAllRequests.getFarmId());
+            harvestEntity.setFarmName(plantEntity.getFarmId());
+            harvestEntity.setDescription(harvestCreationAllRequests.getDescription());
+            harvestEntity.setYieldActual(harvestCreationAllRequests.getYieldActual() / readyToHarvestPlants.size());
+            harvestEntity.setPriceActual(harvestCreationAllRequests.getPriceActual());
+            harvestEntity.setIsDeleted(0);
+            harvestEntity.setCreateAt(LocalDateTime.now());
+            harvestEntity.setUpdateAt(LocalDateTime.now());
+            harvestEntity.setTypePlantId(plantEntity.getTypePlantId());
+
+            HarvestEntity savedHarvestEntity = harvestRepository.save(harvestEntity);
+            plantEntity.setIsDeleted(1);
+            plantRepository.save(plantEntity);
+
+            harvestRepository.saveAll(harvestResponses);
+        }
+
+        return harvestResponses;
+        }
 
     @Override
     public List<HarvestResponse> findAllByCreateAt(String date) {
