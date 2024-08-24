@@ -3,6 +3,7 @@ package vn.edu.likelion.farm_management.service.plant;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +39,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class PlantServiceImpl implements PlantService {
 
     @Autowired
@@ -53,17 +55,15 @@ public class PlantServiceImpl implements PlantService {
     @Override
     public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
             PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
-
             try {
-
-                plantEntity = plantRepository.save(plantEntity);
-                PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntity);
+                PlantEntity plantEntityCreated = plantRepository.save(plantEntity);
+                log.info(String.valueOf(plantEntityCreated.getUpdateAt()));
+                PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntityCreated);
                 return Optional.of(plantResponse);
             }catch (Exception e) {
                 e.printStackTrace();
                 throw new AppException(ErrorCode.UPDATE_FAILED);
             }
-
     }
 
     @Override
@@ -80,10 +80,14 @@ public class PlantServiceImpl implements PlantService {
     public void delete(String id) {
         PlantEntity plantEntity = plantRepository.findById(id).
                 orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
-
         plantEntity.setIsDeleted(1);
-        plantRepository.delete(plantEntity);
-
+//        plantRepository.delete(plantEntity); // ?? Gì đây ông nội Phúc
+        try {
+            plantRepository.save(plantEntity);
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new AppException(ErrorCode.DELETE_FAILED);
+        }
     }
 
     @Override
@@ -107,6 +111,8 @@ public class PlantServiceImpl implements PlantService {
         if (plantEntities.isEmpty()) {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
         }
+
+
         return plantEntities.stream()
                 .map(plantMapper::toPlantResponse)
                 .toList();
@@ -185,16 +191,22 @@ public class PlantServiceImpl implements PlantService {
         PlantEntity plantEntity = plantRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
 
+        if (plantUpdateInfoRequest.getName() != null) {
+            plantEntity.setName(plantUpdateInfoRequest.getName());
+        }
+        if (plantUpdateInfoRequest.getArea() != null) {
+            plantEntity.setArea(plantUpdateInfoRequest.getArea());
+        }
+
         plantMapper.updatePlantEntity(plantEntity, plantUpdateInfoRequest);
 
         try {
             PlantEntity updatedPlantEntity = plantRepository.save(plantEntity);
-
+            log.info(plantEntity.getId());
             PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
-
             return Optional.of(plantResponse);
-
         } catch (Exception e) {
+            log.error("Update failed", e);
             throw new AppException(ErrorCode.UPDATE_FAILED);
         }
     }

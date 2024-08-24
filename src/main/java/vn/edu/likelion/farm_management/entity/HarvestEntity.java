@@ -1,8 +1,6 @@
 package vn.edu.likelion.farm_management.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,9 +22,19 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HarvestEntity extends BaseEntity {
 
+//    @OneToOne
+//    @JoinColumn(name = "plant_id", nullable = false, unique = true)
+//    PlantEntity plant; // Liên kết với cây trồng
 
-    @Column(nullable = false,unique = true)
-    String plantId; // ID của cây trồng
+//    @Column(nullable = false)
+//    String plantId; // ID của cây trồng
+
+    @Column(name = "plant_id", nullable = false)
+    String plantId; // Khóa ngoại của cây trồng
+
+    @OneToOne
+    @JoinColumn(name = "plant_id", referencedColumnName = "id", insertable = false, updatable = false)
+    PlantEntity plant; // Liên kết với cây trồng
 
     @Column(nullable = false)
     String plantName; // Tên cây trồng

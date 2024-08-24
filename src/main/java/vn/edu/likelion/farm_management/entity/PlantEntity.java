@@ -1,8 +1,6 @@
 package vn.edu.likelion.farm_management.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,8 +32,12 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PlantEntity extends BaseEntity {
 
-    @Column(nullable = false)
-    String typePlantId; // ID loại cây trồng
+    @OneToOne(mappedBy = "plant")
+    private HarvestEntity harvest; // Liên kết với thu hoạch
+
+    @ManyToOne
+    @JoinColumn(name = "type_plant_id", nullable = false)
+    TypePlantEntity typePlant; // Liên kết với loại cây trồng
 
     @Column
     String farmId; // ID nông trại

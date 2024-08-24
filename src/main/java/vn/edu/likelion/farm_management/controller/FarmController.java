@@ -1,5 +1,6 @@
 package vn.edu.likelion.farm_management.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -47,7 +48,7 @@ public class FarmController {
 
     @PutMapping(ApiPath.EDIT + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> update(@PathVariable(value = "id") String id,
-                                                          @RequestBody FarmCreationRequest farmCreationRequest) {
+                                                          @RequestBody @Valid FarmCreationRequest farmCreationRequest) {
         return responseUtil.buildResponse(RestAPIStatus.OK, farmService.updateInfo(id, farmCreationRequest),
                 HttpStatus.OK);
     }
@@ -66,7 +67,7 @@ public class FarmController {
 
     @PostMapping(value = ApiPath.ADD, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestAPIResponse<Object>> addFarm(@RequestBody FarmCreationRequest farmCreationRequest) {
+    public ResponseEntity<RestAPIResponse<Object>> addFarm(@RequestBody @Valid FarmCreationRequest farmCreationRequest) {
         return responseUtil.buildResponse(RestAPIStatus.CREATED, farmService.create(farmCreationRequest),
                 HttpStatus.CREATED);
     }

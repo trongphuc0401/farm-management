@@ -1,6 +1,8 @@
 package vn.edu.likelion.farm_management.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +26,7 @@ import vn.edu.likelion.farm_management.service.plant.PlantService;
 @RestController
 @RequestMapping(ApiPath.PLANT_API)
 @RequiredArgsConstructor
+@Slf4j
 public class PlantController {
 
     @Autowired
@@ -60,7 +63,7 @@ public class PlantController {
 
     @PostMapping(value = ApiPath.ADD, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestAPIResponse<Object>> addPlant(@RequestBody PlantCreationRequest plantCreationRequest) {
+    public ResponseEntity<RestAPIResponse<Object>> addPlant(@RequestBody @Valid PlantCreationRequest plantCreationRequest) {
         return responseUtil.buildResponse(RestAPIStatus.CREATED, plantService.create(plantCreationRequest),
                 HttpStatus.CREATED);
 
@@ -68,15 +71,14 @@ public class PlantController {
 
     @PutMapping(value = ApiPath.EDIT + ApiPath.ID, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestAPIResponse<Object>> updatePlant(@PathVariable String id, @RequestBody
+    public ResponseEntity<RestAPIResponse<Object>> updatePlant(@PathVariable String id, @RequestBody @Valid
     PlantUpdateInfoRequest plantUpdateInfoRequest) {
         return responseUtil.buildResponse(RestAPIStatus.OK, plantService.updateInfo(id, plantUpdateInfoRequest),
                 HttpStatus.OK);
 
     }
 
-    @PutMapping(value = ApiPath.ADD_TO_FARM,consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = ApiPath.ADD_TO_FARM)
     public ResponseEntity<RestAPIResponse<Object>> addPlantToFarm(
             @RequestParam String plantId,
             @RequestParam String farmId ) {

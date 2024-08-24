@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,10 +68,11 @@ public class FarmServiceImpl implements FarmService {
     @Override
     public Optional<FarmGeneralResponse> updateInfo(String id, FarmCreationRequest t) {
 
-        // Kiểm tra tồn tại nông trại
         FarmEntity farmEntity = farmRepository.findById(id).
                 orElseThrow(() -> new AppException(ErrorCode.FARM_NOT_EXIST));
+
         farmEntity.setUpdateAt(LocalDateTime.now());
+
         // Cập nhật nông trại Entity thông qua Mapper
         farmMapper.updateEntity(farmEntity, t);
 
@@ -82,10 +84,12 @@ public class FarmServiceImpl implements FarmService {
         List<Object[]> list = farmRepository.findFarmInformationToFarmResponse(id);
         if (list.isEmpty()) {
             area_planted = 0.00;
+        } else {
+            Object[] objects = list.get(0);
+            FarmRepository.toFarmGeneralResponse(farmGeneralResponse, objects);
+            area_planted = (Double) objects[2];
         }
-        Object[] objects = list.get(0);
-        FarmRepository.toFarmGeneralResponse(farmGeneralResponse, objects);
-        area_planted = (Double) objects[2];
+
 
         // Kiểm tra nếu diện tích mới cập nhật không phù hợp
         if ( area < area_planted) {
@@ -144,10 +148,16 @@ public class FarmServiceImpl implements FarmService {
 
     @Override
     public List<FarmGeneralResponse> findAll() {
-        return farmRepository.findAll()
+        List<FarmEntity> farmEntityList = farmRepository.findAll();
+        if (farmEntityList.isEmpty()) {
+            throw new AppException(ErrorCode.FARM_NOT_EXIST);
+        }
+
+        return farmEntityList
                         .stream()
                         .map(a -> {
                             FarmGeneralResponse farmGeneralResponse = farmMapper.toFarmGeneralResponse(a);
+
                             List<Object[]> list = farmRepository.findFarmInformationToFarmResponse(a.getId());
                             if (list.isEmpty()) {
                                 return farmGeneralResponse;

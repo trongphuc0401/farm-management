@@ -21,11 +21,10 @@ public enum ErrorCode {
 
     INVALID_KEY(RestAPIStatus.BAD_REQUEST,-100,"Invalid message key","Bad Request","Message key không hợp lệ"),
 
-    USERNAME_TOO_SHORT(RestAPIStatus.BAD_REQUEST, -101, "Username must be at least 8 characters", "Bad Request", "Tên người dùng phải có ít nhất 8 ký tự"),
+    USERNAME_TOO_SHORT(RestAPIStatus.BAD_REQUEST, -101, "Username must be at least {min} characters", "Bad Request", "Tên người dùng phải có ít nhất {min} ký tự"),
     PASSWORD_NO_NUMBER(RestAPIStatus.BAD_REQUEST, -102, "Password must contain at least one number", "Bad Request", "Mật khẩu phải chứa ít nhất một số"),
     EMAIL_INVALID(RestAPIStatus.BAD_REQUEST, -103, "Email is invalid", "Bad Request", "Email không hợp lệ"),
     USER_NOT_EXIST(RestAPIStatus.BAD_REQUEST, -104, "User not exist", "Bad Request", "Người dùng không tồn tại"),
-    INVALID_REQUEST_PARAMETER(RestAPIStatus.BAD_REQUEST, -108, "Invalid request parameter", "Bad Request", "Tham số yêu cầu không hợp lệ"),
     MISSING_REQUIRED_FIELD(RestAPIStatus.BAD_REQUEST, -105, "Missing required field", "Bad Request", "Thiếu trường bắt buộc"),
     PHOTO_UPLOAD_FAILED(RestAPIStatus.BAD_REQUEST, -106, "Failed to save photo", "Bad Request", "Upload ảnh thất bại"),
     INVALID_DATE_FORMAT(RestAPIStatus.BAD_REQUEST, -107, "Invalid date format", "Bad Request", "Định dạng ngày không hợp lệ"),
@@ -41,7 +40,7 @@ public enum ErrorCode {
     FARM_UPDATE_AREA_FAIL(RestAPIStatus.BAD_REQUEST,-123,"Area Farm is not update","Bad request","Không thể cập nhật diện tích nông trại!"),
 
 
-    HARVEST_NOT_EXIST(RestAPIStatus.NOT_FOUND,-130,"Harvest not exist","Not found","Không tìm thấy bản ghi thu hoạch cây trồng này"),
+    HARVEST_NOT_EXIST(RestAPIStatus.NOT_FOUND,-130,"Harvest not exist","Not found","Không tìm thấy bản ghi thu hoạch cây trồng nào!"),
 
     UNAUTHORIZED_ACCESS(RestAPIStatus.UNAUTHORIZED, -201, "Unauthorized access", "Unauthorized", "Truy cập không được phép"),
     FORBIDDEN(RestAPIStatus.FORBIDDEN, -202, "Forbidden: You do not have permission", "Forbidden", "Cấm: Bạn không có quyền truy cập"),
@@ -60,6 +59,15 @@ public enum ErrorCode {
     FEATURE_NOT_AVAILABLE(RestAPIStatus.NOT_IMPLEMENTED, -412, "Feature not available", "Not Implemented", "Tính năng chưa có sẵn"),
     RESPONSE_DTO_CONVERSION_FAILED(RestAPIStatus.INTERNAL_SERVER_ERROR, -414, "Failed to convert to ResponseDTO", "Internal Server Error", "Không thể chuyển đổi sang ResponseDTO"),
 
+
+    INVALID_REQUEST_PARAMETER(RestAPIStatus.BAD_REQUEST, -600, "Invalid request parameter", "Bad Request", "Tham số yêu cầu không hợp lệ"),
+    AREA_NEGATIVE(RestAPIStatus.BAD_REQUEST, -601, "Area cannot be negative", "Bad request", "Diện tích không được âm"),
+    AREA_TOO_LARGE(RestAPIStatus.BAD_REQUEST, -602, "Area  exceeds maximum allowed value {value} - {fieldName}", "Bad request", "Diện tích vượt quá giá trị cho phép {value} - {fieldName}"),
+    PARAM_NOT_NULL(RestAPIStatus.BAD_REQUEST, -603, "{fieldName} cannot be null", "Bad request", "Giá trị {fieldName} không được null"),
+
+
+    DELETE_FAILED(RestAPIStatus.CAN_NOT_DELETE,-9996,"Delete failed","Not found","Xoá thất bại"),
+
     UPDATE_FAILED(RestAPIStatus.BAD_REQUEST,-9997,"Update failed","Not found","Cập nhật thất bại"),
     QUERY_NOT_FOUND(RestAPIStatus.BAD_REQUEST,-9998,"Query not found","Not found","Truy vấn không thành công"),
     UNCATEGORIZED_EXCEPTION(RestAPIStatus.BAD_REQUEST,-9999,"Uncategorized error","Bad request","Lỗi chưa được định nghĩa");
@@ -77,4 +85,5 @@ public enum ErrorCode {
         this.httpStatus = httpStatus;
         this.messageVN = messageVN;
     }
+
 }

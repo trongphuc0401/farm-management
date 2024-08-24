@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
  * @throws
  */
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -36,7 +37,7 @@ public class FarmGeneralResponse {
 
     String description; // Mô tả
 
-    Integer harvestablePlantCount; // Số
+    Integer harvestablePlantCount; // Số lượng cây tròng có thể thu hoạch
 
     String status; // Trạng thái
 
@@ -44,5 +45,5 @@ public class FarmGeneralResponse {
 
     LocalDateTime createAt; // Ngày tạo
 
-    LocalDateTime updateAt; //
+    LocalDateTime updateAt; // Ngày cập nhật bảng ghi
 }

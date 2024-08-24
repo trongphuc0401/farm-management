@@ -1,5 +1,6 @@
 package vn.edu.likelion.farm_management.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,14 +46,14 @@ public class HarvestController {
 
     @PutMapping(ApiPath.EDIT + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> update(@PathVariable(value = "id") String id,
-                                                          @RequestBody HarvestCreationRequest harvestCreationRequest) {
+                                                          @RequestBody @Valid HarvestCreationRequest harvestCreationRequest) {
         return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.updateInfo(id, harvestCreationRequest),
                 HttpStatus.OK);
     }
 
     @PostMapping(value = ApiPath.ADD, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestAPIResponse<Object>> create(@RequestBody HarvestCreationRequest harvestCreationRequest) {
+    public ResponseEntity<RestAPIResponse<Object>> create(@RequestBody @Valid HarvestCreationRequest harvestCreationRequest) {
         return responseUtil.buildResponse(RestAPIStatus.CREATED,harvestService.harvestByNumber(harvestCreationRequest), HttpStatus.CREATED);
     }
 

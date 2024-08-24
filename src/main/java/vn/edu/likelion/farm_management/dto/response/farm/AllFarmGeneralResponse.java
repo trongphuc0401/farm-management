@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
  * @throws
  */
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

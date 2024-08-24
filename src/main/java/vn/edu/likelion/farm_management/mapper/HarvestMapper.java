@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 import vn.edu.likelion.farm_management.dto.request.farm.FarmCreationRequest;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationAllRequest;
@@ -22,7 +23,7 @@ import java.util.List;
  * @return
  * @throws
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface HarvestMapper {
     FarmMapper INSTANCE = Mappers.getMapper(FarmMapper.class);
 

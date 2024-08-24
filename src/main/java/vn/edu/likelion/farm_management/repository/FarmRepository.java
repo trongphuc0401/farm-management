@@ -51,8 +51,8 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
     @Query(value = "SELECT " +
             "SUM(tp.area) as area_planted, " +   // Tổng diện tích cây trồng
             "(SELECT SUM(area) FROM tbl_farm) AS area, " +  // Tổng diện tích của tất cả các farm
-            "SUM(tp.expected_yield) as yield_total, " +   // Tổng sản lượng của từng cây trồng
-            "SUM(tp.price * tp.expected_yield) as price_total " +    // Tổng giá trị tiền từ cây trồng
+            "SUM(tp.yield) as yield_total, " +   // Tổng sản lượng của từng cây trồng
+            "SUM(tp.price * tp.yield) as price_total " +    // Tổng giá trị tiền từ cây trồng
             "FROM tbl_plant tp " +
             "JOIN tbl_farm f ON tp.farm_id = f.id ", // Giả sử có bảng `tbl_farm` với thông tin diện tích farm
             nativeQuery = true)
@@ -84,8 +84,8 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
                 SELECT 
                     EXTRACT(MONTH FROM p.date_fruiting_stage_finish) AS month,
                     p.type_plant_id,
-                    SUM(p.expected_yield) AS total_yield,
-                    SUM(p.expected_yield * p.price) AS total_money
+                    SUM(p.yield) AS total_yield,
+                    SUM(p.yield * p.price) AS total_money
                 FROM 
                     tbl_plant p
                 WHERE 
@@ -98,8 +98,8 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
                 SELECT 
                     EXTRACT(MONTH FROM h.create_at) AS month,
                     h.type_plant_id,
-                    SUM(h.total_yield) AS total_yield,
-                    SUM(h.total_yield * h.price_currently) AS total_money
+                    SUM(h.yield_actual) AS total_yield,
+                    SUM(h.yield_actual * h.yield_actual) AS total_money
                 FROM 
                     tbl_harvest h
                 GROUP BY 
@@ -135,10 +135,10 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
             "tf.name AS farm_name, " +
             "ttp.id AS type_plant_id, " +
             "ttp.name AS type_plant_name, " +
-            "tp.expected_yield AS total_yield_planted, " +
+            "tp.yield AS total_yield_planted, " +
             "tp.price AS total_money_planted, " +
-            "th.yield_currently AS total_yield_actual, " +
-            "th.price_currently AS total_money_actual " +
+            "th.yield_actual AS total_yield_actual, " +
+            "th.price_actual AS total_money_actual " +
             "FROM tbl_harvest th " +
             "LEFT JOIN tbl_plant tp ON tp.id = th.plant_id " +
             "LEFT JOIN tbl_farm tf ON tf.id = tp.farm_id " +

@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
 public interface HarvestRepository extends JpaRepository<HarvestEntity,String> {
 
     @Query(value = "SELECT DATE(create_at) AS date, " +
-            "SUM(yield_total) AS yield_total, " +
-            "SUM(price_currently * yield_total) AS price_total " +
+            "SUM(yield_actual) AS yield_total, " +
+            "SUM(yield_actual * yield_actual) AS price_total " +
             "FROM tbl_harvest " +
             "GROUP BY DATE(create_at) " +
             "ORDER BY DATE(create_at)", nativeQuery = true)

@@ -1,9 +1,6 @@
 package vn.edu.likelion.farm_management.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import org.springframework.cglib.core.Local;
 import vn.edu.likelion.farm_management.common.enums.StatusPlant;
@@ -27,22 +24,26 @@ import java.util.Optional;
  * @return
  * @throws
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface PlantMapper {
     PlantMapper INSTANCE = Mappers.getMapper(PlantMapper.class);
 
+    @Mapping(source = "typePlantId", target = "typePlant.id")
     PlantEntity toCreatePlant(PlantCreationRequest plantCreationRequest);
 
+//    @Mapping(source = "typePlantId", target = "typePlant.id")
     PlantEntity toUpdatePlant(PlantUpdateInfoRequest plantUpdateInfoRequest);
 
     @Mapping(target = "status", source = ".", qualifiedByName = "calculateStatus")
     @Mapping(target = "statusName", source = ".", qualifiedByName = "calculateStatusName")
+    @Mapping(source = "typePlant.id", target = "typePlantId")
     PlantResponse toPlantResponse(PlantEntity plantEntity);
 
     TypePlantResponse toTypePlantResponse(TypePlantEntity typePlantEntity);
 
     PaginatePlantResponse toPaginatePlantResponse(PlantEntity plantEntity);
 
+//    @Mapping(source = "typePlantId", target = "typePlant.id")
     void updatePlantEntity(@MappingTarget PlantEntity plantEntity, PlantUpdateInfoRequest plantUpdateInfoRequest );
 
     static PlantEntity toUpdateToFarmPlant(PlantEntity plantEntity,String farmId){

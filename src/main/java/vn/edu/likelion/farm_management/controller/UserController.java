@@ -1,5 +1,6 @@
 package vn.edu.likelion.farm_management.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class UserController {
     
     @PutMapping(ApiPath.USER_API_updateInfo)
     public ResponseEntity<RestAPIResponse<Object>> updateInfo(
-            @PathVariable String id, @RequestBody UserUpdateInfoRequest userUpdateInfoRequest) {
+            @PathVariable String id, @RequestBody @Valid UserUpdateInfoRequest userUpdateInfoRequest) {
         return responseUtil.successResponse(
                 userService.updateInfo(id, userUpdateInfoRequest)
         );
