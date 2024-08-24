@@ -1,5 +1,7 @@
 package vn.edu.likelion.farm_management.common.exceptions;
 
+import jakarta.validation.ConstraintViolation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -9,6 +11,9 @@ import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * GlobalExceptionHandler -
@@ -19,6 +24,7 @@ import java.time.LocalDateTime;
  */
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = RuntimeException.class)
@@ -54,10 +60,21 @@ public class GlobalExceptionHandler {
     ResponseEntity handlingValidation(MethodArgumentNotValidException exception) {
 
         String enumKey = exception.getFieldError().getDefaultMessage();
+
         ErrorCode errorCode = ErrorCode.INVALID_KEY;
+
+        Map<String, Object> attributes = null;
+        String fieldName = exception.getFieldError().getField(); // Lấy tên trường
         try {
             errorCode = ErrorCode.valueOf(enumKey);
-        }catch (IllegalArgumentException e) {
+            var constraintViolation =
+                    exception.getBindingResult().getAllErrors().get(0).unwrap(ConstraintViolation.class);
+
+            attributes = constraintViolation.getConstraintDescriptor().getAttributes();
+
+            log.info(attributes.toString());
+
+        } catch (IllegalArgumentException e) {
 
         }
 
@@ -65,14 +82,38 @@ public class GlobalExceptionHandler {
 
         restAPIResponse.setStatus(errorCode.getStatusCode());
         restAPIResponse.setCode(errorCode.getCodeError());
-        restAPIResponse.setMessageEng(errorCode.getMessageEng());
-        restAPIResponse.setMessageVN(errorCode.getMessageVN());
         restAPIResponse.setTimestamp(LocalDateTime.now());
+
+        // Gọi Exception theo tham số
+        restAPIResponse.setMessageEng(
+                Objects.nonNull(attributes) ? mapAttribute(errorCode.getMessageEng(), attributes, fieldName) :
+                        errorCode.getMessageEng());
+        restAPIResponse.setMessageVN(
+                Objects.nonNull(attributes) ? mapAttribute(errorCode.getMessageVN(), attributes, fieldName) :
+                errorCode.getMessageVN());
 
         return ResponseEntity.badRequest().body(restAPIResponse);
     }
 
 
+    private String mapAttribute(String message, Map<String, Object> attributes, String fieldName) {
+        // Thay thế placeholder {fieldName}
+        message = message.replace("{fieldName}", fieldName.toUpperCase());
+
+        // Duyệt qua tất cả các giá trị của enum ValidationAttribute
+        for (ValidationAttribute attribute : ValidationAttribute.values()) {
+            String key = attribute.getKey(); // Lấy tên thuộc tính từ enum
+
+            if (attributes.containsKey(key)) {
+                String value = String.valueOf(attributes.get(key)); // Lấy giá trị của thuộc tính từ map attributes
+                log.info("gia tri key = " + key);
+                log.info("gia tri value = " + value);
+                message = message.replace("{" + key + "}", value); // Thay thế {min}, {max}, ...
+            }
+        }
+
+        return message;
+    }
 
 
 }

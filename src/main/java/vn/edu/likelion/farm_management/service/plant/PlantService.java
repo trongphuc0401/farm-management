@@ -26,8 +26,13 @@ public interface PlantService extends BaseService<PlantEntity , PlantCreationReq
     Optional<PlantResponse> addPlantToFarm(String plantId,String farmId);
 
     PaginatePlantResponse getAllByPagination(int pageNo , int pagSize);
+
     List<TypePlantResponse> findAllTypePlant();
 
+    List<PlantResponse> findAllPlantByFarm(String farmId);
+
     PaginatePlantResponse searchPlantsByPagination(String searchText, int pageNo , int pagSize);
+
+
 
 }

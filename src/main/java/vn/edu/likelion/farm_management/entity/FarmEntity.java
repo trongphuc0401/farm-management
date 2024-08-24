@@ -22,14 +22,14 @@ import vn.edu.likelion.farm_management.common.enums.StatusFarm;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FarmEntity extends BaseEntity{
-    @Column
+    @Column(nullable = false)
     String name;
 
     @Enumerated(EnumType.STRING)
     @Column
     StatusFarm status;
 
-    @Column
+    @Column(nullable = false)
     Double area;
 
     @Column

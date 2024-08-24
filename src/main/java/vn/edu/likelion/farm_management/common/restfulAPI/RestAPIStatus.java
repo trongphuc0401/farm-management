@@ -5,7 +5,7 @@ import lombok.Getter;
 
 public enum RestAPIStatus {
     OK(200, "OK"),
-    NO_RESULT(201, "No more result."),
+    CREATED(201, "Create successfull."),
     FAIL(202, "Fail"),
     NON_AUTHORITATIVE_INFORMATION(203, ""),
     BAD_REQUEST(400, "Bad request"),

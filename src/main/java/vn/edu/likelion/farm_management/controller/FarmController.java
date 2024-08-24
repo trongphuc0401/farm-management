@@ -1,7 +1,9 @@
 package vn.edu.likelion.farm_management.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,10 @@ import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
 import vn.edu.likelion.farm_management.dto.request.farm.FarmCreationRequest;
 
+import vn.edu.likelion.farm_management.dto.response.farm.AllFarmGeneralResponse;
 import vn.edu.likelion.farm_management.service.farm.FarmService;
+
+import java.io.ByteArrayInputStream;
 
 
 /**
@@ -41,10 +46,9 @@ public class FarmController {
         return responseUtil.successResponse(farmService.findAll());
     }
 
-    @PutMapping( ApiPath.EDIT + ApiPath.ID)
+    @PutMapping(ApiPath.EDIT + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> update(@PathVariable(value = "id") String id,
-                                                          @RequestBody FarmCreationRequest farmCreationRequest) {
-        System.out.println("Farm update");
+                                                          @RequestBody @Valid FarmCreationRequest farmCreationRequest) {
         return responseUtil.buildResponse(RestAPIStatus.OK, farmService.updateInfo(id, farmCreationRequest),
                 HttpStatus.OK);
     }
@@ -63,8 +67,14 @@ public class FarmController {
 
     @PostMapping(value = ApiPath.ADD, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestAPIResponse<Object>> addFarm(@RequestBody FarmCreationRequest farmCreationRequest) {
-        return responseUtil.buildResponse(RestAPIStatus.NO_RESULT,farmService.create(farmCreationRequest), HttpStatus.CREATED);
+    public ResponseEntity<RestAPIResponse<Object>> addFarm(@RequestBody @Valid FarmCreationRequest farmCreationRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.CREATED, farmService.create(farmCreationRequest),
+                HttpStatus.CREATED);
     }
 
+    @GetMapping(ApiPath.TOTAL_PLANTED_AREA_ALL_FARM)
+    public ResponseEntity<RestAPIResponse<Object>> getTotalPlantedAreaAllFarm() {
+        return responseUtil.buildResponse(RestAPIStatus.OK, farmService.getTotalPlantedAreaAllFarm(),
+                HttpStatus.OK);
+    }
 }

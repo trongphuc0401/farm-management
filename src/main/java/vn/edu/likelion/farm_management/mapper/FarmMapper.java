@@ -1,9 +1,6 @@
 package vn.edu.likelion.farm_management.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import vn.edu.likelion.farm_management.common.enums.StatusFarm;
 import vn.edu.likelion.farm_management.dto.request.farm.FarmCreationRequest;
@@ -17,7 +14,7 @@ import vn.edu.likelion.farm_management.entity.FarmEntity;
  * @return
  * @throws
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface FarmMapper {
     FarmMapper INSTANCE = Mappers.getMapper(FarmMapper.class);
 

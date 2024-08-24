@@ -52,6 +52,11 @@ public abstract class BaseEntity implements Serializable {
             id = UniqueID.getUUID();
         }
         this.createAt = LocalDateTime.now();
+//        this.updateAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
         updateAt = LocalDateTime.now();
     }
 }   

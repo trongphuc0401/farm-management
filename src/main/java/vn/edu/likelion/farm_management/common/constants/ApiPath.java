@@ -15,6 +15,9 @@ public interface ApiPath {
     //http methods
     String ID = "/{id}";
 
+    String DATE = "/{date}";
+
+
     String SLUG = "/slug/{slug}";
     String DETAIL = "/detail";
     String ADD = "/add";
@@ -30,6 +33,7 @@ public interface ApiPath {
     String FIND_ALL = "/findAll";
     String FIND_BY_ID = "/findById";
     String SEARCH = "/search";
+    String ADD_ALL = "/addAll";
 
     // Authenticate APIs
     String LOGIN = "/login";
@@ -59,12 +63,21 @@ public interface ApiPath {
     String PAGINATE = "/paginate";
     String TYPE_PLANT ="/findAllType";
 
+    String FIND_ALL_PLANT_BY_FARM = "/findPlantByFarm";
+
     // Farm
     String FARM_API = BASE_API_URL + "/farm";
     String ADD_TO_FARM = "/addToFarm";
+    String TOTAL_PLANTED_AREA_ALL_FARM = "/totalPlantedAreaAllFarm";
 
     // Harvest
     String HARVEST_API = BASE_API_URL + "/harvest";
+
+
+    // Dashboard
+    String DASHBOARD_API = BASE_API_URL + "/dashboard";
+
+
 
     // Report
     String REPORT_API = BASE_API_URL + "/report";
