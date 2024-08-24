@@ -33,6 +33,7 @@ public interface ApiPath {
     String FIND_ALL = "/findAll";
     String FIND_BY_ID = "/findById";
     String SEARCH = "/search";
+    String ADD_ALL = "/addAll";
 
     // Authenticate APIs
     String LOGIN = "/login";
@@ -72,7 +73,11 @@ public interface ApiPath {
     // Harvest
     String HARVEST_API = BASE_API_URL + "/harvest";
 
-    String ADD_ALL = "/addAll";
+
+    // Dashboard
+    String DASHBOARD_API = BASE_API_URL + "/dashboard";
+
+
 
     // Report
     String REPORT_API = BASE_API_URL + "/report";

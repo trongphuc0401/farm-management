@@ -2,6 +2,7 @@ package vn.edu.likelion.farm_management.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,10 @@ import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
 import vn.edu.likelion.farm_management.dto.request.farm.FarmCreationRequest;
 
+import vn.edu.likelion.farm_management.dto.response.farm.AllFarmGeneralResponse;
 import vn.edu.likelion.farm_management.service.farm.FarmService;
+
+import java.io.ByteArrayInputStream;
 
 
 /**

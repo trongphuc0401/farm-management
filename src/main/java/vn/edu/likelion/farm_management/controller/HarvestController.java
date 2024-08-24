@@ -38,8 +38,10 @@ public class HarvestController {
     @Autowired
     HarvestService harvestService;
 
+
     @Autowired
     private FarmRepository farmRepository;
+
 
     @PutMapping(ApiPath.EDIT + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> update(@PathVariable(value = "id") String id,
@@ -48,7 +50,7 @@ public class HarvestController {
                 HttpStatus.OK);
     }
 
-    @PostMapping(value =ApiPath.ADD , consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(value = ApiPath.ADD, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestAPIResponse<Object>> create(@RequestBody HarvestCreationRequest harvestCreationRequest) {
         return responseUtil.buildResponse(RestAPIStatus.CREATED,harvestService.harvestByNumber(harvestCreationRequest), HttpStatus.CREATED);
@@ -74,14 +76,16 @@ public class HarvestController {
     @GetMapping(ApiPath.FIND_ALL + ApiPath.DATE)
     public ResponseEntity<RestAPIResponse<Object>> getAllHavertByDate(
             @PathVariable(value = "date") String date,
-            @RequestParam(value = "pageNo",defaultValue = "0", required = false) int pageNo,
-            @RequestParam(value = "pageSize",defaultValue = "10", required = false) int pageSize) {
-        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.getAllHarvestByDate(date, pageNo, pageSize ), HttpStatus.OK);
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.getAllHarvestByDate(date, pageNo, pageSize),
+                HttpStatus.OK);
     }
 
     @GetMapping("/getAllMoneyAndYieldGroupByDate")
     public ResponseEntity<RestAPIResponse<Object>> getAllMoneyAndYieldGroupByDate() {
-        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.getAllMoneyAndYieldGroupDate(), HttpStatus.OK);
+        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.getAllMoneyAndYieldGroupDate(),
+                HttpStatus.OK);
     }
 
 }
