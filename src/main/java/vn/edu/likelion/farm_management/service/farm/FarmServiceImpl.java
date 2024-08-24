@@ -254,10 +254,14 @@ public class FarmServiceImpl implements FarmService {
                 row.createCell(5).setCellValue(harvestReport.getFarmName());
                 row.createCell(6).setCellValue(harvestReport.getTypePlantId());
                 row.createCell(7).setCellValue(harvestReport.getTypePlantName());
-                row.createCell(8).setCellValue(harvestReport.getTotalYieldPlanted() != null ? harvestReport.getTotalYieldPlanted() : 0);
-                row.createCell(9).setCellValue(harvestReport.getTotalMoneyPlanted() != null ? harvestReport.getTotalMoneyPlanted() : 0);
-                row.createCell(10).setCellValue(harvestReport.getTotalYieldActual() != null ? harvestReport.getTotalYieldActual() : 0);
-                row.createCell(11).setCellValue(harvestReport.getTotalMoneyActual() != null ? harvestReport.getTotalMoneyActual() : 0);
+                row.createCell(8).setCellValue(
+                        harvestReport.getTotalYieldPlanted() != null ? harvestReport.getTotalYieldPlanted() : 0);
+                row.createCell(9).setCellValue(
+                        harvestReport.getTotalMoneyPlanted() != null ? harvestReport.getTotalMoneyPlanted() : 0);
+                row.createCell(10).setCellValue(
+                        harvestReport.getTotalYieldActual() != null ? harvestReport.getTotalYieldActual() : 0);
+                row.createCell(11).setCellValue(
+                        harvestReport.getTotalMoneyActual() != null ? harvestReport.getTotalMoneyActual() : 0);
 
                 // Áp dụng định dạng cho các ô dữ liệu
                 for (Cell cell : row) {
