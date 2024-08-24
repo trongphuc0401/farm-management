@@ -12,9 +12,12 @@ import vn.edu.likelion.farm_management.common.constants.ApiPath;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
+import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationAllRequest;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationRequest;
 import vn.edu.likelion.farm_management.repository.FarmRepository;
 import vn.edu.likelion.farm_management.service.harvest.HarvestService;
+
+import java.util.List;
 
 /**
  * HarvestController -
@@ -38,8 +41,6 @@ public class HarvestController {
     @Autowired
     private FarmRepository farmRepository;
 
-
-
     @PutMapping(ApiPath.EDIT + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> update(@PathVariable(value = "id") String id,
                                                           @RequestBody HarvestCreationRequest harvestCreationRequest) {
@@ -50,7 +51,13 @@ public class HarvestController {
     @PostMapping(value =ApiPath.ADD , consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestAPIResponse<Object>> create(@RequestBody HarvestCreationRequest harvestCreationRequest) {
-        return responseUtil.buildResponse(RestAPIStatus.CREATED,harvestService.create(harvestCreationRequest), HttpStatus.CREATED);
+        return responseUtil.buildResponse(RestAPIStatus.CREATED,harvestService.harvestByNumber(harvestCreationRequest), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value =ApiPath.ADD_ALL , consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestAPIResponse<Object>> createAll(@RequestBody List<HarvestCreationAllRequest> harvestCreationAllRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.CREATED,harvestService.harvestAll(harvestCreationAllRequest), HttpStatus.CREATED);
     }
 
     @GetMapping(ApiPath.FIND_BY_ID + ApiPath.ID)
