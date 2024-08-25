@@ -30,7 +30,7 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String>, Pagi
                     " WHERE LOWER(tp.name) LIKE LOWER(CONCAT(:searchText, '%')) AND tp.isDeleted = 0", nativeQuery = true)
     Page<Object[]> findPlantBySearchText1(@Param("searchText") String searchText , Pageable pageable);
 
-    @Query(value = "SELECT tp FROM PlantEntity tp WHERE LOWER(tp.name) LIKE LOWER(CONCAT(:searchText, '%')) AND tp.isDeleted = 0")
+    @Query(value = "SELECT tp FROM PlantEntity tp WHERE LOWER(tp.name) LIKE LOWER(CONCAT('%',:searchText, '%')) AND tp.isDeleted = 0")
     Page<PlantEntity> findPlantBySearchText(@Param("searchText") String searchText, Pageable pageable);
 
     @Query(value = "SELECT tp FROM PlantEntity tp WHERE tp.typePlant.id = :typePlantId AND tp.isDeleted = 0")
@@ -38,7 +38,7 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String>, Pagi
 
 
     @Query("SELECT p FROM PlantEntity p WHERE p.isDeleted = 0")
-    Page<PlantEntity> findAllNonDeletedPlants(Pageable pageable);
+    Page<PlantEntity> findAllNonDeletedPlants(@Param("") Pageable pageable);
 
     List<PlantEntity> findPlantByFarmId(String farmId);
 

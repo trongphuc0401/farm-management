@@ -160,7 +160,7 @@ public class FarmServiceImpl implements FarmService {
 
     @Override
     public List<FarmGeneralResponse> findAll() {
-        List<FarmEntity> farmEntityList = farmRepository.findAll();
+        List<FarmEntity> farmEntityList = farmRepository.findAllNonDeletedFarms();
         if (farmEntityList.isEmpty()) {
             throw new AppException(ErrorCode.FARM_NOT_EXIST);
         }
@@ -319,6 +319,14 @@ public class FarmServiceImpl implements FarmService {
             throw new AppException(ErrorCode.INVALID_REQUEST_PARAMETER);
         }
 
+
+        FarmEntity farmEntity = farmRepository.findById(farmId).orElseThrow(()-> new AppException(
+                ErrorCode.FARM_NOT_EXIST));
+
+        if (farmEntity.getIsDeleted() == 1) {
+            throw new AppException(ErrorCode.FARM_NOT_EXIST);
+        }
+
         for (String id : list) {
             Optional<PlantEntity> optionalPlantEntity = plantRepository.findById(id);
             if (optionalPlantEntity.isEmpty()) {
@@ -333,19 +341,19 @@ public class FarmServiceImpl implements FarmService {
                 continue;
             }
 
-
             PlantEntity plantEntity = optionalPlantEntity.get();
             plantEntity.setFarmId(farmId);
-
-
             try{
                 PlantMapper.toUpdateToFarmPlant(plantEntity, farmId);
-                PlantEntity updatePlantToFarm = plantRepository.save(plantEntity);
+                log.info(plantEntity.toString());
+
+                plantRepository.save(plantEntity);
+
             }catch (Exception e){
                 log.info(e.getMessage());
                 throw new AppException(ErrorCode.UPDATE_FAILED);
             }
-        };
+        }
 
 
         return true;
@@ -357,6 +365,8 @@ public class FarmServiceImpl implements FarmService {
         String farmId = farmAddNewPlantRequest.getFarmId();
         PlantCreationRequest plantCreationRequest = farmAddNewPlantRequest.getPlantCreationRequest();
 
+
+        log.info(plantCreationRequest.toString());
         if (quantity < 1) {
             throw new AppException(ErrorCode.INVALID_REQUEST_PARAMETER);
         }
@@ -369,12 +379,20 @@ public class FarmServiceImpl implements FarmService {
             throw new AppException(ErrorCode.INVALID_REQUEST_PARAMETER);
         }
 
+        FarmEntity farmEntity = farmRepository.findById(farmId).orElseThrow(()-> new AppException(
+                ErrorCode.FARM_NOT_EXIST));
+
+        if (farmEntity.getIsDeleted() == 1) {
+            throw new AppException(ErrorCode.FARM_NOT_EXIST);
+        }
+
         for (int i=0; i < quantity; i++) {
-            PlantEntity plantEntity = new PlantEntity();
+            PlantEntity plantEntity =
             plantMapper.toCreatePlant(plantCreationRequest);
 
-            plantEntity.setFarmId(farmId);
 
+            plantEntity.setFarmId(farmId);
+            log.info(plantEntity.toString());
             try{
                 PlantMapper.toUpdateToFarmPlant(plantEntity, farmId);
                 PlantEntity updatePlantToFarm = plantRepository.save(plantEntity);

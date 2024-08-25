@@ -1,5 +1,7 @@
 package vn.edu.likelion.farm_management.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +12,7 @@ import vn.edu.likelion.farm_management.dto.response.dashboard.MonthlyPlantHarves
 import vn.edu.likelion.farm_management.dto.response.farm.AllFarmGeneralResponse;
 import vn.edu.likelion.farm_management.dto.response.farm.FarmGeneralResponse;
 import vn.edu.likelion.farm_management.entity.FarmEntity;
+import vn.edu.likelion.farm_management.entity.PlantEntity;
 
 
 import java.sql.Timestamp;
@@ -26,14 +29,20 @@ import java.util.List;
 
 @Repository
 public interface FarmRepository extends JpaRepository<FarmEntity, String> {
+
+    @Query("SELECT p FROM FarmEntity p WHERE p.isDeleted = 0")
+    List<FarmEntity> findAllNonDeletedFarms();
+
     // Query native reference
     @Query(value = "SELECT " + "tp.name as plant_name, " + // Tên cây trồng trên farm
             "ttp.name as type_plant_name, " + // Tên loại cây trồng trên farm
             "SUM(tp.area) as area_planted," + // Tổng diện tích cây đã trồng trên farm
             "COUNT(CASE WHEN tp.date_fruiting_stage_finish <= CURRENT_DATE THEN 1 ELSE NULL END) AS harvestable_plant_count, " +
             "MIN(tp.date_fruiting_stage_finish) as date_harvest  " + // Ngày có thể thu hoạch
-            "FROM tbl_plant tp " + "JOIN tbl_type_plant ttp ON tp.type_plant_id = ttp.id " +
-            "WHERE tp.farm_id = :farm_id AND tp.is_deleted = 0" + "GROUP BY ttp.name, tp.name " +
+            "FROM tbl_plant tp " +
+            "JOIN tbl_type_plant ttp ON tp.type_plant_id = ttp.id " +
+            "WHERE tp.farm_id = :farm_id AND tp.is_deleted = 0  " +
+            "GROUP BY ttp.name, tp.name " +
             "ORDER BY harvestable_plant_count DESC", nativeQuery = true)
     List<Object[]> findFarmInformationToFarmResponse(@Param("farm_id") String farmId);
 
