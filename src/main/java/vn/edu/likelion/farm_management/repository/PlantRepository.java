@@ -27,11 +27,14 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String>, Pagi
 
     // Query native reference
     @Query(value =  "SELECT tp.id,tp.name FROM tbl_plant tp" +
-                    " WHERE LOWER(tp.name) LIKE LOWER(CONCAT(:searchText, '%'))", nativeQuery = true)
+                    " WHERE LOWER(tp.name) LIKE LOWER(CONCAT(:searchText, '%')) AND tp.is_deleted = 0", nativeQuery = true)
     Page<Object[]> findPlantBySearchText1(@Param("searchText") String searchText , Pageable pageable);
 
-    @Query(value = "SELECT tp FROM PlantEntity tp WHERE LOWER(tp.name) LIKE LOWER(CONCAT(:searchText, '%'))")
+    @Query(value = "SELECT tp FROM PlantEntity tp WHERE LOWER(tp.name) LIKE LOWER(CONCAT(:searchText, '%')) AND tp.isDeleted = 0")
     Page<PlantEntity> findPlantBySearchText(@Param("searchText") String searchText, Pageable pageable);
+
+    @Query(value = "SELECT tp FROM PlantEntity tp WHERE tp.typePlant.id = :typePlantId AND tp.isDeleted = 0")
+    Page<PlantEntity> findAllByTypePlantId(@Param("typePlantId") String typePlantId, Pageable pageable);
 
 
     List<PlantEntity> findPlantByFarmId(String farmId);
@@ -41,7 +44,6 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String>, Pagi
 
     @Query("SELECT pe FROM PlantEntity pe WHERE pe.id IN :ids AND pe.dateFruitingStageFinish <= :currentDate AND pe.isDeleted = 0 ORDER BY pe.dateFruitingStageFinish ASC")
     List<PlantEntity> findPlantsReadyForHarvest(@Param("ids") List<String> plantIds, @Param("currentDate") LocalDateTime date);
-
 
 
 }

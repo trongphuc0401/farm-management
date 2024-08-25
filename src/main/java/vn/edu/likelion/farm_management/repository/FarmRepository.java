@@ -27,16 +27,13 @@ import java.util.List;
 @Repository
 public interface FarmRepository extends JpaRepository<FarmEntity, String> {
     // Query native reference
-    @Query(value = "SELECT " +
-            "tp.name as plant_name, " + // Tên cây trồng trên farm
+    @Query(value = "SELECT " + "tp.name as plant_name, " + // Tên cây trồng trên farm
             "ttp.name as type_plant_name, " + // Tên loại cây trồng trên farm
             "SUM(tp.area) as area_planted," + // Tổng diện tích cây đã trồng trên farm
-            "COUNT(*) AS harvestable_plant_count, " + // Đếm số lượng cây có thể thu hoạch
+            "COUNT(CASE WHEN tp.date_fruiting_stage_finish <= CURRENT_DATE THEN 1 ELSE NULL END) AS harvestable_plant_count, " +
             "MIN(tp.date_fruiting_stage_finish) as date_harvest  " + // Ngày có thể thu hoạch
-            "FROM tbl_plant tp " +
-            "JOIN tbl_type_plant ttp ON tp.type_plant_id = ttp.id " +
-            "WHERE tp.farm_id = :farm_id " +
-            "GROUP BY ttp.name, tp.name " +
+            "FROM tbl_plant tp " + "JOIN tbl_type_plant ttp ON tp.type_plant_id = ttp.id " +
+            "WHERE tp.farm_id = :farm_id AND tp.is_deleted = 0" + "GROUP BY ttp.name, tp.name " +
             "ORDER BY harvestable_plant_count DESC", nativeQuery = true)
     List<Object[]> findFarmInformationToFarmResponse(@Param("farm_id") String farmId);
 
@@ -48,13 +45,11 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
         farmGeneralResponse.setDateHarvest(Convert.timeStampToLocalDateTime((Timestamp) objects[4]));
     }
 
-    @Query(value = "SELECT " +
-            "SUM(tp.area) as area_planted, " +   // Tổng diện tích cây trồng
+    @Query(value = "SELECT " + "SUM(tp.area) as area_planted, " +   // Tổng diện tích cây trồng
             "(SELECT SUM(area) FROM tbl_farm) AS area, " +  // Tổng diện tích của tất cả các farm
             "SUM(tp.yield) as yield_total, " +   // Tổng sản lượng của từng cây trồng
             "SUM(tp.price * tp.yield) as price_total " +    // Tổng giá trị tiền từ cây trồng
-            "FROM tbl_plant tp " +
-            "JOIN tbl_farm f ON tp.farm_id = f.id ", // Giả sử có bảng `tbl_farm` với thông tin diện tích farm
+            "FROM tbl_plant tp " + "JOIN tbl_farm f ON tp.farm_id = f.id " + "WHERE tp.is_deleted = 0",
             nativeQuery = true)
     List<Object[]> getTotalPlantedAreaAllFarm();
 
@@ -90,6 +85,7 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
                     tbl_plant p
                 WHERE 
                     p.farm_id IS NOT NULL
+                    p.is_deleted = 0
                 GROUP BY 
                     EXTRACT(MONTH FROM p.date_fruiting_stage_finish),
                     p.type_plant_id
@@ -102,6 +98,8 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
                     SUM(h.yield_actual * h.yield_actual) AS total_money
                 FROM 
                     tbl_harvest h
+                WHERE
+                    h.is_deleted = 0
                 GROUP BY 
                     EXTRACT(MONTH FROM h.create_at),
                     h.type_plant_id
@@ -116,7 +114,8 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
             """, nativeQuery = true)
     List<Object[]> getMonthlyPlantAndHarvestSummary();
 
-    static void toMonthlyPlantHarvestSummaryDTO(MonthlyPlantHarvestSummaryDTO monthlyPlantHarvestSummaryDTO, Object[] objects) {
+    static void toMonthlyPlantHarvestSummaryDTO(MonthlyPlantHarvestSummaryDTO monthlyPlantHarvestSummaryDTO,
+                                                Object[] objects) {
         monthlyPlantHarvestSummaryDTO.setMonth((Integer) objects[0]);
         monthlyPlantHarvestSummaryDTO.setTypePlantId((String) objects[1]);
         monthlyPlantHarvestSummaryDTO.setTypePlantName((String) objects[2]);
@@ -127,24 +126,14 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
     }
 
 
-
-    @Query(value = "SELECT " +
-            "tp.id AS plant_id, " +
-            "tp.name AS plant_name, " +
-            "tp.farm_id AS farm_id, " +
-            "tf.name AS farm_name, " +
-            "ttp.id AS type_plant_id, " +
-            "ttp.name AS type_plant_name, " +
-            "tp.yield AS total_yield_planted, " +
-            "tp.price AS total_money_planted, " +
-            "th.yield_actual AS total_yield_actual, " +
-            "th.price_actual AS total_money_actual " +
-            "FROM tbl_harvest th " +
-            "LEFT JOIN tbl_plant tp ON tp.id = th.plant_id " +
+    @Query(value = "SELECT " + "tp.id AS plant_id, " + "tp.name AS plant_name, " + "tp.farm_id AS farm_id, " +
+            "tf.name AS farm_name, " + "ttp.id AS type_plant_id, " + "ttp.name AS type_plant_name, " +
+            "tp.yield AS total_yield_planted, " + "tp.price AS total_money_planted, " +
+            "th.yield_actual AS total_yield_actual, " + "th.price_actual AS total_money_actual " +
+            "FROM tbl_harvest th " + "LEFT JOIN tbl_plant tp ON tp.id = th.plant_id " +
             "LEFT JOIN tbl_farm tf ON tf.id = tp.farm_id " +
             "LEFT JOIN tbl_type_plant ttp ON ttp.id = tp.type_plant_id " +
-            "WHERE EXTRACT(MONTH FROM th.create_at) = :month " +
-            "AND EXTRACT(YEAR FROM th.create_at) = :year",
+            "WHERE EXTRACT(MONTH FROM th.create_at) = :month" + "AND EXTRACT(YEAR FROM th.create_at) = :year",
             nativeQuery = true)
     List<Object[]> getReportDashboard(@Param("month") int month, @Param("year") int year);
 

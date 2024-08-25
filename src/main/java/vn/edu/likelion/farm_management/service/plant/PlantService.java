@@ -33,6 +33,8 @@ public interface PlantService extends BaseService<PlantEntity , PlantCreationReq
 
     PaginatePlantResponse searchPlantsByPagination(String searchText, int pageNo , int pagSize);
 
+    boolean addPlantBaseOnQuantity(int quantity, PlantCreationRequest plantCreationRequest);
 
+    PaginatePlantResponse findAllByTypePlantId(int pageNo , int pagSize, String typePlanId);
 
 }

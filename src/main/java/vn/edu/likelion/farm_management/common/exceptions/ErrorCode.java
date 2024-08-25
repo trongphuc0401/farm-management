@@ -66,6 +66,8 @@ public enum ErrorCode {
     AREA_NEGATIVE(RestAPIStatus.BAD_REQUEST, -601, "Area cannot be negative", "Bad request", "Diện tích không được âm"),
     AREA_TOO_LARGE(RestAPIStatus.BAD_REQUEST, -602, "Area  exceeds maximum allowed value {value} - {fieldName}", "Bad request", "Diện tích vượt quá giá trị cho phép {value} - {fieldName}"),
     PARAM_NOT_NULL(RestAPIStatus.BAD_REQUEST, -603, "{fieldName} cannot be null", "Bad request", "Giá trị {fieldName} không được null"),
+    PARAM_OVER_MIN (RestAPIStatus.BAD_REQUEST, -604, "{fieldName} must be great than {min}", "Invalid Field", "Giá trị {fieldName} phải bé hơn {min}"),
+    PARAM_OVER_MAX(RestAPIStatus.BAD_REQUEST, -605, "{fieldName} must be less than {max}", "Invalid Field", "Giá trị {fieldName} lớn hơn {max}"),
 
 
     DELETE_FAILED(RestAPIStatus.CAN_NOT_DELETE,-9996,"Delete failed","Not found","Xoá thất bại"),
