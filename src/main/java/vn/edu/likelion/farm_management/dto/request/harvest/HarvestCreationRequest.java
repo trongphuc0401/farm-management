@@ -30,10 +30,10 @@ public class HarvestCreationRequest {
     String description;
 
     @NotNull(message = "PARAM_NOT_NULL")
-    @DecimalMin(value = "0.0", inclusive = true, message = "AREA_NEGATIVE")
+    @DecimalMin(value = "0.0", inclusive = true, message = "PARAM_NEGATIVE")
     Double yieldActual;
 
     @NotNull(message = "PARAM_NOT_NULL")
-    @DecimalMin(value = "0.0", inclusive = true, message = "AREA_NEGATIVE")
+    @DecimalMin(value = "0.0", inclusive = true, message = "PARAM_NEGATIVE")
     Double priceActual;
 }

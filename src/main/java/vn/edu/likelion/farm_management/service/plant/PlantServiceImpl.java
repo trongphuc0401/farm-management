@@ -144,7 +144,7 @@ public class PlantServiceImpl implements PlantService {
     public PaginatePlantResponse getAllByPagination(int pageNo, int pagSize) {
 
         Pageable pageable = PageRequest.of(pageNo, pagSize, Sort.by("createAt").descending());
-        Page<PlantEntity> plantEntities = plantRepository.findAll(pageable);
+        Page<PlantEntity> plantEntities = plantRepository.findAllNonDeletedPlants(pageable);
         if (plantEntities.isEmpty()) {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
         }
