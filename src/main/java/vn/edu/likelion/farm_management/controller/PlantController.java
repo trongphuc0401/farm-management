@@ -53,20 +53,38 @@ public class PlantController {
         return responseUtil.successResponse(plantService.findAllPlantByFarm(id));
     }
 
-    @GetMapping(ApiPath.FIND_ALL+ ApiPath.PAGINATE)
+    @GetMapping(ApiPath.FIND_ALL + ApiPath.PAGINATE)
     public ResponseEntity<RestAPIResponse<Object>> findAllByPagination(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return responseUtil.successResponse(plantService.getAllByPagination(pageNo, pageSize));
     }
 
+    @GetMapping("/findAllByTypePlantId")
+    public ResponseEntity<RestAPIResponse<Object>> findAllByTypePlantId(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+            @RequestParam(value = "typePlantId", required = true) String typePlantId
+            ) {
+        return responseUtil.successResponse(plantService.getAllByPagination(pageNo, pageSize));
+    }
+
 
     @PostMapping(value = ApiPath.ADD, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestAPIResponse<Object>> addPlant(@RequestBody @Valid PlantCreationRequest plantCreationRequest) {
+    public ResponseEntity<RestAPIResponse<Object>> addPlant(
+            @RequestBody @Valid PlantCreationRequest plantCreationRequest) {
         return responseUtil.buildResponse(RestAPIStatus.CREATED, plantService.create(plantCreationRequest),
                 HttpStatus.CREATED);
+    }
 
+    @PostMapping(value = ApiPath.ADD + "ByQuantity")
+    public ResponseEntity<RestAPIResponse<Object>> addPlantBaseOnQuantity(
+            @RequestParam(value = "quantity") int quantity,
+            @RequestBody @Valid PlantCreationRequest plantCreationRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.CREATED,
+                plantService.addPlantBaseOnQuantity(quantity, plantCreationRequest),
+                HttpStatus.CREATED);
     }
 
     @PutMapping(value = ApiPath.EDIT + ApiPath.ID, consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -81,10 +99,9 @@ public class PlantController {
     @PutMapping(value = ApiPath.ADD_TO_FARM)
     public ResponseEntity<RestAPIResponse<Object>> addPlantToFarm(
             @RequestParam String plantId,
-            @RequestParam String farmId ) {
-
-        return responseUtil.buildResponse(RestAPIStatus.OK,plantService.addPlantToFarm(plantId,farmId),HttpStatus.OK);
-
+            @RequestParam String farmId) {
+        return responseUtil.buildResponse(RestAPIStatus.OK, plantService.addPlantToFarm(plantId, farmId),
+                HttpStatus.OK);
     }
 
     @DeleteMapping(value = ApiPath.DELETE + ApiPath.ID)
@@ -103,6 +120,6 @@ public class PlantController {
             @RequestParam String searchText,
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return responseUtil.successResponse(plantService.searchPlantsByPagination(searchText,pageNo, pageSize));
+        return responseUtil.successResponse(plantService.searchPlantsByPagination(searchText, pageNo, pageSize));
     }
 }

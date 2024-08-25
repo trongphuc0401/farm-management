@@ -54,17 +54,35 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
-            PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
+        PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
+        try {
+            PlantEntity plantEntityCreated = plantRepository.save(plantEntity);
+            log.info(String.valueOf(plantEntityCreated.getUpdateAt()));
+            PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntityCreated);
+            return Optional.of(plantResponse);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new AppException(ErrorCode.UPDATE_FAILED);
+        }
+    }
+
+    @Override
+    public boolean addPlantBaseOnQuantity(int quantity, PlantCreationRequest plantCreationRequest) {
+        for (int i = 0; i < quantity; i++) {
+            PlantEntity plantEntity = new PlantEntity();
+            plantMapper.toCreatePlant(plantCreationRequest);
             try {
-                PlantEntity plantEntityCreated = plantRepository.save(plantEntity);
-                log.info(String.valueOf(plantEntityCreated.getUpdateAt()));
-                PlantResponse plantResponse = plantMapper.toPlantResponse(plantEntityCreated);
-                return Optional.of(plantResponse);
-            }catch (Exception e) {
-                e.printStackTrace();
+                plantRepository.save(plantEntity);
+            } catch (Exception e) {
+                log.info(e.getMessage());
                 throw new AppException(ErrorCode.UPDATE_FAILED);
             }
+        }
+        return true;
     }
+
+
+
 
     @Override
     public Optional<PlantResponse> update(PlantUpdateInfoRequest t) {
@@ -84,7 +102,7 @@ public class PlantServiceImpl implements PlantService {
 //        plantRepository.delete(plantEntity); // ?? Gì đây ông nội Phúc
         try {
             plantRepository.save(plantEntity);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new AppException(ErrorCode.DELETE_FAILED);
         }
@@ -142,7 +160,7 @@ public class PlantServiceImpl implements PlantService {
 
 
         Pageable pageable = PageRequest.of(pageNo, pagSize, Sort.by("createAt").descending());
-        Page<PlantEntity> plantEntities = plantRepository.findPlantBySearchText(searchText,pageable);
+        Page<PlantEntity> plantEntities = plantRepository.findPlantBySearchText(searchText, pageable);
         if (plantEntities.isEmpty()) {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
         }
@@ -158,6 +176,23 @@ public class PlantServiceImpl implements PlantService {
     }
 
 
+    @Override
+    public PaginatePlantResponse findAllByTypePlantId(int pageNo, int pagSize, String typePlantId) {
+        Pageable pageable = PageRequest.of(pageNo, pagSize, Sort.by("createAt").descending());
+        Page<PlantEntity> plantEntities = plantRepository.findAllByTypePlantId(typePlantId, pageable);
+        if (plantEntities.isEmpty()) {
+            throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+        }
+        List<PlantEntity> plantEntityList = plantEntities.getContent();
+        List<PlantResponse> data = plantEntityList.stream().map(plantMapper::toPlantResponse).toList();
+        PaginatePlantResponse paginatePlantResponse = new PaginatePlantResponse();
+        paginatePlantResponse.setResults(data);
+        paginatePlantResponse.setPageNo(plantEntities.getNumber());
+        paginatePlantResponse.setPageSize(plantEntities.getSize());
+        paginatePlantResponse.setTotalElements(plantEntities.getNumberOfElements());
+        paginatePlantResponse.setTotalPages(plantEntities.getTotalPages());
+        return paginatePlantResponse;
+    }
 
     @Override
     public List<TypePlantResponse> findAllTypePlant() {
@@ -166,7 +201,7 @@ public class PlantServiceImpl implements PlantService {
         if (typePlantEntities.isEmpty()) {
             throw new AppException(ErrorCode.TYPE_PLANT_NOT_EXIST);
         }
-        return  typePlantEntities.stream()
+        return typePlantEntities.stream()
                 .map(plantMapper::toTypePlantResponse)
                 .toList();
     }
@@ -212,12 +247,12 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public Optional<PlantResponse> addPlantToFarm(String plantId,String farmId) {
+    public Optional<PlantResponse> addPlantToFarm(String plantId, String farmId) {
 
         PlantEntity plantEntity = plantRepository.findById(plantId)
                 .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
 
-        PlantMapper.toUpdateToFarmPlant(plantEntity,farmId);
+        PlantMapper.toUpdateToFarmPlant(plantEntity, farmId);
         PlantEntity updatePlantToFarm = plantRepository.save(plantEntity);
         PlantResponse plantResponse = plantMapper.toPlantResponse(updatePlantToFarm);
 
