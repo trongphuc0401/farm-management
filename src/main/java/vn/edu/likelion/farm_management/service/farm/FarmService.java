@@ -1,5 +1,7 @@
 package vn.edu.likelion.farm_management.service.farm;
 
+import vn.edu.likelion.farm_management.dto.request.farm.FarmAddNewPlantRequest;
+import vn.edu.likelion.farm_management.dto.request.farm.FarmAddPlantRequest;
 import vn.edu.likelion.farm_management.dto.request.farm.FarmCreationRequest;
 import vn.edu.likelion.farm_management.dto.response.dashboard.HarvestReport;
 import vn.edu.likelion.farm_management.dto.response.dashboard.YieldAndMoneyDashboard;
@@ -21,8 +23,9 @@ public interface FarmService extends BaseService<FarmEntity, FarmCreationRequest
 
     YieldAndMoneyDashboard getMonthlyPlantAndHarvestSummary();
 
-
-
-
     ByteArrayInputStream getReportDashboard(int month, int year);
+
+    boolean addPlantToFarmByListPlantId(FarmAddPlantRequest farmAddPlantRequest);
+
+    boolean addNewPlantToFarmBaseOnQuantity(FarmAddNewPlantRequest farmAddNewPlantRequest);
 }

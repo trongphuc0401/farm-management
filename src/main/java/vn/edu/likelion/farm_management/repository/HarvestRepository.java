@@ -35,6 +35,7 @@ public interface HarvestRepository extends JpaRepository<HarvestEntity,String> {
             "SUM(yield_actual) AS yield_total, " +
             "SUM(yield_actual * yield_actual) AS price_total " +
             "FROM tbl_harvest " +
+            "WHERE is_deleted = 0 " +
             "GROUP BY DATE(create_at) " +
             "ORDER BY DATE(create_at)", nativeQuery = true)
     List<Object[]> getAllMoneyAndYieldGroupDate();
@@ -70,6 +71,7 @@ public interface HarvestRepository extends JpaRepository<HarvestEntity,String> {
         HarvestEntity entity = new HarvestEntity();
         entity.setPlantId(response.getPlantId());
         entity.setPlantName(response.getPlantName());
+        entity.setTypePlantId(response.getTypePlantId());
         entity.setFarmId(response.getFarmId());
         entity.setFarmName(response.getFarmName());
         entity.setDescription(response.getDescription());

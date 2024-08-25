@@ -33,6 +33,8 @@ public enum ErrorCode {
     PLANT_EXIST(RestAPIStatus.EXISTED , -110,"Plant Exist","Already Exist","Cây trồng đã tồn tại"),
     PLANT_NOT_EXIST(RestAPIStatus.NOT_FOUND , -111,"Plant Not Exist","Not Found","Cây trồng không được tìm thấy"),
     TYPE_PLANT_NOT_EXIST(RestAPIStatus.NOT_FOUND , -112,"Type Plant Not Exist","Not Found","Giống cây trồng không được tìm thấy"),
+    NO_PLANTS_READY_TO_HARVEST(RestAPIStatus.NOT_FOUND,-113,"No Plants ready to Harvest ","Not found","Không cây nào sẳn sàng để thu hoạch"),
+
 
     FARM_EXIST(RestAPIStatus.EXISTED,-120,"Farm Exist","Already Exist","Nông trại đã tồn tại"),
     FARM_NOT_EXIST(RestAPIStatus.NOT_FOUND,-121,"Farm not exist","Not found","Nông trại không tồn tại"),
@@ -64,6 +66,9 @@ public enum ErrorCode {
     AREA_NEGATIVE(RestAPIStatus.BAD_REQUEST, -601, "Area cannot be negative", "Bad request", "Diện tích không được âm"),
     AREA_TOO_LARGE(RestAPIStatus.BAD_REQUEST, -602, "Area  exceeds maximum allowed value {value} - {fieldName}", "Bad request", "Diện tích vượt quá giá trị cho phép {value} - {fieldName}"),
     PARAM_NOT_NULL(RestAPIStatus.BAD_REQUEST, -603, "{fieldName} cannot be null", "Bad request", "Giá trị {fieldName} không được null"),
+    PARAM_OVER_MIN (RestAPIStatus.BAD_REQUEST, -604, "{fieldName} must be greater than or equal {value}", "Invalid Field", "Giá trị {fieldName} phải lớn hơn hoặc bằng {value}"),
+    PARAM_OVER_MAX(RestAPIStatus.BAD_REQUEST, -605, "{fieldName} must be less than or equal {value}", "Invalid Field", "Giá trị {fieldName} bé hơn hoặc bằng {value}"),
+    PARAM_NEGATIVE(RestAPIStatus.BAD_REQUEST, -606, "{fieldName} cannot be negative", "Bad request", "{fieldName} không được âm"),
 
 
     DELETE_FAILED(RestAPIStatus.CAN_NOT_DELETE,-9996,"Delete failed","Not found","Xoá thất bại"),

@@ -1,5 +1,7 @@
 package vn.edu.likelion.farm_management.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +12,7 @@ import vn.edu.likelion.farm_management.dto.response.dashboard.MonthlyPlantHarves
 import vn.edu.likelion.farm_management.dto.response.farm.AllFarmGeneralResponse;
 import vn.edu.likelion.farm_management.dto.response.farm.FarmGeneralResponse;
 import vn.edu.likelion.farm_management.entity.FarmEntity;
+import vn.edu.likelion.farm_management.entity.PlantEntity;
 
 
 import java.sql.Timestamp;
@@ -26,16 +29,19 @@ import java.util.List;
 
 @Repository
 public interface FarmRepository extends JpaRepository<FarmEntity, String> {
+
+    @Query("SELECT p FROM FarmEntity p WHERE p.isDeleted = 0")
+    List<FarmEntity> findAllNonDeletedFarms();
+
     // Query native reference
-    @Query(value = "SELECT " +
-            "tp.name as plant_name, " + // Tên cây trồng trên farm
+    @Query(value = "SELECT " + "tp.name as plant_name, " + // Tên cây trồng trên farm
             "ttp.name as type_plant_name, " + // Tên loại cây trồng trên farm
             "SUM(tp.area) as area_planted," + // Tổng diện tích cây đã trồng trên farm
-            "COUNT(*) AS harvestable_plant_count, " + // Đếm số lượng cây có thể thu hoạch
+            "COUNT(CASE WHEN tp.date_fruiting_stage_finish <= CURRENT_DATE THEN 1 ELSE NULL END) AS harvestable_plant_count, " +
             "MIN(tp.date_fruiting_stage_finish) as date_harvest  " + // Ngày có thể thu hoạch
             "FROM tbl_plant tp " +
             "JOIN tbl_type_plant ttp ON tp.type_plant_id = ttp.id " +
-            "WHERE tp.farm_id = :farm_id " +
+            "WHERE tp.farm_id = :farm_id AND tp.is_deleted = 0  " +
             "GROUP BY ttp.name, tp.name " +
             "ORDER BY harvestable_plant_count DESC", nativeQuery = true)
     List<Object[]> findFarmInformationToFarmResponse(@Param("farm_id") String farmId);
@@ -48,13 +54,11 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
         farmGeneralResponse.setDateHarvest(Convert.timeStampToLocalDateTime((Timestamp) objects[4]));
     }
 
-    @Query(value = "SELECT " +
-            "SUM(tp.area) as area_planted, " +   // Tổng diện tích cây trồng
+    @Query(value = "SELECT " + "SUM(tp.area) as area_planted, " +   // Tổng diện tích cây trồng
             "(SELECT SUM(area) FROM tbl_farm) AS area, " +  // Tổng diện tích của tất cả các farm
             "SUM(tp.yield) as yield_total, " +   // Tổng sản lượng của từng cây trồng
             "SUM(tp.price * tp.yield) as price_total " +    // Tổng giá trị tiền từ cây trồng
-            "FROM tbl_plant tp " +
-            "JOIN tbl_farm f ON tp.farm_id = f.id ", // Giả sử có bảng `tbl_farm` với thông tin diện tích farm
+            "FROM tbl_plant tp " + "JOIN tbl_farm f ON tp.farm_id = f.id " + "WHERE tp.is_deleted = 0",
             nativeQuery = true)
     List<Object[]> getTotalPlantedAreaAllFarm();
 
@@ -90,6 +94,7 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
                     tbl_plant p
                 WHERE 
                     p.farm_id IS NOT NULL
+                    p.is_deleted = 0
                 GROUP BY 
                     EXTRACT(MONTH FROM p.date_fruiting_stage_finish),
                     p.type_plant_id
@@ -102,6 +107,8 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
                     SUM(h.yield_actual * h.yield_actual) AS total_money
                 FROM 
                     tbl_harvest h
+                WHERE
+                    h.is_deleted = 0
                 GROUP BY 
                     EXTRACT(MONTH FROM h.create_at),
                     h.type_plant_id
@@ -116,7 +123,8 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
             """, nativeQuery = true)
     List<Object[]> getMonthlyPlantAndHarvestSummary();
 
-    static void toMonthlyPlantHarvestSummaryDTO(MonthlyPlantHarvestSummaryDTO monthlyPlantHarvestSummaryDTO, Object[] objects) {
+    static void toMonthlyPlantHarvestSummaryDTO(MonthlyPlantHarvestSummaryDTO monthlyPlantHarvestSummaryDTO,
+                                                Object[] objects) {
         monthlyPlantHarvestSummaryDTO.setMonth((Integer) objects[0]);
         monthlyPlantHarvestSummaryDTO.setTypePlantId((String) objects[1]);
         monthlyPlantHarvestSummaryDTO.setTypePlantName((String) objects[2]);
@@ -125,7 +133,6 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
         monthlyPlantHarvestSummaryDTO.setTotalYieldActual((Double) objects[5]);
         monthlyPlantHarvestSummaryDTO.setTotalMoneyActual((Double) objects[6]);
     }
-
 
 
     @Query(value = "SELECT " +
