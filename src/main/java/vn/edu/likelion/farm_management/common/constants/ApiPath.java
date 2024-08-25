@@ -35,6 +35,7 @@ public interface ApiPath {
     String SEARCH = "/search";
     String ADD_ALL = "/addAll";
 
+
     // Authenticate APIs
     String LOGIN = "/login";
     String LOGOUT = "/logout";
@@ -72,6 +73,7 @@ public interface ApiPath {
 
     // Harvest
     String HARVEST_API = BASE_API_URL + "/harvest";
+    String CREATE_BY_LIST_PLANTS = "/createByListPlants";
 
 
     // Dashboard

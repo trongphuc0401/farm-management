@@ -15,12 +15,15 @@ import vn.edu.likelion.farm_management.common.constants.ApiPath;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
+import vn.edu.likelion.farm_management.dto.request.farm.FarmAddNewPlantRequest;
+import vn.edu.likelion.farm_management.dto.request.farm.FarmAddPlantRequest;
 import vn.edu.likelion.farm_management.dto.request.farm.FarmCreationRequest;
 
 import vn.edu.likelion.farm_management.dto.response.farm.AllFarmGeneralResponse;
 import vn.edu.likelion.farm_management.service.farm.FarmService;
 
 import java.io.ByteArrayInputStream;
+import java.util.List;
 
 
 /**
@@ -77,4 +80,21 @@ public class FarmController {
         return responseUtil.buildResponse(RestAPIStatus.OK, farmService.getTotalPlantedAreaAllFarm(),
                 HttpStatus.OK);
     }
+
+    @PutMapping(value = "/addPlantToFarmByListPlantId")
+    public ResponseEntity<RestAPIResponse<Object>> addPlantToFarmByListPlantId(
+            @RequestBody @Valid FarmAddPlantRequest farmAddPlantRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.OK, farmService.addPlantToFarmByListPlantId(farmAddPlantRequest),
+                HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/addNewPlantToFarmBaseOnQuantity")
+    public ResponseEntity<RestAPIResponse<Object>> addNewPlantToFarmBaseOnQuantity(
+            @RequestBody @Valid FarmAddNewPlantRequest farmAddNewPlantRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.OK, farmService.addNewPlantToFarmBaseOnQuantity(farmAddNewPlantRequest),
+                HttpStatus.OK);
+    }
+
+
+
 }

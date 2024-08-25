@@ -28,7 +28,7 @@ public class FarmCreationRequest {
     String name;
 
     @NotNull(message = "PARAM_NOT_NULL")
-    @DecimalMin(value = "0.0", inclusive = true, message = "AREA_NEGATIVE")
+    @DecimalMin(value = "0.0", inclusive = true, message = "PARAM_NEGATIVE")
     @DecimalMax(value = "99999.0", inclusive = true, message = "AREA_TOO_LARGE")
     Double area;
 

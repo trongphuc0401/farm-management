@@ -14,6 +14,7 @@ import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationAllRequest;
+import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationListPlantsRequest;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationRequest;
 import vn.edu.likelion.farm_management.repository.FarmRepository;
 import vn.edu.likelion.farm_management.service.harvest.HarvestService;
@@ -59,13 +60,24 @@ public class HarvestController {
 
     @PostMapping(value =ApiPath.ADD_ALL , consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestAPIResponse<Object>> createAll(@RequestBody List<HarvestCreationAllRequest> harvestCreationAllRequest) {
+    public ResponseEntity<RestAPIResponse<Object>> createAll(@RequestBody HarvestCreationAllRequest harvestCreationAllRequest) {
         return responseUtil.buildResponse(RestAPIStatus.CREATED,harvestService.harvestAll(harvestCreationAllRequest), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value =ApiPath.CREATE_BY_LIST_PLANTS , consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestAPIResponse<Object>> createByListPlant(@RequestBody HarvestCreationListPlantsRequest harvestCreationListPlantsRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.CREATED,harvestService.harvestByListPlant(harvestCreationListPlantsRequest.getPlantIds(),harvestCreationListPlantsRequest.getHarvestCreationAllRequest()), HttpStatus.CREATED);
     }
 
     @GetMapping(ApiPath.FIND_BY_ID + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> findById(@PathVariable(value = "id") String id) {
         return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.findById(id), HttpStatus.OK);
+    }
+
+    @GetMapping(ApiPath.FIND_ALL_PLANT_BY_FARM + ApiPath.ID)
+    public ResponseEntity<RestAPIResponse<Object>> findAllPlantByFarm(@PathVariable(value = "id") String farmId) {
+        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.findAllPlantReadyHarvestByFarmId(farmId), HttpStatus.OK);
     }
 
     @DeleteMapping(ApiPath.DELETE + ApiPath.ID)
