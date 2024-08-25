@@ -7,16 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import vn.edu.likelion.farm_management.common.utils.Convert;
 import vn.edu.likelion.farm_management.common.utils.DateTimeUtils;
-import vn.edu.likelion.farm_management.dto.response.farm.FarmGeneralResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestGroupDateResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponse;
 import vn.edu.likelion.farm_management.entity.HarvestEntity;
-import vn.edu.likelion.farm_management.entity.PlantEntity;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
