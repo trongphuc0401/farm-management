@@ -66,7 +66,7 @@ public class PlantController {
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
             @RequestParam(value = "typePlantId", required = true) String typePlantId
             ) {
-        return responseUtil.successResponse(plantService.getAllByPagination(pageNo, pageSize));
+        return responseUtil.successResponse(plantService.findAllByTypePlantId(pageNo, pageSize, typePlantId));
     }
 
 
