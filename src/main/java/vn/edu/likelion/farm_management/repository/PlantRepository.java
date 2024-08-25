@@ -33,7 +33,7 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String>, Pagi
     @Query(value = "SELECT tp FROM PlantEntity tp WHERE LOWER(tp.name) LIKE LOWER(CONCAT('%',:searchText, '%')) AND tp.isDeleted = 0")
     Page<PlantEntity> findPlantBySearchText(@Param("searchText") String searchText, Pageable pageable);
 
-    @Query(value = "SELECT tp FROM PlantEntity tp WHERE tp.typePlant.id = :typePlantId AND tp.isDeleted = 0")
+    @Query(value = "SELECT tp FROM PlantEntity tp WHERE tp.typePlant.id = :typePlantId AND tp.farmId IS NULL AND tp.isDeleted = 0")
     Page<PlantEntity> findAllByTypePlantId(@Param("typePlantId") String typePlantId, Pageable pageable);
 
 
