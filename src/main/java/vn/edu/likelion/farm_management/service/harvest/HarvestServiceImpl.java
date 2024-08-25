@@ -18,6 +18,7 @@ import lombok.experimental.FieldDefaults;
 
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationAllRequest;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationRequest;
+import vn.edu.likelion.farm_management.dto.request.harvest.HarvestUpdateRequest;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestGroupDateResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponsePaginate;
@@ -79,18 +80,30 @@ public class HarvestServiceImpl implements HarvestService{
     }
 
     @Override
-    public Optional<HarvestResponse> update(HarvestCreationRequest harvestCreationRequest) {
+    public Optional<HarvestResponse> update(HarvestUpdateRequest harvestUpdateRequest) {
         return Optional.empty();
     }
 
+
     @Override
-    public Optional<HarvestResponse> updateInfo(String id, HarvestCreationRequest harvestCreationRequest) {
+    public Optional<HarvestResponse> updateInfo(String id, HarvestUpdateRequest harvestUpdateRequest) {
         HarvestEntity harvestEntity = harvestRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.HARVEST_NOT_EXIST));
 
+
+
+        FarmEntity farmEntity = farmRepository.findById(harvestEntity.getFarmId()).orElseThrow(()-> new AppException(
+                ErrorCode.FARM_NOT_EXIST));
+
+        if (farmEntity.getIsDeleted() == 1) {
+            throw new AppException(ErrorCode.FARM_NOT_EXIST);
+        }
+
+
+
         harvestEntity.setUpdateAt(LocalDateTime.now());
 
-        harvestMapper.updateEntity(harvestEntity, harvestCreationRequest);
+        harvestMapper.updateEntity(harvestEntity, harvestUpdateRequest);
 
         try {
             HarvestEntity harvestEntityUpdate = harvestRepository.save(harvestEntity);

@@ -16,6 +16,7 @@ import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationAllRequest;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationListPlantsRequest;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationRequest;
+import vn.edu.likelion.farm_management.dto.request.harvest.HarvestUpdateRequest;
 import vn.edu.likelion.farm_management.repository.FarmRepository;
 import vn.edu.likelion.farm_management.service.harvest.HarvestService;
 
@@ -47,8 +48,8 @@ public class HarvestController {
 
     @PutMapping(ApiPath.EDIT + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> update(@PathVariable(value = "id") String id,
-                                                          @RequestBody @Valid HarvestCreationRequest harvestCreationRequest) {
-        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.updateInfo(id, harvestCreationRequest),
+                                                          @RequestBody @Valid HarvestUpdateRequest harvestUpdateRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.OK, harvestService.updateInfo(id, harvestUpdateRequest),
                 HttpStatus.OK);
     }
 

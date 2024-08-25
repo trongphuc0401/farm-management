@@ -3,6 +3,7 @@ package vn.edu.likelion.farm_management.service.harvest;
 import org.springframework.stereotype.Service;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationAllRequest;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationRequest;
+import vn.edu.likelion.farm_management.dto.request.harvest.HarvestUpdateRequest;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestGroupDateResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponsePaginate;
@@ -21,7 +22,7 @@ import java.util.List;
  * @throws
  */
 public interface HarvestService
-        extends BaseService<HarvestEntity, HarvestCreationRequest, HarvestResponse, HarvestCreationRequest> {
+        extends BaseService<HarvestEntity, HarvestCreationRequest, HarvestResponse, HarvestUpdateRequest> {
 
     HarvestResponsePaginate getAllHarvestByDate(String date, int pageNo, int pagSize);
 

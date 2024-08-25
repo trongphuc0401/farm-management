@@ -135,14 +135,23 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
     }
 
 
-    @Query(value = "SELECT " + "tp.id AS plant_id, " + "tp.name AS plant_name, " + "tp.farm_id AS farm_id, " +
-            "tf.name AS farm_name, " + "ttp.id AS type_plant_id, " + "ttp.name AS type_plant_name, " +
-            "tp.yield AS total_yield_planted, " + "tp.price AS total_money_planted, " +
-            "th.yield_actual AS total_yield_actual, " + "th.price_actual AS total_money_actual " +
-            "FROM tbl_harvest th " + "LEFT JOIN tbl_plant tp ON tp.id = th.plant_id " +
+    @Query(value = "SELECT " +
+            "tp.id AS plant_id, " +
+            "tp.name AS plant_name, " +
+            "tp.farm_id AS farm_id, " +
+            "tf.name AS farm_name, " +
+            "ttp.id AS type_plant_id, " +
+            "ttp.name AS type_plant_name, " +
+            "tp.yield AS total_yield_planted, " +
+            "tp.price AS total_money_planted, " +
+            "th.yield_actual AS total_yield_actual, " +
+            "th.price_actual AS total_money_actual " +
+            "FROM tbl_harvest th " +
+            "LEFT JOIN tbl_plant tp ON tp.id = th.plant_id " +
             "LEFT JOIN tbl_farm tf ON tf.id = tp.farm_id " +
             "LEFT JOIN tbl_type_plant ttp ON ttp.id = tp.type_plant_id " +
-            "WHERE EXTRACT(MONTH FROM th.create_at) = :month" + "AND EXTRACT(YEAR FROM th.create_at) = :year",
+            "WHERE EXTRACT(MONTH FROM th.create_at) = :month " +
+            "AND EXTRACT(YEAR FROM th.create_at) = :year",
             nativeQuery = true)
     List<Object[]> getReportDashboard(@Param("month") int month, @Param("year") int year);
 
