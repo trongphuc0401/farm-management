@@ -6,7 +6,9 @@ import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationReques
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestGroupDateResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponsePaginate;
+import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 import vn.edu.likelion.farm_management.entity.HarvestEntity;
+import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.service.BaseService;
 
 import java.util.List;
@@ -26,7 +28,11 @@ public interface HarvestService
     List<HarvestGroupDateResponse> getAllMoneyAndYieldGroupDate();
 
     List<HarvestResponse> harvestByNumber(HarvestCreationRequest harvestCreationRequest);
-    List<HarvestResponse> harvestAll(List<HarvestCreationAllRequest> harvestCreationAllRequests);
+
+    List<PlantResponse> findAllPlantReadyHarvestByFarmId(String farmId);
+
+    List<HarvestResponse> harvestAll(HarvestCreationAllRequest harvestCreationAllRequests);
+    List<HarvestResponse> harvestByListPlant(List<String> listPlant, HarvestCreationAllRequest harvestCreationAllRequests);
 
     List<HarvestResponse> findAllByCreateAt(String date);
 
