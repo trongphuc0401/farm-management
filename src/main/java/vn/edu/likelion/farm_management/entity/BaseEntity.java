@@ -36,13 +36,14 @@ public abstract class BaseEntity implements Serializable {
     @UuidGenerator
     String id;
 
-    @Column(nullable = true, updatable = false)
+
+    @Column(nullable = false, updatable = false)
     LocalDateTime createAt;
 
     @Column(nullable = true, insertable = false)
     LocalDateTime updateAt;
 
-    @Column
+    @Column(nullable = false)
     int isDeleted;
 
     @PrePersist
