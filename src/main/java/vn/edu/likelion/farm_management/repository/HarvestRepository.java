@@ -35,6 +35,7 @@ public interface HarvestRepository extends JpaRepository<HarvestEntity,String> {
             "SUM(yield_actual) AS yield_total, " +
             "SUM(yield_actual * yield_actual) AS price_total " +
             "FROM tbl_harvest " +
+            "WHERE is_delete = 0 " +
             "GROUP BY DATE(create_at) " +
             "ORDER BY DATE(create_at)", nativeQuery = true)
     List<Object[]> getAllMoneyAndYieldGroupDate();
@@ -50,7 +51,7 @@ public interface HarvestRepository extends JpaRepository<HarvestEntity,String> {
         harvestGroupDateResponse.setTotalMoneyActual(totalMoney);
     }
 
-    @Query(value = "SELECT h FROM HarvestEntity h WHERE DATE(h.createAt) = :date")
+    @Query(value = "SELECT DISTINCT  h FROM HarvestEntity h WHERE DATE(h.createAt) = :date")
     Page<HarvestEntity> findAllByCreateAt(@Param("date") LocalDate date, Pageable pageable);
 
     @Query(value = "SELECT h FROM HarvestEntity h WHERE DATE(h.createAt) = :date")

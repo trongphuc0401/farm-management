@@ -282,6 +282,13 @@ public class HarvestServiceImpl implements HarvestService{
     @Override public List<HarvestResponse> harvestAll(HarvestCreationAllRequest harvestCreationAllRequests) {
         List<HarvestResponse> harvestResponses = new ArrayList<>();
 
+        FarmEntity farm = farmRepository.findById(harvestCreationAllRequests.getFarmId()).orElseThrow(()-> new AppException(
+                ErrorCode.FARM_NOT_EXIST));
+
+        if (farm.getIsDeleted() == 1) {
+            throw new AppException(ErrorCode.FARM_NOT_EXIST);
+        }
+
         // Lấy danh sách các cây có status là Harvested
         List<PlantEntity> readyToHarvestPlants  = plantRepository.findReadyToHarvestPlants(LocalDateTime.now());
 
@@ -289,17 +296,10 @@ public class HarvestServiceImpl implements HarvestService{
             throw new AppException(ErrorCode.NO_PLANTS_READY_TO_HARVEST);
         }
 
-        String farmName = "";
+        String farmName = farm.getName();
         for (PlantEntity plantEntity : readyToHarvestPlants) {
 
-            Optional<FarmEntity> farmEntity = farmRepository.findById(plantEntity.getFarmId());
 
-            if (farmEntity.isPresent()) {
-                FarmEntity farm = farmEntity.get();
-
-                farmName = farm.getName();
-
-            }
             HarvestResponse response = new HarvestResponse();
 
             response.setId(UUID.randomUUID().toString());

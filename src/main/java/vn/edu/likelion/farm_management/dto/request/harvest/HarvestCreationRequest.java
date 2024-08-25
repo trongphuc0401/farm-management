@@ -4,6 +4,8 @@ package vn.edu.likelion.farm_management.dto.request.harvest;
 import jakarta.persistence.Column;
 
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +24,10 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HarvestCreationRequest {
+
+    @NotNull(message = "PARAM_NOT_NULL")
+    @Min(value = 0 , message = "PARAM_OVER_MIN")
+    @Max(value = 100,message = "PARAM_OVER_MAX")
     Integer quantity;
 
     @NotNull(message = "PARAM_NOT_NULL")
