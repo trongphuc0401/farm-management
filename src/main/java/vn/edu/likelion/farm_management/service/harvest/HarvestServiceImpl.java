@@ -1,6 +1,7 @@
 package vn.edu.likelion.farm_management.service.harvest;
 
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,10 +21,14 @@ import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationReques
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestGroupDateResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponse;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponsePaginate;
+import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
+import vn.edu.likelion.farm_management.entity.FarmEntity;
 import vn.edu.likelion.farm_management.entity.HarvestEntity;
 
 import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.mapper.HarvestMapper;
+import vn.edu.likelion.farm_management.mapper.PlantMapper;
+import vn.edu.likelion.farm_management.repository.FarmRepository;
 import vn.edu.likelion.farm_management.repository.HarvestRepository;
 import vn.edu.likelion.farm_management.repository.PlantRepository;
 
@@ -32,6 +37,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * HarvestServiceImpl -
@@ -55,7 +61,11 @@ public class HarvestServiceImpl implements HarvestService{
     @Autowired
     HarvestMapper harvestMapper;
 
+    @Autowired
+    PlantMapper plantMapper;
 
+    @Autowired
+    FarmRepository farmRepository;
 
 
     @Override
@@ -193,49 +203,175 @@ public class HarvestServiceImpl implements HarvestService{
     }
 
     @Override
+    @Transactional
     public List<HarvestResponse> harvestByNumber(HarvestCreationRequest harvestCreationRequest) {
+
         List<HarvestResponse> harvestResponses = new ArrayList<>();
 
-        List<PlantEntity> readyToHarvestPlants  = plantRepository.findByDateFruitingStageFinishLessThanEqualOrderByDateFruitingStageFinishAsc(LocalDateTime.now());
+            // Lấy danh sách các cây có status là Harvested
+            List<PlantEntity> readyToHarvestPlants  = plantRepository.findReadyToHarvestPlants(LocalDateTime.now());
 
-        if (readyToHarvestPlants.isEmpty()) {
-            throw new AppException(ErrorCode.PLANT_NOT_EXIST);
-        }
+            if (readyToHarvestPlants.isEmpty()) {
+                throw new AppException(ErrorCode.NO_PLANTS_READY_TO_HARVEST);
+            }
 
-        int quantityToHarvest = Math.min(harvestCreationRequest.getQuantity(),readyToHarvestPlants.size());
+            int quantityToHarvest = Math.min(harvestCreationRequest.getQuantity(), readyToHarvestPlants.size());
 
 
-        Double yieldPerPlant = (double) harvestCreationRequest.getYieldActual() / quantityToHarvest;
+            String farmName = "";
+            for (int i = 0; i < quantityToHarvest; i++) {
+                PlantEntity plantEntity = readyToHarvestPlants.get(i);
+                Optional<FarmEntity> farmEntity = farmRepository.findById(plantEntity.getFarmId());
 
-        for(int i = 0 ; i < quantityToHarvest ; i++) {
+                if (farmEntity.isPresent()) {
+                    FarmEntity farm = farmEntity.get();
 
-            PlantEntity plantEntity = readyToHarvestPlants.get(i);
+                    farmName = farm.getName();
 
-            HarvestResponse response = new HarvestResponse();
-            response.setPlantId(plantEntity.getId());
-            response.setPlantName(plantEntity.getName());
-            response.setFarmId(plantEntity.getFarmId());
-            response.setFarmName(plantEntity.getName());
-            response.setDescription(plantEntity.getDescription());
-            response.setYieldActual(yieldPerPlant);
-            response.setPriceActual(harvestCreationRequest.getPriceActual());
-            response.setIsDeleted(0);
-            response.setCreateAt(LocalDateTime.now());
-            harvestResponses.add(response);
+                }
+
+                HarvestResponse response = new HarvestResponse();
+                response.setId(UUID.randomUUID().toString());
+                response.setPlantId(plantEntity.getId());
+                response.setPlantName(plantEntity.getName());
+                response.setTypePlantId(plantEntity.getTypePlant().getId());
+                response.setFarmId(harvestCreationRequest.getFarmId());
+                response.setFarmName(farmName);
+                response.setDescription(harvestCreationRequest.getDescription());
+                response.setYieldActual(harvestCreationRequest.getYieldActual() / quantityToHarvest);
+                response.setPriceActual(harvestCreationRequest.getPriceActual());
+                response.setIsDeleted(0);
+                response.setCreateAt(LocalDateTime.now());
+
+                harvestResponses.add(response);
+
+                plantEntity.setIsDeleted(1);
+                plantRepository.save(plantEntity);
+            }
 
             harvestRepository.saveAll(harvestResponses);
 
+            return harvestResponses;
+    }
+
+    @Override public List<PlantResponse> findAllPlantReadyHarvestByFarmId(String farmId) {
+
+        List<PlantEntity> allPlantsInFarm = plantRepository.findPlantByFarmId(farmId);
+            if (allPlantsInFarm.isEmpty()) {
+                throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+            }
+
+        List<PlantEntity> readyToHarvestPlants = plantRepository.findReadyToHarvestPlants(LocalDateTime.now());
+
+        List<PlantEntity> plantsReadyToHarvestInFarm = new ArrayList<>();
+
+        for(PlantEntity plantEntity : allPlantsInFarm) {
+            if (readyToHarvestPlants.contains(plantEntity)) {
+                plantsReadyToHarvestInFarm.add(plantEntity);
+            }
         }
+
+            if (plantsReadyToHarvestInFarm.isEmpty()) {
+            throw new AppException(ErrorCode.NO_PLANTS_READY_TO_HARVEST);
+        }
+        return plantsReadyToHarvestInFarm.stream()
+                .map(plantMapper::toPlantResponse).toList();
+    }
+
+
+    @Override public List<HarvestResponse> harvestAll(HarvestCreationAllRequest harvestCreationAllRequests) {
+        List<HarvestResponse> harvestResponses = new ArrayList<>();
+
+        // Lấy danh sách các cây có status là Harvested
+        List<PlantEntity> readyToHarvestPlants  = plantRepository.findReadyToHarvestPlants(LocalDateTime.now());
+
+        if (readyToHarvestPlants.isEmpty()) {
+            throw new AppException(ErrorCode.NO_PLANTS_READY_TO_HARVEST);
+        }
+
+        String farmName = "";
+        for (PlantEntity plantEntity : readyToHarvestPlants) {
+
+            Optional<FarmEntity> farmEntity = farmRepository.findById(plantEntity.getFarmId());
+
+            if (farmEntity.isPresent()) {
+                FarmEntity farm = farmEntity.get();
+
+                farmName = farm.getName();
+
+            }
+            HarvestResponse response = new HarvestResponse();
+
+            response.setId(UUID.randomUUID().toString());
+            response.setPlantId(plantEntity.getId());
+            response.setPlantName(plantEntity.getName());
+            response.setFarmId(harvestCreationAllRequests.getFarmId());
+            response.setFarmName(farmName);
+            response.setDescription(harvestCreationAllRequests.getDescription());
+            response.setYieldActual(harvestCreationAllRequests.getYieldActual() / readyToHarvestPlants.size());
+            response.setPriceActual(harvestCreationAllRequests.getPriceActual());
+            response.setIsDeleted(0);
+            response.setCreateAt(LocalDateTime.now());
+            response.setTypePlantId(plantEntity.getTypePlant().getId());
+            harvestResponses.add(response);
+            plantEntity.setIsDeleted(1);
+
+            plantRepository.save(plantEntity);
+
+
+        }
+        harvestRepository.saveAll(harvestResponses);
+
         return harvestResponses;
     }
 
+    @Override public List<HarvestResponse> harvestByListPlant(List<String> plantIds,
+                                                              HarvestCreationAllRequest harvestCreationAllRequests) {
+        List<HarvestResponse> harvestResponses = new ArrayList<>();
 
-    @Override
-    public List<HarvestResponse> harvestAll(List<HarvestCreationAllRequest> harvestCreationAllRequests) {
-        List<HarvestEntity> harvestEntities = harvestMapper.toCreateAllHarvest(harvestCreationAllRequests);
+        // Lấy danh sách các cây có status là Harvested
+        List<PlantEntity> plantsReadyForHarvest  = plantRepository.findPlantsReadyForHarvest(plantIds,LocalDateTime.now());
 
-        return harvestRepository.saveAll(harvestEntities).stream().map(harvestMapper::toHarvestResponse).toList();
+        if (plantsReadyForHarvest.isEmpty()) {
+            throw new AppException(ErrorCode.NO_PLANTS_READY_TO_HARVEST);
+        }
+
+        String farmName = "";
+        for (PlantEntity plantEntity : plantsReadyForHarvest) {
+
+            Optional<FarmEntity> farmEntity = farmRepository.findById(plantEntity.getFarmId());
+
+            if (farmEntity.isPresent()) {
+                FarmEntity farm = farmEntity.get();
+
+                farmName = farm.getName();
+
+            }
+            HarvestResponse response = new HarvestResponse();
+
+            response.setId(UUID.randomUUID().toString());
+            response.setPlantId(plantEntity.getId());
+            response.setPlantName(plantEntity.getName());
+            response.setFarmId(harvestCreationAllRequests.getFarmId());
+            response.setFarmName(farmName);
+            response.setDescription(harvestCreationAllRequests.getDescription());
+            response.setYieldActual(harvestCreationAllRequests.getYieldActual() / plantsReadyForHarvest.size());
+            response.setPriceActual(harvestCreationAllRequests.getPriceActual());
+            response.setIsDeleted(0);
+            response.setCreateAt(LocalDateTime.now());
+            response.setTypePlantId(plantEntity.getTypePlant().getId());
+            harvestResponses.add(response);
+            plantEntity.setIsDeleted(1);
+
+            plantRepository.save(plantEntity);
+
+
+        }
+        harvestRepository.saveAll(harvestResponses);
+
+        return harvestResponses;
     }
+
 
     @Override
     public List<HarvestResponse> findAllByCreateAt(String date) {

@@ -22,19 +22,8 @@ import lombok.experimental.FieldDefaults;
 public class HarvestCreationAllRequest {
 
     @NotNull(message = "PARAM_NOT_NULL")
-    String plantId;
-
-    @NotNull(message = "PARAM_NOT_NULL")
-    String plantName;
-
-    @NotNull(message = "PARAM_NOT_NULL")
-    String typePlantId;
-
-    @NotNull(message = "PARAM_NOT_NULL")
     String farmId;
 
-    @NotNull(message = "PARAM_NOT_NULL")
-    String farmName;
     String description;
 
     @NotNull(message = "PARAM_NOT_NULL")

@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import vn.edu.likelion.farm_management.common.enums.StatusFarm;
 import vn.edu.likelion.farm_management.common.exceptions.AppException;
 import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
 import vn.edu.likelion.farm_management.dto.request.plant.PlantCreationRequest;
@@ -50,6 +51,9 @@ public class PlantServiceImpl implements PlantService {
 
     @Autowired
     TypePlantRepository typePlantRepository;
+
+    @Autowired
+    FarmRepository farmRepository;
 
 
     @Override
@@ -252,7 +256,13 @@ public class PlantServiceImpl implements PlantService {
         PlantEntity plantEntity = plantRepository.findById(plantId)
                 .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
 
-        PlantMapper.toUpdateToFarmPlant(plantEntity, farmId);
+        Optional<FarmEntity> farmEntity =farmRepository.findById(farmId);
+        if (farmEntity.isPresent()) {
+            FarmEntity farm = farmEntity.get();
+            farm.setStatus(StatusFarm.ACTIVE);
+            farmRepository.save(farm);
+        }
+        PlantMapper.toUpdateToFarmPlant(plantEntity,farmId);
         PlantEntity updatePlantToFarm = plantRepository.save(plantEntity);
         PlantResponse plantResponse = plantMapper.toPlantResponse(updatePlantToFarm);
 

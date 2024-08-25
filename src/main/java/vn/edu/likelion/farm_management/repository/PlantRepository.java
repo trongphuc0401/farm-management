@@ -39,6 +39,11 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String>, Pagi
 
     List<PlantEntity> findPlantByFarmId(String farmId);
 
-    List<PlantEntity> findByDateFruitingStageFinishLessThanEqualOrderByDateFruitingStageFinishAsc(LocalDateTime date);
+    @Query("SELECT p FROM PlantEntity p WHERE p.dateFruitingStageFinish <= :date AND p.isDeleted = 0 ORDER BY p.dateFruitingStageFinish ASC")
+    List<PlantEntity> findReadyToHarvestPlants(@Param("date") LocalDateTime date);
+
+    @Query("SELECT pe FROM PlantEntity pe WHERE pe.id IN :ids AND pe.dateFruitingStageFinish <= :currentDate AND pe.isDeleted = 0 ORDER BY pe.dateFruitingStageFinish ASC")
+    List<PlantEntity> findPlantsReadyForHarvest(@Param("ids") List<String> plantIds, @Param("currentDate") LocalDateTime date);
+
 
 }

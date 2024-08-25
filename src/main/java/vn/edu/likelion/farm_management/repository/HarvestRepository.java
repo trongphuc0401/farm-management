@@ -70,6 +70,7 @@ public interface HarvestRepository extends JpaRepository<HarvestEntity,String> {
         HarvestEntity entity = new HarvestEntity();
         entity.setPlantId(response.getPlantId());
         entity.setPlantName(response.getPlantName());
+        entity.setTypePlantId(response.getTypePlantId());
         entity.setFarmId(response.getFarmId());
         entity.setFarmName(response.getFarmName());
         entity.setDescription(response.getDescription());
