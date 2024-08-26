@@ -302,8 +302,13 @@ public class HarvestServiceImpl implements HarvestService{
     @Override public List<HarvestResponse> harvestAll(HarvestCreationAllRequest harvestCreationAllRequests) {
         List<HarvestResponse> harvestResponses = new ArrayList<>();
 
+
         FarmEntity farm = farmRepository.findById(harvestCreationAllRequests.getFarmId()).orElseThrow(()-> new AppException(
                 ErrorCode.FARM_NOT_EXIST));
+        List<PlantEntity> plant = plantRepository.findPlantByFarmId(farm.getId());
+        if (plant.isEmpty()) {
+            throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+        }
 
         if (farm.getIsDeleted() == 1) {
             throw new AppException(ErrorCode.FARM_NOT_EXIST);

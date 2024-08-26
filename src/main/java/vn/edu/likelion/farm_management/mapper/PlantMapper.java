@@ -78,15 +78,15 @@ public interface PlantMapper {
     default StatusPlant getStatusPlant(PlantEntity plant) {
         LocalDateTime now = LocalDateTime.now();
 
-        if (plant.getDateFruitingStageFinish() != null && now.isAfter(plant.getDateFruitingStageFinish())) {
+        if (plant.getDateFruitingStageFinish() != null && !now.isBefore(plant.getDateFruitingStageFinish())) {
             return StatusPlant.HARVESTED;
-        } else if (plant.getDateFloweringStageFinish() != null && now.isAfter(plant.getDateFloweringStageFinish())) {
+        } else if (plant.getDateFloweringStageFinish() != null && !now.isBefore(plant.getDateFloweringStageFinish())) {
             return StatusPlant.FRUITING;
-        } else if (plant.getDateVegetativeStageFinish() != null && now.isAfter(plant.getDateVegetativeStageFinish())) {
+        } else if (plant.getDateVegetativeStageFinish() != null && !now.isBefore(plant.getDateVegetativeStageFinish())) {
             return StatusPlant.FLOWERING;
-        } else if (plant.getDateSeedlingFinish() != null && now.isAfter(plant.getDateSeedlingFinish())) {
+        } else if (plant.getDateSeedlingFinish() != null && !now.isBefore(plant.getDateSeedlingFinish())) {
             return StatusPlant.VEGETATIVE;
-        } else if (plant.getDatePlanted() != null && now.isAfter(plant.getDatePlanted())) {
+        } else if (plant.getDatePlanted() != null && !now.isBefore(plant.getDatePlanted())) {
             return StatusPlant.SEEDLING;
         } else {
             return StatusPlant.UNPLANNED;
