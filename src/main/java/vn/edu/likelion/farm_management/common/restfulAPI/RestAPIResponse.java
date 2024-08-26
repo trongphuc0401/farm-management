@@ -12,12 +12,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-// @JsonInclude(JsonInclude.Include.NON_EMPTY) // Bất kỳ cái nào không có dữ liệu, thì không hiển thị
+@JsonInclude(JsonInclude.Include.NON_EMPTY) // Bất kỳ cái nào không có dữ liệu, thì không hiển thị
 public class RestAPIResponse <T extends Object>  implements Serializable {
     private int status;
     private int code;
     private String messageEng;
     private String messageVN;
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private  T data;
     private LocalDateTime timestamp;
 
