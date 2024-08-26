@@ -20,6 +20,7 @@ import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.TypePlantResponse;
 import vn.edu.likelion.farm_management.entity.FarmEntity;
 import vn.edu.likelion.farm_management.entity.PlantEntity;
+import vn.edu.likelion.farm_management.entity.TypePlantEntity;
 import vn.edu.likelion.farm_management.mapper.PlantMapper;
 import vn.edu.likelion.farm_management.repository.FarmRepository;
 import vn.edu.likelion.farm_management.repository.PlantRepository;
@@ -55,7 +56,6 @@ public class PlantServiceImpl implements PlantService {
     @Autowired
     FarmRepository farmRepository;
 
-
     @Override
     public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
         PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
@@ -85,9 +85,6 @@ public class PlantServiceImpl implements PlantService {
         return true;
     }
 
-
-
-
     @Override
     public Optional<PlantResponse> update(PlantUpdateInfoRequest t) {
         return Optional.empty();
@@ -100,10 +97,10 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public void delete(String id) {
-        PlantEntity plantEntity = plantRepository.findById(id).
-                orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
+        PlantEntity plantEntity = plantRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
         plantEntity.setIsDeleted(1);
-//        plantRepository.delete(plantEntity); // ?? Gì đây ông nội Phúc
+        // plantRepository.delete(plantEntity); // ?? Gì đây ông nội Phúc
         try {
             plantRepository.save(plantEntity);
         } catch (Exception e) {
@@ -134,7 +131,6 @@ public class PlantServiceImpl implements PlantService {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
         }
 
-
         return plantEntities.stream()
                 .map(plantMapper::toPlantResponse)
                 .toList();
@@ -162,7 +158,6 @@ public class PlantServiceImpl implements PlantService {
     @Override
     public PaginatePlantResponse searchPlantsByPagination(String searchText, int pageNo, int pagSize) {
 
-
         Pageable pageable = PageRequest.of(pageNo, pagSize, Sort.by("createAt").descending());
         Page<PlantEntity> plantEntities = plantRepository.findPlantBySearchText(searchText, pageable);
         if (plantEntities.isEmpty()) {
@@ -178,7 +173,6 @@ public class PlantServiceImpl implements PlantService {
         paginatePlantResponse.setTotalPages(plantEntities.getTotalPages());
         return paginatePlantResponse;
     }
-
 
     @Override
     public PaginatePlantResponse findAllByTypePlantId(int pageNo, int pagSize, String typePlantId) {
@@ -210,7 +204,6 @@ public class PlantServiceImpl implements PlantService {
                 .toList();
     }
 
-
     @Override
     public List<PlantResponse> findAllPlantByFarm(String farmId) {
 
@@ -223,7 +216,6 @@ public class PlantServiceImpl implements PlantService {
                 .map(plantMapper::toPlantResponse)
                 .toList();
     }
-
 
     @Override
     public Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest plantUpdateInfoRequest) {
@@ -269,7 +261,7 @@ public class PlantServiceImpl implements PlantService {
 
         if (!plantEntities.isEmpty()) {
             typePlantId = plantEntities.get(0).getTypePlant().getId();
-        }
+
         if (typePlantId ==null || plantEntity.getTypePlant().equals(typePlantId)) {
 
             farmEntity.setStatus(StatusFarm.ACTIVE);
