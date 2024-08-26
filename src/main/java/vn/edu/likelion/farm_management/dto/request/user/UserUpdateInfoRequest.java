@@ -12,22 +12,18 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateInfoRequest {
 
-    @NotNull(message = "PARAM_NOT_NULL")
+
     String firstName;
 
-    @NotNull(message = "PARAM_NOT_NULL")
+
     String lastName;
 
-    @NotNull(message = "PARAM_NOT_NULL")
+
     Integer gender;
 
-    @NotNull(message = "PARAM_NOT_NULL")
+
     String email;
 
-    @NotBlank(message = "Phone number cannot be blank")
-    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Please enter a valid phone number")
     String phone;
-
-
     String local;
 }
