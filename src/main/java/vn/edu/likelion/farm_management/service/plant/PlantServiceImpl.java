@@ -58,7 +58,14 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public Optional<PlantResponse> create(PlantCreationRequest plantCreationRequest) {
+
+
         PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
+
+        if (plantEntity.getFarmId() == null || plantEntity.getFarmId().isEmpty()) {
+            throw new AppException(ErrorCode.FARM_NOT_EXIST);
+        }
+
         try {
             PlantEntity plantEntityCreated = plantRepository.save(plantEntity);
             log.info(String.valueOf(plantEntityCreated.getUpdateAt()));
@@ -209,9 +216,6 @@ public class PlantServiceImpl implements PlantService {
 
         var plantEntities = plantRepository.findPlantByFarmId(farmId);
 
-        if (plantEntities.isEmpty()) {
-            throw new AppException(ErrorCode.PLANT_NOT_EXIST);
-        }
         return plantEntities.stream()
                 .map(plantMapper::toPlantResponse)
                 .toList();
