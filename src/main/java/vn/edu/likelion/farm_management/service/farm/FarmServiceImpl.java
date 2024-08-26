@@ -309,12 +309,13 @@ public class FarmServiceImpl implements FarmService {
     public boolean addPlantToFarmByListPlantId(FarmAddPlantRequest farmAddPlantRequest) {
 
         List<String> list = farmAddPlantRequest.getPlantIdList();
+        int quantity = list.size();;
         String farmId = farmAddPlantRequest.getFarmId();
 
+        // Kiểm tra đầu vào
         if (list.isEmpty()) {
             throw new AppException(ErrorCode.INVALID_REQUEST_PARAMETER);
         }
-
         if (farmId == null) {
             throw new AppException(ErrorCode.INVALID_REQUEST_PARAMETER);
         }
@@ -322,20 +323,20 @@ public class FarmServiceImpl implements FarmService {
 
         FarmEntity farmEntity = farmRepository.findById(farmId).orElseThrow(() -> new AppException(
                 ErrorCode.FARM_NOT_EXIST));
-
         if (farmEntity.getIsDeleted() == 1) {
             throw new AppException(ErrorCode.FARM_NOT_EXIST);
         }
-
         String typePlantId = null;
-
         List<PlantEntity> entityList = plantRepository.findPlantByFarmId(farmId);
-
         if (!entityList.isEmpty()) {
             typePlantId = entityList.get(0).getTypePlant().getId();
-
         }
 
+
+        // So sánh diện tích thêm vào có over hay không
+        Double totalPlantingArea = 0.00;
+
+        // Kiểm tra typePlantId
         if (typePlantId == null) {
             int count = 0;
             for (String id : list) {
@@ -352,6 +353,7 @@ public class FarmServiceImpl implements FarmService {
                 }
                 count++;
                 typePlantId = optionalPlantEntity.get().getTypePlant().getId();
+                totalPlantingArea += optionalPlantEntity.get().getArea();
             }
         } else {
             for (String id : list) {
@@ -362,15 +364,25 @@ public class FarmServiceImpl implements FarmService {
                 if (optionalPlantEntity.get().getIsDeleted() == 1) {
                     throw new AppException(ErrorCode.PLANT_NOT_EXIST);
                 }
-                log.info("I'm here");
                 if (!optionalPlantEntity.get().getTypePlant().getId().equals(typePlantId)) {
                     throw new AppException(ErrorCode.TYPE_PLANT_INVALID);
                 }
 
-                log.info("I'm here2");
+                totalPlantingArea += optionalPlantEntity.get().getArea();
+
             }
         }
 
+        Double totalPlantedArea =  entityList.stream()
+                .mapToDouble(PlantEntity::getArea)
+                .sum();
+        Double totalArea = farmEntity.getArea();
+        if (totalPlantingArea + totalPlantedArea > totalArea ) {
+            throw new AppException(ErrorCode.FARM_FULL);
+        }
+
+
+        // Thực hiện việc cập nhật dữ liệu
         for (String id : list) {
             Optional<PlantEntity> optionalPlantEntity = plantRepository.findById(id);
             if (optionalPlantEntity.isEmpty()) {
@@ -401,6 +413,7 @@ public class FarmServiceImpl implements FarmService {
         PlantCreationRequest plantCreationRequest = farmAddNewPlantRequest.getPlantCreationRequest();
 
 
+
         log.info(plantCreationRequest.toString());
         if (quantity < 1) {
             throw new AppException(ErrorCode.INVALID_REQUEST_PARAMETER);
@@ -429,8 +442,18 @@ public class FarmServiceImpl implements FarmService {
             typePlantId = entityList.get(0).getTypePlant().getId();
         }
 
-        if (typePlantId == null || plantCreationRequest.getTypePlantId().equals(typePlantId)) {
+        Double totalPlantingArea = quantity * farmAddNewPlantRequest.getPlantCreationRequest().getArea();
+        Double totalPlantedArea =  entityList.stream()
+                .mapToDouble(PlantEntity::getArea)
+                .sum();
+        Double totalArea = farmEntity.getArea();
 
+        if (totalPlantingArea + totalPlantedArea > totalArea ) {
+
+            throw new AppException(ErrorCode.FARM_FULL);
+        }
+
+        if (typePlantId == null || plantCreationRequest.getTypePlantId().equals(typePlantId)) {
 
             for (int i = 0; i < quantity; i++) {
                 PlantEntity plantEntity =
