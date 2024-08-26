@@ -59,9 +59,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity handlingValidation(MethodArgumentNotValidException exception) {
 
-        String enumKey = exception.getFieldError().getDefaultMessage();
+        String enumKey = Objects.requireNonNull(exception.getFieldError()).getDefaultMessage();
 
         ErrorCode errorCode = ErrorCode.INVALID_KEY;
+
 
         Map<String, Object> attributes = null;
         String fieldName = exception.getFieldError().getField(); // Lấy tên trường
@@ -75,6 +76,8 @@ public class GlobalExceptionHandler {
             log.info(attributes.toString());
 
         } catch (IllegalArgumentException e) {
+            // Bắn lỗi ở đây
+            log.info(enumKey);
 
         }
 
@@ -106,8 +109,6 @@ public class GlobalExceptionHandler {
 
             if (attributes.containsKey(key)) {
                 String value = String.valueOf(attributes.get(key)); // Lấy giá trị của thuộc tính từ map attributes
-                log.info("gia tri key = " + key);
-                log.info("gia tri value = " + value);
                 message = message.replace("{" + key + "}", value); // Thay thế {min}, {max}, ...
             }
         }

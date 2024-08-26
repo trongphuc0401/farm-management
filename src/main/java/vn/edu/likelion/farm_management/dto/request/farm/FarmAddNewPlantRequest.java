@@ -1,6 +1,7 @@
 package vn.edu.likelion.farm_management.dto.request.farm;
 
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -34,6 +35,7 @@ public class FarmAddNewPlantRequest {
     @NotNull(message = "PARAM_NOT_NULL")
     String farmId;
 
+    @Valid
     @NotNull
     PlantCreationRequest plantCreationRequest;
 

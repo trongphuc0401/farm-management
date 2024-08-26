@@ -255,6 +255,7 @@ public class PlantServiceImpl implements PlantService {
             throw new AppException(ErrorCode.FARM_NOT_EXIST);
         }
 
+
         String typePlantId = null;
 
         List<PlantEntity> plantEntities = plantRepository.findPlantByFarmId(farmId);
@@ -262,6 +263,17 @@ public class PlantServiceImpl implements PlantService {
         if (!plantEntities.isEmpty()) {
             typePlantId = plantEntities.get(0).getFarmId();
         }
+        Double totalPlantingArea = plantEntity.getArea();
+        Double totalPlantedArea =  plantEntities.stream()
+                .mapToDouble(PlantEntity::getArea)
+                .sum();
+        Double totalArea = farmEntity.getArea();
+        if (totalPlantingArea + totalPlantedArea > totalArea ) {
+            throw new AppException(ErrorCode.FARM_FULL);
+        }
+
+
+
         if (typePlantId ==null || plantEntity.getTypePlant().equals(typePlantId)) {
 
             farmEntity.setStatus(StatusFarm.ACTIVE);
