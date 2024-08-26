@@ -332,12 +332,11 @@ public class FarmServiceImpl implements FarmService {
         List<PlantEntity> entityList = plantRepository.findPlantByFarmId(farmId);
 
         if (!entityList.isEmpty()) {
-            typePlantId = entityList.get(0).getFarmId();
+            typePlantId = entityList.get(0).getTypePlant().getId();
 
         }
 
         if (typePlantId == null) {
-
             int count = 0;
             for (String id : list) {
                 Optional<PlantEntity> optionalPlantEntity = plantRepository.findById(id);
@@ -348,10 +347,11 @@ public class FarmServiceImpl implements FarmService {
                     throw new AppException(ErrorCode.PLANT_NOT_EXIST);
                 }
 
-                if (count > 0 && !optionalPlantEntity.get().getTypePlant().equals(typePlantId)) {
+                if (count > 0 && !optionalPlantEntity.get().getTypePlant().getId().equals(typePlantId)) {
                     throw new AppException(ErrorCode.TYPE_PLANT_INVALID);
                 }
-                typePlantId = optionalPlantEntity.get().getFarmId();
+                count++;
+                typePlantId = optionalPlantEntity.get().getTypePlant().getId();
             }
         } else {
             for (String id : list) {
@@ -362,9 +362,12 @@ public class FarmServiceImpl implements FarmService {
                 if (optionalPlantEntity.get().getIsDeleted() == 1) {
                     throw new AppException(ErrorCode.PLANT_NOT_EXIST);
                 }
-                if (!optionalPlantEntity.get().getTypePlant().equals(typePlantId)) {
+                log.info("I'm here");
+                if (!optionalPlantEntity.get().getTypePlant().getId().equals(typePlantId)) {
                     throw new AppException(ErrorCode.TYPE_PLANT_INVALID);
                 }
+
+                log.info("I'm here2");
             }
         }
 
@@ -423,7 +426,7 @@ public class FarmServiceImpl implements FarmService {
         List<PlantEntity> entityList = plantRepository.findPlantByFarmId(farmId);
 
         if (!entityList.isEmpty()) {
-            typePlantId = entityList.get(0).getFarmId();
+            typePlantId = entityList.get(0).getTypePlant().getId();
         }
 
         if (typePlantId == null || plantCreationRequest.getTypePlantId().equals(typePlantId)) {
