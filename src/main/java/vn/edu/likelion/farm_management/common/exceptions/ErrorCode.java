@@ -33,7 +33,6 @@ public enum ErrorCode {
     TYPE_PLANT_INVALID(RestAPIStatus.NOT_FOUND,-114,"Type Plant is Invalid ","Invalid Field","Loại cây trồng không phù hợp, vui lòng kiểm tra"),
 
 
-
     FARM_EXIST(RestAPIStatus.EXISTED,-120,"Farm Exist","Already Exist","Nông trại đã tồn tại"),
     FARM_NOT_EXIST(RestAPIStatus.NOT_FOUND,-121,"Farm not exist","Not found","Nông trại không tồn tại"),
     FARM_FULL(RestAPIStatus.BAD_REQUEST,-122,"Farm full","Bad request","Nông trại hết chỗ"),
