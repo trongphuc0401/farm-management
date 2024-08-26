@@ -256,17 +256,35 @@ public class PlantServiceImpl implements PlantService {
         PlantEntity plantEntity = plantRepository.findById(plantId)
                 .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
 
-        Optional<FarmEntity> farmEntity =farmRepository.findById(farmId);
-        if (farmEntity.isPresent()) {
-            FarmEntity farm = farmEntity.get();
-            farm.setStatus(StatusFarm.ACTIVE);
-            farmRepository.save(farm);
-        }
-        PlantMapper.toUpdateToFarmPlant(plantEntity,farmId);
-        PlantEntity updatePlantToFarm = plantRepository.save(plantEntity);
-        PlantResponse plantResponse = plantMapper.toPlantResponse(updatePlantToFarm);
+        FarmEntity farmEntity = farmRepository.findById(farmId)
+                .orElseThrow(() -> new AppException(ErrorCode.FARM_NOT_EXIST));
 
-        return Optional.of(plantResponse);
+        if (farmEntity.getIsDeleted() ==1) {
+            throw new AppException(ErrorCode.FARM_NOT_EXIST);
+        }
+
+        String typePlantId = null;
+
+        List<PlantEntity> plantEntities = plantRepository.findPlantByFarmId(farmId);
+
+        if (!plantEntities.isEmpty()) {
+            typePlantId = plantEntities.get(0).getTypePlant().getId();
+        }
+        if (typePlantId ==null || plantEntity.getTypePlant().equals(typePlantId)) {
+
+            farmEntity.setStatus(StatusFarm.ACTIVE);
+            farmRepository.save(farmEntity);
+
+            PlantMapper.toUpdateToFarmPlant(plantEntity,farmId);
+            PlantEntity updatePlantToFarm = plantRepository.save(plantEntity);
+            PlantResponse plantResponse = plantMapper.toPlantResponse(updatePlantToFarm);
+
+            return Optional.of(plantResponse);
+
+        }else {
+            throw new AppException(ErrorCode.TYPE_PLANT_INVALID);
+        }
+
 
     }
 }
