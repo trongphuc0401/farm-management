@@ -3,12 +3,15 @@ package vn.edu.likelion.farm_management.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.edu.likelion.farm_management.common.constants.ApiPath;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
+import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
+import vn.edu.likelion.farm_management.dto.request.user.UserCreationRequest;
 import vn.edu.likelion.farm_management.dto.request.user.UserUpdateInfoRequest;
 
 import vn.edu.likelion.farm_management.service.user.UserService;
@@ -24,6 +27,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
+    @PostMapping(ApiPath.ADD)
+    public ResponseEntity<RestAPIResponse<Object>> create(@RequestBody UserCreationRequest userCreationRequest) {
+        return responseUtil.buildResponse(RestAPIStatus.CREATED,userService.create(userCreationRequest),HttpStatus.CREATED);
+    }
 
     @GetMapping(ApiPath.FIND_ALL)
     public ResponseEntity<RestAPIResponse<Object>> findAll() {
