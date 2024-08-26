@@ -260,8 +260,8 @@ public class PlantServiceImpl implements PlantService {
         List<PlantEntity> plantEntities = plantRepository.findPlantByFarmId(farmId);
 
         if (!plantEntities.isEmpty()) {
-            typePlantId = plantEntities.get(0).getTypePlant().getId();
-
+            typePlantId = plantEntities.get(0).getFarmId();
+        }
         if (typePlantId ==null || plantEntity.getTypePlant().equals(typePlantId)) {
 
             farmEntity.setStatus(StatusFarm.ACTIVE);
@@ -279,4 +279,5 @@ public class PlantServiceImpl implements PlantService {
 
 
     }
+
 }
