@@ -172,4 +172,6 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
     // Reference How to query with key word ? in Spring JPA
     // @Query(value = "SELECT * FROM employee e WHERE e.department = ?1 AND e.salary > ?2", nativeQuery = true)
     // List<Employee> findEmployeesByDepartmentAndSalary(String department, Double salary);
+
+
 }
