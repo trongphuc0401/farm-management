@@ -95,8 +95,7 @@ public class FarmServiceImpl implements FarmService {
         List<Object[]> list = farmRepository.findFarmInformationToFarmResponse(id);
         if (list.isEmpty()) {
             area_planted = 0.00;
-        }
-        else {
+        } else {
             Object[] objects = list.get(0);
             FarmRepository.toFarmGeneralResponse(farmGeneralResponse, objects);
             area_planted = (Double) objects[2];
@@ -311,6 +310,7 @@ public class FarmServiceImpl implements FarmService {
 
         List<String> list = farmAddPlantRequest.getPlantIdList();
         String farmId = farmAddPlantRequest.getFarmId();
+
         if (list.isEmpty()) {
             throw new AppException(ErrorCode.INVALID_REQUEST_PARAMETER);
         }
@@ -320,20 +320,53 @@ public class FarmServiceImpl implements FarmService {
         }
 
 
-        FarmEntity farmEntity = farmRepository.findById(farmId).orElseThrow(()-> new AppException(
+        FarmEntity farmEntity = farmRepository.findById(farmId).orElseThrow(() -> new AppException(
                 ErrorCode.FARM_NOT_EXIST));
 
         if (farmEntity.getIsDeleted() == 1) {
             throw new AppException(ErrorCode.FARM_NOT_EXIST);
         }
 
-        for (String id : list) {
-            Optional<PlantEntity> optionalPlantEntity = plantRepository.findById(id);
-            if (optionalPlantEntity.isEmpty()) {
-                throw new AppException(ErrorCode.PLANT_NOT_EXIST);
-            }
+        String typePlantId = null;
+
+        List<PlantEntity> entityList = plantRepository.findPlantByFarmId(farmId);
+
+        if (!entityList.isEmpty()) {
+            typePlantId = entityList.get(0).getFarmId();
+
         }
 
+        if (typePlantId == null) {
+
+            int count = 0;
+            for (String id : list) {
+                Optional<PlantEntity> optionalPlantEntity = plantRepository.findById(id);
+                if (optionalPlantEntity.isEmpty()) {
+                    throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+                }
+                if (optionalPlantEntity.get().getIsDeleted() == 1) {
+                    throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+                }
+
+                if (count > 0 && !optionalPlantEntity.get().getTypePlant().equals(typePlantId)) {
+                    throw new AppException(ErrorCode.TYPE_PLANT_INVALID);
+                }
+                typePlantId = optionalPlantEntity.get().getFarmId();
+            }
+        } else {
+            for (String id : list) {
+                Optional<PlantEntity> optionalPlantEntity = plantRepository.findById(id);
+                if (optionalPlantEntity.isEmpty()) {
+                    throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+                }
+                if (optionalPlantEntity.get().getIsDeleted() == 1) {
+                    throw new AppException(ErrorCode.PLANT_NOT_EXIST);
+                }
+                if (!optionalPlantEntity.get().getTypePlant().equals(typePlantId)) {
+                    throw new AppException(ErrorCode.TYPE_PLANT_INVALID);
+                }
+            }
+        }
 
         for (String id : list) {
             Optional<PlantEntity> optionalPlantEntity = plantRepository.findById(id);
@@ -343,18 +376,17 @@ public class FarmServiceImpl implements FarmService {
 
             PlantEntity plantEntity = optionalPlantEntity.get();
             plantEntity.setFarmId(farmId);
-            try{
+            try {
                 PlantMapper.toUpdateToFarmPlant(plantEntity, farmId);
                 log.info(plantEntity.toString());
 
                 plantRepository.save(plantEntity);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
                 throw new AppException(ErrorCode.UPDATE_FAILED);
             }
         }
-
 
         return true;
     }
@@ -379,29 +411,41 @@ public class FarmServiceImpl implements FarmService {
             throw new AppException(ErrorCode.INVALID_REQUEST_PARAMETER);
         }
 
-        FarmEntity farmEntity = farmRepository.findById(farmId).orElseThrow(()-> new AppException(
+        FarmEntity farmEntity = farmRepository.findById(farmId).orElseThrow(() -> new AppException(
                 ErrorCode.FARM_NOT_EXIST));
 
         if (farmEntity.getIsDeleted() == 1) {
             throw new AppException(ErrorCode.FARM_NOT_EXIST);
         }
 
-        for (int i=0; i < quantity; i++) {
-            PlantEntity plantEntity =
-            plantMapper.toCreatePlant(plantCreationRequest);
+        String typePlantId = null;
 
+        List<PlantEntity> entityList = plantRepository.findPlantByFarmId(farmId);
 
-            plantEntity.setFarmId(farmId);
-            log.info(plantEntity.toString());
-            try{
-                PlantMapper.toUpdateToFarmPlant(plantEntity, farmId);
-                PlantEntity updatePlantToFarm = plantRepository.save(plantEntity);
-            }catch (Exception e){
-                log.info(e.getMessage());
-                throw new AppException(ErrorCode.UPDATE_FAILED);
-            }
+        if (!entityList.isEmpty()) {
+            typePlantId = entityList.get(0).getFarmId();
         }
 
+        if (typePlantId == null || plantCreationRequest.getTypePlantId().equals(typePlantId)) {
+
+
+            for (int i = 0; i < quantity; i++) {
+                PlantEntity plantEntity =
+                        plantMapper.toCreatePlant(plantCreationRequest);
+
+                plantEntity.setFarmId(farmId);
+                log.info(plantEntity.toString());
+                try {
+                    PlantMapper.toUpdateToFarmPlant(plantEntity, farmId);
+                    plantRepository.save(plantEntity);
+                } catch (Exception e) {
+                    log.info(e.getMessage());
+                    throw new AppException(ErrorCode.UPDATE_FAILED);
+                }
+            }
+        } else {
+            throw new AppException(ErrorCode.TYPE_PLANT_INVALID);
+        }
         return true;
     }
 }
