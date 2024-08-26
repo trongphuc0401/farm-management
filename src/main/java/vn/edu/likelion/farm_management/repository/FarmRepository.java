@@ -93,7 +93,7 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
                 FROM 
                     tbl_plant p
                 WHERE 
-                    p.farm_id IS NOT NULL
+                    p.farm_id IS NOT NULL AND
                     p.is_deleted = 0
                 GROUP BY 
                     EXTRACT(MONTH FROM p.date_fruiting_stage_finish),
@@ -151,7 +151,7 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
             "LEFT JOIN tbl_farm tf ON tf.id = tp.farm_id " +
             "LEFT JOIN tbl_type_plant ttp ON ttp.id = tp.type_plant_id " +
             "WHERE EXTRACT(MONTH FROM th.create_at) = :month " +
-            "AND EXTRACT(YEAR FROM th.create_at) = :year",
+            "AND EXTRACT(YEAR FROM th.create_at) = :year ",
             nativeQuery = true)
     List<Object[]> getReportDashboard(@Param("month") int month, @Param("year") int year);
 
