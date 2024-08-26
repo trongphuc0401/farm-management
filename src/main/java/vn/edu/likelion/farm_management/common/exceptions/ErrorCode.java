@@ -34,6 +34,7 @@ public enum ErrorCode {
     PLANT_NOT_EXIST(RestAPIStatus.NOT_FOUND , -111,"Plant Not Exist","Not Found","Cây trồng không được tìm thấy"),
     TYPE_PLANT_NOT_EXIST(RestAPIStatus.NOT_FOUND , -112,"Type Plant Not Exist","Not Found","Giống cây trồng không được tìm thấy"),
     NO_PLANTS_READY_TO_HARVEST(RestAPIStatus.NOT_FOUND,-113,"No Plants ready to Harvest ","Not found","Không cây nào sẳn sàng để thu hoạch"),
+    TYPE_PLANT_INVALID(RestAPIStatus.NOT_FOUND,-114,"Type Plant is Invalid ","Invalid Field","Loại cây trồng không phù hợp, vui lòng kiểm tra"),
 
 
     FARM_EXIST(RestAPIStatus.EXISTED,-120,"Farm Exist","Already Exist","Nông trại đã tồn tại"),

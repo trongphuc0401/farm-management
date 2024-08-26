@@ -40,6 +40,7 @@ public interface PlantRepository extends JpaRepository<PlantEntity,String>, Pagi
     @Query("SELECT p FROM PlantEntity p WHERE p.isDeleted = 0")
     Page<PlantEntity> findAllNonDeletedPlants(@Param("") Pageable pageable);
 
+    @Query(value = "SELECT tp FROM PlantEntity tp WHERE tp.farmId = :farmId AND tp.isDeleted = 0")
     List<PlantEntity> findPlantByFarmId(String farmId);
 
     @Query("SELECT p FROM PlantEntity p WHERE p.dateFruitingStageFinish <= :date AND p.isDeleted = 0 ORDER BY p.dateFruitingStageFinish ASC")
