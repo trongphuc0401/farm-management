@@ -104,7 +104,7 @@ public interface FarmRepository extends JpaRepository<FarmEntity, String> {
                     EXTRACT(MONTH FROM h.create_at) AS month,
                     h.type_plant_id,
                     SUM(h.yield_actual) AS total_yield,
-                    SUM(h.yield_actual * h.yield_actual) AS total_money
+                    SUM(h.yield_actual * h.price_actual) AS total_money
                 FROM 
                     tbl_harvest h
                 WHERE
