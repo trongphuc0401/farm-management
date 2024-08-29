@@ -28,25 +28,25 @@ public class PlantUpdateInfoRequest {
 
     String description; // Mô tả cây trồng
 
-    @DecimalMax(value = "99999.0", inclusive = true, message = "AREA_TOO_LARGE")
-    @DecimalMin(value = "0.0", inclusive = true, message = "AREA_NEGATIVE")
+    @DecimalMax(value = "99999.0", inclusive = true, message = "PARAM_OVER_MAX")
+    @DecimalMin(value = "0.1", inclusive = true, message = "PARAM_OVER_MIN")
     Double area; // Diện tích cây trồng trong 1 ô
 
-    @DecimalMin(value = "0.0", inclusive = true, message = "AREA_NEGATIVE")
+    @DecimalMin(value = "0.1", inclusive = true, message = "PARAM_OVER_MIN")
     Double yield; // Sản lượng dự kiến
 
-    @DecimalMin(value = "0.0", inclusive = true, message = "AREA_NEGATIVE")
+    @DecimalMin(value = "0.1", inclusive = true, message = "PARAM_OVER_MIN")
     Double price; // Giá cả
 
-    @Min(value = 0, message = "AREA_NEGATIVE")
+    @Min(value = 1, message = "PARAM_OVER_MIN")
     Integer seedlingDay; // Ngày bán
 
-    @Min(value = 0, message = "AREA_NEGATIVE")
+    @Min(value = 1, message = "PARAM_OVER_MIN")
     Integer vegetativeStageDay; // Ngày bắt đầu giai đoạn sinh trưởng
 
-    @Min(value = 0, message = "AREA_NEGATIVE")
+    @Min(value = 1, message = "PARAM_OVER_MIN")
     Integer floweringStageDay; // Ngày bắt đầu giai đoạn ra hoa
 
-    @Min(value = 0, message = "AREA_NEGATIVE")
+    @Min(value = 1, message = "PARAM_OVER_MIN")
     Integer fruitingStageDay; // Ngày bắt đầu giai đoạn tạo quả
 }

@@ -34,32 +34,25 @@ public class PlantCreationRequest {
 
     String description; // Mô tả cây trồng
 
-    @NotNull(message = "PARAM_NOT_NULL")
-    @DecimalMin(value = "0.0", inclusive = true, message = "AREA_NEGATIVE")
-    @DecimalMax(value = "99999.0", inclusive = true, message = "AREA_TOO_LARGE")
+    @DecimalMin(value = "0.1", inclusive = true, message = "PARAM_OVER_MIN")
+    @DecimalMax(value = "99999.0", inclusive = true, message = "PARAM_OVER_MAX")
     Double area; // Diện tích cây trồng
 
-    @NotNull(message = "PARAM_NOT_NULL")
-    @DecimalMin(value = "0.0", inclusive = true, message = "AREA_NEGATIVE")
+    @DecimalMin(value = "0.1", inclusive = true, message = "PARAM_OVER_MIN")
     Double yield; // Sản lượng dự kiến
 
-    @NotNull(message = "PARAM_NOT_NULL")
-    @DecimalMin(value = "0.0", inclusive = true, message = "AREA_NEGATIVE")
+    @DecimalMin(value = "0.1", inclusive = true, message = "PARAM_OVER_MIN")
     Double price; // Giá cả
 
-    @NotNull(message = "PARAM_NOT_NULL")
-    @Min(value = 0, message = "AREA_NEGATIVE")
+    @Min(value = 1, message = "PARAM_OVER_MIN")
     Integer seedlingDay; // Ngày bán
 
-    @NotNull(message = "PARAM_NOT_NULL")
-    @Min(value = 0, message = "AREA_NEGATIVE")
+    @Min(value = 1, message = "PARAM_OVER_MIN")
     Integer vegetativeStageDay; // Ngày bắt đầu giai đoạn sinh trưởng
 
-    @NotNull(message = "PARAM_NOT_NULL")
-    @Min(value = 0, message = "AREA_NEGATIVE")
+    @Min(value = 1, message = "PARAM_OVER_MIN")
     Integer floweringStageDay; // Ngày bắt đầu giai đoạn ra hoa
 
-    @NotNull(message = "PARAM_NOT_NULL")
-    @Min(value = 0, message = "AREA_NEGATIVE")
+    @Min(value = 1, message = "PARAM_OVER_MIN")
     Integer fruitingStageDay; // Ngày bắt đầu giai đoạn tạo quả
 }

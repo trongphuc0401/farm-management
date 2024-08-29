@@ -1,11 +1,7 @@
 package vn.edu.likelion.farm_management.common.exceptions;
 
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.http.HttpStatus;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIStatus;
-
-import java.time.LocalDateTime;
 
 /**
  * ErrorCode -
@@ -19,7 +15,7 @@ public enum ErrorCode {
 
     OK(RestAPIStatus.OK,1200,"Success","OK","Thành công"),
 
-    INVALID_KEY(RestAPIStatus.BAD_REQUEST,-100,"Invalid message key","Bad Request","Message key không hợp lệ"),
+    INVALID_KEY(RestAPIStatus.BAD_REQUEST,-100,"Invalid input object type!","Bad Request","Dữ liệu đầu vào không hợp lệ"),
 
     USERNAME_TOO_SHORT(RestAPIStatus.BAD_REQUEST, -101, "Username must be at least {min} characters", "Bad Request", "Tên người dùng phải có ít nhất {min} ký tự"),
     PASSWORD_NO_NUMBER(RestAPIStatus.BAD_REQUEST, -102, "Password must contain at least one number", "Bad Request", "Mật khẩu phải chứa ít nhất một số"),
@@ -28,11 +24,15 @@ public enum ErrorCode {
     MISSING_REQUIRED_FIELD(RestAPIStatus.BAD_REQUEST, -105, "Missing required field", "Bad Request", "Thiếu trường bắt buộc"),
     PHOTO_UPLOAD_FAILED(RestAPIStatus.BAD_REQUEST, -106, "Failed to save photo", "Bad Request", "Upload ảnh thất bại"),
     INVALID_DATE_FORMAT(RestAPIStatus.BAD_REQUEST, -107, "Invalid date format", "Bad Request", "Định dạng ngày không hợp lệ"),
+    PARAM_INVALID(RestAPIStatus.BAD_REQUEST, -108, "{fieldName} is invalid", "Bad Request", "{fieldName} không hợp lệ"),
 
 
     PLANT_EXIST(RestAPIStatus.EXISTED , -110,"Plant Exist","Already Exist","Cây trồng đã tồn tại"),
     PLANT_NOT_EXIST(RestAPIStatus.NOT_FOUND , -111,"Plant Not Exist","Not Found","Cây trồng không được tìm thấy"),
     TYPE_PLANT_NOT_EXIST(RestAPIStatus.NOT_FOUND , -112,"Type Plant Not Exist","Not Found","Giống cây trồng không được tìm thấy"),
+    NO_PLANTS_READY_TO_HARVEST(RestAPIStatus.NOT_FOUND,-113,"No Plants ready to Harvest ","Not found","Không cây nào sẳn sàng để thu hoạch"),
+    TYPE_PLANT_INVALID(RestAPIStatus.NOT_FOUND,-114,"Type Plant is Invalid ","Invalid Field","Loại cây trồng không phù hợp, vui lòng kiểm tra"),
+
 
     FARM_EXIST(RestAPIStatus.EXISTED,-120,"Farm Exist","Already Exist","Nông trại đã tồn tại"),
     FARM_NOT_EXIST(RestAPIStatus.NOT_FOUND,-121,"Farm not exist","Not found","Nông trại không tồn tại"),
@@ -64,6 +64,9 @@ public enum ErrorCode {
     AREA_NEGATIVE(RestAPIStatus.BAD_REQUEST, -601, "Area cannot be negative", "Bad request", "Diện tích không được âm"),
     AREA_TOO_LARGE(RestAPIStatus.BAD_REQUEST, -602, "Area  exceeds maximum allowed value {value} - {fieldName}", "Bad request", "Diện tích vượt quá giá trị cho phép {value} - {fieldName}"),
     PARAM_NOT_NULL(RestAPIStatus.BAD_REQUEST, -603, "{fieldName} cannot be null", "Bad request", "Giá trị {fieldName} không được null"),
+    PARAM_OVER_MIN (RestAPIStatus.BAD_REQUEST, -604, "{fieldName} must be greater than or equal {value}", "Invalid Field", "Giá trị {fieldName} phải lớn hơn hoặc bằng {value}"),
+    PARAM_OVER_MAX(RestAPIStatus.BAD_REQUEST, -605, "{fieldName} must be less than or equal {value}", "Invalid Field", "Giá trị {fieldName} bé hơn hoặc bằng {value}"),
+    PARAM_NEGATIVE(RestAPIStatus.BAD_REQUEST, -606, "{fieldName} cannot be negative", "Bad request", "{fieldName} không được âm"),
 
 
     DELETE_FAILED(RestAPIStatus.CAN_NOT_DELETE,-9996,"Delete failed","Not found","Xoá thất bại"),
@@ -77,6 +80,8 @@ public enum ErrorCode {
     private final String messageEng;
     private final String httpStatus;
     private final String messageVN;
+
+
 
     ErrorCode(RestAPIStatus restApiStatus ,int errorCode, String messageEng, String httpStatus, String messageVN) {
         this.statusCode = restApiStatus.getCode();

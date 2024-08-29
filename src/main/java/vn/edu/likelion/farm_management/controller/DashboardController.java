@@ -59,7 +59,7 @@ public class DashboardController {
         ByteArrayInputStream in = farmService.getReportDashboard(month, year);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=farm-data"+month+"-"+year+".xlsx");
+        headers.add("Content-Disposition", "attachment; filename=farm-data-"+month+"-"+year+".xlsx");
 
         return ResponseEntity.ok()
                 .headers(headers)

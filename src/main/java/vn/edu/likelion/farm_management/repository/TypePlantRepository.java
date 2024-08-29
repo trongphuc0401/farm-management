@@ -13,4 +13,5 @@ import vn.edu.likelion.farm_management.entity.TypePlantEntity;
  */
 @Repository
 public interface TypePlantRepository extends JpaRepository<TypePlantEntity,String> {
+
 }

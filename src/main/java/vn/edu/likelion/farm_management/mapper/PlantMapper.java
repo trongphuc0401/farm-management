@@ -11,8 +11,10 @@ import vn.edu.likelion.farm_management.dto.request.plant.PlantUpdateToFarmReques
 import vn.edu.likelion.farm_management.dto.response.plant.PaginatePlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.PlantResponse;
 import vn.edu.likelion.farm_management.dto.response.plant.TypePlantResponse;
+import vn.edu.likelion.farm_management.entity.FarmEntity;
 import vn.edu.likelion.farm_management.entity.PlantEntity;
 import vn.edu.likelion.farm_management.entity.TypePlantEntity;
+import vn.edu.likelion.farm_management.repository.FarmRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -56,6 +58,7 @@ public interface PlantMapper {
         plantEntity.setDateFloweringStageFinish(PlantLifecycleUtils.calculateFloweringDate(plantEntity.getFloweringStageDay(),plantEntity.getDateVegetativeStageFinish()));
         plantEntity.setDateFruitingStageFinish(PlantLifecycleUtils.calculateFruitingDate(plantEntity.getFruitingStageDay(),plantEntity.getDateFloweringStageFinish()));
         plantEntity.setUpdateAt(LocalDateTime.now());
+
 
         return plantEntity;
 

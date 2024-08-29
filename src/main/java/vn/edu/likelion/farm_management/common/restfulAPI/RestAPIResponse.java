@@ -18,6 +18,7 @@ public class RestAPIResponse <T extends Object>  implements Serializable {
     private int code;
     private String messageEng;
     private String messageVN;
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private  T data;
     private LocalDateTime timestamp;
 

@@ -9,6 +9,7 @@ import org.mapstruct.factory.Mappers;
 import vn.edu.likelion.farm_management.dto.request.farm.FarmCreationRequest;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationAllRequest;
 import vn.edu.likelion.farm_management.dto.request.harvest.HarvestCreationRequest;
+import vn.edu.likelion.farm_management.dto.request.harvest.HarvestUpdateRequest;
 import vn.edu.likelion.farm_management.dto.response.harvest.HarvestResponse;
 import vn.edu.likelion.farm_management.entity.FarmEntity;
 
@@ -36,7 +37,7 @@ public interface HarvestMapper {
     @Mapping(source = "updateAt", target = "updateAt")
     HarvestResponse toHarvestResponse(HarvestEntity harvestEntity);
 
-    void updateEntity(@MappingTarget HarvestEntity harvestEntity, HarvestCreationRequest harvestCreationRequest);
+    void updateEntity(@MappingTarget HarvestEntity harvestEntity, HarvestUpdateRequest harvestUpdateRequest);
 
 
 }
