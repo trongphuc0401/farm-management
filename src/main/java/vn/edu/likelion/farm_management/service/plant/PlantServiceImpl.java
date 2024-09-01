@@ -62,9 +62,6 @@ public class PlantServiceImpl implements PlantService {
 
         PlantEntity plantEntity = plantMapper.toCreatePlant(plantCreationRequest);
 
-        if (plantEntity.getFarmId() == null || plantEntity.getFarmId().isEmpty()) {
-            throw new AppException(ErrorCode.FARM_NOT_EXIST);
-        }
 
         try {
             PlantEntity plantEntityCreated = plantRepository.save(plantEntity);
