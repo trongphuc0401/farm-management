@@ -220,6 +220,7 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public Optional<PlantResponse> updateInfo(String id, PlantUpdateInfoRequest plantUpdateInfoRequest) {
+
         PlantEntity plantEntity = plantRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PLANT_NOT_EXIST));
 
@@ -238,7 +239,6 @@ public class PlantServiceImpl implements PlantService {
             PlantResponse plantResponse = plantMapper.toPlantResponse(updatedPlantEntity);
             return Optional.of(plantResponse);
         } catch (Exception e) {
-            log.error("Update failed", e);
             throw new AppException(ErrorCode.UPDATE_FAILED);
         }
     }

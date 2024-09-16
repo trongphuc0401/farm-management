@@ -90,15 +90,12 @@ public class HarvestServiceImpl implements HarvestService{
         HarvestEntity harvestEntity = harvestRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.HARVEST_NOT_EXIST));
 
-
-
         FarmEntity farmEntity = farmRepository.findById(harvestEntity.getFarmId()).orElseThrow(()-> new AppException(
                 ErrorCode.FARM_NOT_EXIST));
 
         if (farmEntity.getIsDeleted() == 1) {
             throw new AppException(ErrorCode.FARM_NOT_EXIST);
         }
-
 
 
         harvestEntity.setUpdateAt(LocalDateTime.now());

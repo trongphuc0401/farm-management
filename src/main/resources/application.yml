@@ -9,9 +9,9 @@ spring:
     # connect database postgresql
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://dpg-cqu0i3bv2p9s73cuoiig-a.singapore-postgres.render.com/farm_management_hsyi
-    username: farm_management_hsyi_user
-    password: dUMLaC6eu9zdMj25dAVovf3XdLgvNkBo
+    url: jdbc:postgresql://dpg-crjbib2j1k6c73fl1580-a.singapore-postgres.render.com/farm_1ds5
+    username: fuchs
+    password: JCX3cquBGttyf38an9LjnUZet9hN9MAD
   jpa:
     hibernate:
       ddl-auto: none
