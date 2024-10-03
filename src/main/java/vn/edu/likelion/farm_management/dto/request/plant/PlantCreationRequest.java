@@ -38,8 +38,8 @@ public class PlantCreationRequest {
     @DecimalMax(value = "99999.0", inclusive = true, message = "PARAM_OVER_MAX")
     Double area; // Diện tích cây trồng
 
-    @DecimalMin(value = "0.1", inclusive = true, message = "PARAM_OVER_MIN")
-    Double yield; // Sản lượng dự kiến
+    // @DecimalMin(value = "0.1", inclusive = true, message = "PARAM_OVER_MIN")
+    // Double yield; // Sản lượng dự kiến
 
     @DecimalMin(value = "0.1", inclusive = true, message = "PARAM_OVER_MIN")
     Double price; // Giá cả

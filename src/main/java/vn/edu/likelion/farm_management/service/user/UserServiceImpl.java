@@ -4,16 +4,23 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import vn.edu.likelion.farm_management.common.exceptions.AppException;
 import vn.edu.likelion.farm_management.common.exceptions.ErrorCode;
+import vn.edu.likelion.farm_management.dto.request.user.LoginUserRequest;
 import vn.edu.likelion.farm_management.dto.request.user.UserCreationRequest;
 import vn.edu.likelion.farm_management.dto.request.user.UserUpdateInfoRequest;
+import vn.edu.likelion.farm_management.dto.response.user.LoginResponse;
 import vn.edu.likelion.farm_management.dto.response.user.UserResponse;
 import vn.edu.likelion.farm_management.entity.UserEntity;
 import vn.edu.likelion.farm_management.mapper.UserMapper;
 import vn.edu.likelion.farm_management.repository.UserRepository;
+import vn.edu.likelion.farm_management.security.JwtTokenProvider;
 import vn.edu.likelion.farm_management.service.uploadFile.FileUpload;
 
 import java.io.IOException;
@@ -37,7 +44,14 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Autowired
-    private final FileUpload fileUpload;
+    FileUpload fileUpload;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+    @Autowired private JwtTokenProvider jwtTokenProvider;
 
 
     @Override
@@ -147,6 +161,43 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             throw new AppException(ErrorCode.PHOTO_UPLOAD_FAILED);
         }
+    }
+
+    @Override
+    public Optional<UserResponse> signup(UserCreationRequest userCreationRequest) {
+
+        if (    userRepository.findByEmail(userCreationRequest.getEmail()).isEmpty()) {
+
+            UserEntity userEntity = userMapper.toUser(userCreationRequest);
+            userEntity.setPassword(passwordEncoder.encode(userCreationRequest.getPassword()));
+            userEntity.setIsDeleted(0);
+            UserEntity user = userRepository.save(userEntity);
+            UserResponse userResponse = userMapper.toUserResponse(user);
+            return Optional.of(userResponse);
+
+        }else {
+            throw new AppException(ErrorCode.USER_EXIST);
+        }
+    }
+
+    @Override
+    public Optional<LoginResponse> login(LoginUserRequest loginUserRequest) {
+        UserEntity userEntity = userRepository.findByEmail(loginUserRequest.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_OR_PASSWORD_INCORRECT));
+        if (!passwordEncoder.matches(loginUserRequest.getPassword(), userEntity.getPassword())) {
+            throw new AppException(ErrorCode.USER_OR_PASSWORD_INCORRECT);
+        }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginUserRequest.getEmail(),
+                loginUserRequest.getPassword()
+        ));
+
+        LoginResponse loginResponse = LoginResponse.builder()
+                .token(jwtTokenProvider.generateToken(userEntity))
+                .user(userEntity)
+                .expiresIn(jwtTokenProvider.getExpirationTime())
+                .build();
+        return Optional.of(loginResponse);
     }
 
 
