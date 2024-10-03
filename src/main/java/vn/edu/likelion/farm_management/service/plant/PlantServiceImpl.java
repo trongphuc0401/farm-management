@@ -148,6 +148,8 @@ public class PlantServiceImpl implements PlantService {
         if (plantEntities.isEmpty()) {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
         }
+        log.info("No plants found for pageNo: {}, pageSize: {}", pageNo, pagSize);
+
         List<PlantEntity> plantEntityList = plantEntities.getContent();
         List<PlantResponse> data = plantEntityList.stream().map(plantMapper::toPlantResponse).toList();
         PaginatePlantResponse paginatePlantResponse = new PaginatePlantResponse();
@@ -167,6 +169,7 @@ public class PlantServiceImpl implements PlantService {
         if (plantEntities.isEmpty()) {
             throw new AppException(ErrorCode.PLANT_NOT_EXIST);
         }
+
         List<PlantEntity> plantEntityList = plantEntities.getContent();
         List<PlantResponse> data = plantEntityList.stream().map(plantMapper::toPlantResponse).toList();
         PaginatePlantResponse paginatePlantResponse = new PaginatePlantResponse();

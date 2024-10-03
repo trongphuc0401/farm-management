@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.likelion.farm_management.common.constants.ApiPath;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
@@ -35,17 +36,19 @@ public class PlantController {
     @Autowired
     PlantService plantService;
 
-
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @GetMapping(ApiPath.FIND_ALL)
     public ResponseEntity<RestAPIResponse<Object>> findAll() {
         return responseUtil.successResponse(plantService.findAll());
     }
 
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @GetMapping(ApiPath.TYPE_PLANT)
     public ResponseEntity<RestAPIResponse<Object>> findAllTypePlant() {
         return responseUtil.successResponse(plantService.findAllTypePlant());
     }
 
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @GetMapping(ApiPath.FIND_ALL_PLANT_BY_FARM + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> findAllPlantByFarm(
             @PathVariable String id
@@ -53,6 +56,8 @@ public class PlantController {
         return responseUtil.successResponse(plantService.findAllPlantByFarm(id));
     }
 
+
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @GetMapping(ApiPath.FIND_ALL + ApiPath.PAGINATE)
     public ResponseEntity<RestAPIResponse<Object>> findAllByPagination(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
@@ -60,6 +65,7 @@ public class PlantController {
         return responseUtil.successResponse(plantService.getAllByPagination(pageNo, pageSize));
     }
 
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @GetMapping("/findAllByTypePlantId")
     public ResponseEntity<RestAPIResponse<Object>> findAllByTypePlantId(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
@@ -69,7 +75,7 @@ public class PlantController {
         return responseUtil.successResponse(plantService.findAllByTypePlantId(pageNo, pageSize, typePlantId));
     }
 
-
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @PostMapping(value = ApiPath.ADD, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestAPIResponse<Object>> addPlant(
@@ -78,6 +84,7 @@ public class PlantController {
                 HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @PostMapping(value = ApiPath.ADD + "ByQuantity")
     public ResponseEntity<RestAPIResponse<Object>> addPlantBaseOnQuantity(
             @RequestParam(value = "quantity") int quantity,
@@ -87,6 +94,7 @@ public class PlantController {
                 HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @PutMapping(value = ApiPath.EDIT + ApiPath.ID, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestAPIResponse<Object>> updatePlant(@PathVariable String id, @RequestBody @Valid
@@ -96,6 +104,7 @@ public class PlantController {
 
     }
 
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @PutMapping(value = ApiPath.ADD_TO_FARM)
     public ResponseEntity<RestAPIResponse<Object>> addPlantToFarm(
             @RequestParam String plantId,
@@ -104,17 +113,20 @@ public class PlantController {
                 HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @DeleteMapping(value = ApiPath.DELETE + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> deletePlant(@PathVariable String id) {
         plantService.delete(id);
         return responseUtil.successResponse();
     }
 
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @GetMapping(ApiPath.FIND_BY_ID + ApiPath.ID)
     public ResponseEntity<RestAPIResponse<Object>> findById(@PathVariable(value = "id") String id) {
         return responseUtil.successResponse(plantService.findById(id));
     }
 
+    @PreAuthorize("hasAuthority(\"ROLE_USER\")")
     @GetMapping(ApiPath.SEARCH)
     public ResponseEntity<RestAPIResponse<Object>> searchPlants(
             @RequestParam String searchText,

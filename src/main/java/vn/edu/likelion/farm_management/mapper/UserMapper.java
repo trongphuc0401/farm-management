@@ -14,6 +14,7 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+
     UserEntity toUser(UserCreationRequest userCreationRequest);
 
     UserResponse toUserResponse(UserEntity userEntity);

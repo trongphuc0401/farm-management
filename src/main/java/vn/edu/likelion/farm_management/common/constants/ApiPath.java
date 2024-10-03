@@ -10,13 +10,12 @@ package vn.edu.likelion.farm_management.common.constants;
 public interface ApiPath {
 
     String DOMAIN = "https://drafarm.up.railway.app";
-    String DOMAIN_LOCAL_FE = "http://localhost:5173/";
+    String DOMAIN_LOCAL_FE = "http://localhost:5173";
 
     //http methods
     String ID = "/{id}";
 
     String DATE = "/{date}";
-
 
     String SLUG = "/slug/{slug}";
     String DETAIL = "/detail";
@@ -52,6 +51,9 @@ public interface ApiPath {
 
     String BASE_API_URL = "/api/v1";
 
+    //Auth
+    String AUTHENTICATE = BASE_API_URL + "/auth";
+
     // User
     String USER_API = BASE_API_URL + "/user";
     String USER_API_findById =   ID;
@@ -83,4 +85,6 @@ public interface ApiPath {
 
     // Report
     String REPORT_API = BASE_API_URL + "/report";
+
+
 }
