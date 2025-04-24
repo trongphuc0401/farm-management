@@ -167,7 +167,6 @@ public class UserServiceImpl implements UserService {
     public Optional<UserResponse> signup(UserCreationRequest userCreationRequest) {
 
         if (    userRepository.findByEmail(userCreationRequest.getEmail()).isEmpty()) {
-
             UserEntity userEntity = userMapper.toUser(userCreationRequest);
             userEntity.setPassword(passwordEncoder.encode(userCreationRequest.getPassword()));
             userEntity.setIsDeleted(0);
