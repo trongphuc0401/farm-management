@@ -1,12 +1,11 @@
-package vn.edu.likelion.farm_management.config;
+package vn.edu.likelion.farm_management.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.util.pattern.PathPatternParser;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class WebConfiguration implements WebMvcConfigurer {
 
     @SuppressWarnings("deprecation")
     @Override

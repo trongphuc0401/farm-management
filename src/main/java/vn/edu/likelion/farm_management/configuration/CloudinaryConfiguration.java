@@ -1,4 +1,4 @@
-package vn.edu.likelion.farm_management.config;
+package vn.edu.likelion.farm_management.configuration;
 
 
 import com.cloudinary.Cloudinary;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class CloudinaryConfig {
+public class CloudinaryConfiguration {
     private final String CLOUD_NAME = "dziu6t7jd";
     private final String API_KEY = "291423369574436";
     private final String API_SECRET = "xYH4K8A803dMFvdamtlnGZRc-Z4";

@@ -8,10 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.likelion.farm_management.common.constants.ApiPath;
 import vn.edu.likelion.farm_management.common.restfulAPI.ResponseUtil;
 import vn.edu.likelion.farm_management.common.restfulAPI.RestAPIResponse;
@@ -32,6 +29,7 @@ import java.io.ByteArrayInputStream;
 @RestController
 @RequestMapping(ApiPath.DASHBOARD_API)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class DashboardController {
 
 

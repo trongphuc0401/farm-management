@@ -16,3 +16,14 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+
+security:
+  jwt:
+    secret-key: 5a3f6b9e7c21d84a9f3b5d2c1e8f47ab8c92a1f4e3d9c5a7b2e4d6f7c9b8a6e5
+    expiration-time: 3600000
+
+  mvc:
+    cors:
+      allowed-origins: "http://localhost:5173"
+      allowed-methods: "*"
+      allowed-headers: "*"

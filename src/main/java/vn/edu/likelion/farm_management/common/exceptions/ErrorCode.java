@@ -19,9 +19,11 @@ public enum ErrorCode {
 
     USERNAME_TOO_SHORT(RestAPIStatus.BAD_REQUEST, -101, "Username must be at least {min} characters", "Bad Request", "Tên người dùng phải có ít nhất {min} ký tự"),
     PASSWORD_NO_NUMBER(RestAPIStatus.BAD_REQUEST, -102, "Password must contain at least one number", "Bad Request", "Mật khẩu phải chứa ít nhất một số"),
+    USER_EXIST(RestAPIStatus.EXISTED,-105,"User exist in system","Bad Request","Người dùng đã tồn tại"),
+    USER_OR_PASSWORD_INCORRECT(RestAPIStatus.BAD_REQUEST,-106,"Account or password incorrect","Bad Request","Tên tài khoản hoặc mật khẩu không đúng"),
+
     EMAIL_INVALID(RestAPIStatus.BAD_REQUEST, -103, "Email is invalid", "Bad Request", "Email không hợp lệ"),
     USER_NOT_EXIST(RestAPIStatus.BAD_REQUEST, -104, "User not exist", "Bad Request", "Người dùng không tồn tại"),
-    MISSING_REQUIRED_FIELD(RestAPIStatus.BAD_REQUEST, -105, "Missing required field", "Bad Request", "Thiếu trường bắt buộc"),
     PHOTO_UPLOAD_FAILED(RestAPIStatus.BAD_REQUEST, -106, "Failed to save photo", "Bad Request", "Upload ảnh thất bại"),
     INVALID_DATE_FORMAT(RestAPIStatus.BAD_REQUEST, -107, "Invalid date format", "Bad Request", "Định dạng ngày không hợp lệ"),
     PARAM_INVALID(RestAPIStatus.BAD_REQUEST, -108, "{fieldName} is invalid", "Bad Request", "{fieldName} không hợp lệ"),
@@ -58,6 +60,13 @@ public enum ErrorCode {
     DATABASE_CONNECTION_ERROR(RestAPIStatus.INTERNAL_SERVER_ERROR, -411, "Database connection error", "Internal Error", "Lỗi kết nối cơ sở dữ liệu"),
     FEATURE_NOT_AVAILABLE(RestAPIStatus.NOT_IMPLEMENTED, -412, "Feature not available", "Not Implemented", "Tính năng chưa có sẵn"),
     RESPONSE_DTO_CONVERSION_FAILED(RestAPIStatus.INTERNAL_SERVER_ERROR, -414, "Failed to convert to ResponseDTO", "Internal Server Error", "Không thể chuyển đổi sang ResponseDTO"),
+
+    PASSWORD_TOO_SHORT(RestAPIStatus.FAIL,-501,"Password must be between 8 and 20 characters","Fail","Mật khẩu phải từ 8 đến 20 ký tự"),
+    PASSWORD_MISSING_UPPERCASE(RestAPIStatus.FAIL,-502,"Password must contain at least one uppercase letter","Fail","Mật khẩu phải chứa ít nhất một chữ cái in hoa"),
+    PASSWORD_MISSING_LOWERCASE(RestAPIStatus.FAIL,-503,"Password must be between 8 and 20 characters","Fail","Mật khẩu phải chứa ít nhất một chữ cái thường"),
+    PASSWORD_MISSING_DIGIT(RestAPIStatus.FAIL,-504,"Password must contain at least one digit","Fail","Mật khẩu phải chứa ít nhất một chữ số"),
+    PASSWORD_MISSING_SPECIAL(RestAPIStatus.FAIL,-505,"Password must contain at least one special character","Fail","Mật khẩu phải chứa ít nhất một ký tự đặc biệt"),
+    PASSWORD_CONTAINS_WHITESPACE(RestAPIStatus.FAIL,-506,"Password must not contain whitespace","Fail","Mật khẩu không được chứa khoảng trắng"),
 
 
     INVALID_REQUEST_PARAMETER(RestAPIStatus.BAD_REQUEST, -600, "Invalid request parameter", "Bad Request", "Tham số yêu cầu không hợp lệ"),

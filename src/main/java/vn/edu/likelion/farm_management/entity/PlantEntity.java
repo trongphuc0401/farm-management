@@ -51,7 +51,7 @@ public class PlantEntity extends BaseEntity {
     @Column(nullable = false)
     Double area; // Diện tích cây trồng
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     Double yield; // Sản lượng dự kiến
 
     @Column(nullable = false)
